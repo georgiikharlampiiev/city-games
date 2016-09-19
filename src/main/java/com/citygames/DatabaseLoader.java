@@ -50,8 +50,6 @@ public class DatabaseLoader implements CommandLineRunner {
 		this.employees.save(new Employee("Merry", "Brandybuck", "pony rider", oliver));
 		this.employees.save(new Employee("Peregrin", "Took", "pipe smoker", oliver));
 
-
-
 		SecurityContextHolder.clearContext();
 	}
 }
