@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-// tag::code[]
+
 @Component
 public class DatabaseLoader implements CommandLineRunner {
 
@@ -50,7 +50,8 @@ public class DatabaseLoader implements CommandLineRunner {
 		this.employees.save(new Employee("Merry", "Brandybuck", "pony rider", oliver));
 		this.employees.save(new Employee("Peregrin", "Took", "pipe smoker", oliver));
 
+
+
 		SecurityContextHolder.clearContext();
 	}
 }
-// end::code[]
