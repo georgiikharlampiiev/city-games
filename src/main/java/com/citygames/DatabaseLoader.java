@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-// tag::code[]
+
 @Component
 public class DatabaseLoader implements CommandLineRunner {
 
@@ -51,4 +51,3 @@ public class DatabaseLoader implements CommandLineRunner {
 		SecurityContextHolder.clearContext();
 	}
 }
-// end::code[]
