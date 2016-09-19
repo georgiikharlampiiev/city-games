@@ -1,5 +1,9 @@
 package com.citygames;
 
+import com.citygames.entity.Employee;
+import com.citygames.entity.Manager;
+import com.citygames.repository.EmployeeRepository;
+import com.citygames.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

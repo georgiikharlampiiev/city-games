@@ -1,5 +1,6 @@
-package com.citygames;
+package com.citygames.repository;
 
+import com.citygames.entity.Manager;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 

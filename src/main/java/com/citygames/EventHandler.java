@@ -2,6 +2,7 @@ package com.citygames;
 
 import static com.citygames.WebSocketConfiguration.*;
 
+import com.citygames.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleAfterDelete;
