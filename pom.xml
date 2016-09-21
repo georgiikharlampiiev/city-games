@@ -14,7 +14,7 @@
 	<groupId>com.citygames</groupId>
 	<artifactId>city-games-odessa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>City Games Odessa</name>
 	<description>City Games Odessa</description>
