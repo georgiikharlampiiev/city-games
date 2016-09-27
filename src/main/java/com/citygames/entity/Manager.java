@@ -31,7 +31,7 @@ public class Manager {
 		this.password = PASSWORD_ENCODER.encode(password);
 	}
 
-	public Manager() {} // изменено на public
+	public Manager() {}
 
 	public Manager(String name, String password, String... roles) {
 
@@ -40,38 +40,5 @@ public class Manager {
 		this.roles = roles;
 	}
 
-	/*Getter & Setter*/
-
-	public static PasswordEncoder getPasswordEncoder() {
-		return PASSWORD_ENCODER;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public String[] getRoles() {
-		return roles;
-	}
-
-	public void setRoles(String[] roles) {
-		this.roles = roles;
-	}
 }
 

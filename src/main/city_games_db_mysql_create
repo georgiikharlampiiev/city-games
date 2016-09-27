@@ -1,0 +1,73 @@
+CREATE TABLE `user` (
+	`id` int NOT NULL,
+	`name` varchar(20) NOT NULL,
+	`user_role_id` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `user_team` (
+	`id` int NOT NULL,
+	`id_user` int NOT NULL,
+	`id_team` int NOT NULL,
+	`id_team_role` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `team` (
+	`id` int NOT NULL,
+	`name` varchar(30) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `user_role` (
+	`id` int NOT NULL,
+	`role` varchar(20) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `role_team` (
+	`id` int NOT NULL,
+	`team_role` varchar(20) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `game` (
+	`id` int NOT NULL,
+	`name` varchar(30) NOT NULL,
+	`description` varchar(100) NOT NULL,
+	`data_start` DATE NOT NULL,
+	`data_finish` DATE NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `game_team` (
+	`id` int NOT NULL,
+	`id_game` int NOT NULL,
+	`id_team` int NOT NULL,
+	`status` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `game_admin` (
+	`id` int NOT NULL,
+	`id_game` int NOT NULL,
+	`id_user` int NOT NULL,
+	`role_game` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+ALTER TABLE `user` ADD CONSTRAINT `user_fk0` FOREIGN KEY (`user_role_id`) REFERENCES `user_role`(`id`);
+
+ALTER TABLE `user_team` ADD CONSTRAINT `user_team_fk0` FOREIGN KEY (`id_user`) REFERENCES `user`(`id`);
+
+ALTER TABLE `user_team` ADD CONSTRAINT `user_team_fk1` FOREIGN KEY (`id_team`) REFERENCES `team`(`id`);
+
+ALTER TABLE `user_team` ADD CONSTRAINT `user_team_fk2` FOREIGN KEY (`id_team_role`) REFERENCES `role_team`(`id`);
+
+ALTER TABLE `game_team` ADD CONSTRAINT `game_team_fk0` FOREIGN KEY (`id_game`) REFERENCES `game`(`id`);
+
+ALTER TABLE `game_team` ADD CONSTRAINT `game_team_fk1` FOREIGN KEY (`id_team`) REFERENCES `team`(`id`);
+
+ALTER TABLE `game_admin` ADD CONSTRAINT `game_admin_fk0` FOREIGN KEY (`id_game`) REFERENCES `game`(`id`);
+
+ALTER TABLE `game_admin` ADD CONSTRAINT `game_admin_fk1` FOREIGN KEY (`id_user`) REFERENCES `user`(`id`);
