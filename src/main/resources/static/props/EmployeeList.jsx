@@ -1,6 +1,5 @@
 import React from 'react';
-import { Router, hashHistory, Link} from 'react-router';
-import {Employee} from '../props/Employee';
+import { Employee } from './Employee.jsx';
 
 export class EmployeeList extends React.Component {
 

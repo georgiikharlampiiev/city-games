@@ -1,7 +1,7 @@
 import React from 'react';
-import { Router, hashHistory, Link} from "react-router";
-import {CreateDialog} from '../props/CreateDialog';
-import {EmployeeList} from '../props/EmployeeList';
+import { Router, hashHistory, Link } from "react-router";
+import { CreateDialog } from '../props/CreateDialog.jsx';
+import { EmployeeList } from '../props/EmployeeList.jsx';
 
 
 const when = require('when');

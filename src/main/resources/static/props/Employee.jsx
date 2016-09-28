@@ -1,6 +1,5 @@
 import React from 'react';
-import { Router, hashHistory, Link} from "react-router";
-import {UpdateDialog} from '../props/UpdateDialog';
+import { UpdateDialog } from './UpdateDialog.jsx';
 
 export class Employee extends React.Component {
 

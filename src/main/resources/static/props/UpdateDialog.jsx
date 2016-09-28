@@ -1,5 +1,4 @@
 import React from 'react';
-import { Router, hashHistory, Link} from "react-router";
 
 export class UpdateDialog extends React.Component {
 
