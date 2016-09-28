@@ -15,8 +15,17 @@ export default class Statistic extends React.Component {
         return (
             <div>
     
+2222222222 dfasdf
+                sdf
+                asd
 
- Statistic
+
+                asdf
+                as
+                df sadf222
+                sadfasd
+
+ Statistic1112222
             </div>
         )
     }

@@ -1,0 +1,4 @@
+1) invoke Help->Find Action… and type “Registry”, in the dialog search for “automake” and enable the entry “compiler.automake.allow.when.app.running”, close dialog
+2) enable background compilation in Settings->Build, Execution, Deployment->Compiler “Make project automatically”
+3) open Spring Boot run config, you should get warning message if everything is configured correctly
+4) Run your app, change your classes on-the-fly
