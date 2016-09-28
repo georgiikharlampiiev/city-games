@@ -13,6 +13,4 @@ public class UserRole {
 
     private String role;
 
-    @OneToMany(mappedBy = "role")
-    private Set<User> users;
 }

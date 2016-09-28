@@ -20,13 +20,10 @@ public class Game {
 
   private Date dataFinish;
 
-  @OneToMany(mappedBy = "game")
+  @OneToMany
   private Set<Team> teams;
 
-  @ManyToOne
-  @JoinTable(name = "game_admin",
-      joinColumns = @JoinColumn(name = "id_game"),
-      inverseJoinColumns = @JoinColumn(name = "id_user"))
-  private User user;
+  @OneToMany
+  private Set<GameAdmin> gameAdmins;
 
 }

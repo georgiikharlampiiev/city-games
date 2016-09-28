@@ -13,12 +13,4 @@ public class RoleTeam {
 
     private String role;
 
-    @ManyToOne
-    @JoinTable(name = "user_team",
-        joinColumns = @JoinColumn(name = "id_team_role"),
-        inverseJoinColumns = @JoinColumn(name = "id_team") )
-    private Team team;
-
-    @OneToMany(mappedBy = "roleTeam")
-    private Set<User> users;
 }

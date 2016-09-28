@@ -2,7 +2,7 @@ package com.citygames;
 
 import static com.citygames.WebSocketConfiguration.*;
 
-import com.citygames.entity.Employee;
+import com.citygames.entity.GameUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleAfterDelete;
@@ -13,7 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-@RepositoryEventHandler(Employee.class)
+@RepositoryEventHandler(GameUser.class)
 public class EventHandler {
 
 	private final SimpMessagingTemplate websocket;
@@ -27,19 +27,19 @@ public class EventHandler {
 	}
 
 	@HandleAfterCreate
-	public void newEmployee(Employee employee) {
+	public void newEmployee(GameUser employee) {
 		this.websocket.convertAndSend(
 				MESSAGE_PREFIX + "/newEmployee", getPath(employee));
 	}
 
 	@HandleAfterDelete
-	public void deleteEmployee(Employee employee) {
+	public void deleteEmployee(GameUser employee) {
 		this.websocket.convertAndSend(
 				MESSAGE_PREFIX + "/deleteEmployee", getPath(employee));
 	}
 
 	@HandleAfterSave
-	public void updateEmployee(Employee employee) {
+	public void updateEmployee(GameUser employee) {
 		this.websocket.convertAndSend(
 				MESSAGE_PREFIX + "/updateEmployee", getPath(employee));
 	}
@@ -49,7 +49,7 @@ public class EventHandler {
 	 *
 	 * @param employee
 	 */
-	private String getPath(Employee employee) {
+	private String getPath(GameUser employee) {
 		return this.entityLinks.linkForSingleResource(employee.getClass(),
 				employee.getId()).toUri().getPath();
 	}

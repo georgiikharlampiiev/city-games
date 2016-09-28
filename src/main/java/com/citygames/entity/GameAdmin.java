@@ -11,13 +11,9 @@ public class GameAdmin {
 
     private @Id @GeneratedValue Long id;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "id")
-    private Set<Game> games;
-
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private Set<User> users;
+    private Set<GameUser> gameUsers;
 
     private String roleGame;
 

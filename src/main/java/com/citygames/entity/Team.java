@@ -15,18 +15,7 @@ public class Team {
 
     private String name;
 
-    @ManyToOne
-    @JoinTable(name="user_team",
-        joinColumns = @JoinColumn(name = "id_team"),
-        inverseJoinColumns = @JoinColumn(name = "id_user") )
-    private User user;
+    @OneToMany
+    private Set<GameUser> gameUser;
 
-    @OneToMany(mappedBy = "team")
-    private Set<RoleTeam> rolesTeam;
-
-    @ManyToOne
-    @JoinTable(name = "game_team",
-        joinColumns = @JoinColumn(name = "id_team"),
-        inverseJoinColumns = @JoinColumn(name = "Id_game"))
-    private Game game;
 }
