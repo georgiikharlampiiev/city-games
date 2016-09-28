@@ -11,6 +11,6 @@ public class RoleTeam {
 
     private @Id @GeneratedValue Long id;
 
-    private String role;
+    private String name;
 
 }

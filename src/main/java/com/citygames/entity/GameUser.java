@@ -24,10 +24,12 @@ public class GameUser {
     private @JsonIgnore
     String password;
 
-    @ManyToOne
-    private UserRole role;
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id")
+    private UserRole roleId;
 
-    @ManyToOne
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id")
     private RoleTeam roleTeam;
 
     public void setPassword(String password) {
