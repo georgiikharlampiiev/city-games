@@ -11,12 +11,15 @@ export default class MainApp extends React.Component {
 	render() {
 		return (
 			<div>
-				<Link to="/statistic">
+				<p><Link to="/statistic">
 					Statistic
-				</Link>
-				<Link to="/users">
+				</Link></p>
+				<p><Link to="/games">
+					Games
+				</Link></p>
+					<p><Link to="/users">
 					Users
-				</Link>
+				</Link></p>
 				{this.props.children}
 
 			</div>
