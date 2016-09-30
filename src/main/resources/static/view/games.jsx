@@ -5,36 +5,36 @@ export class Games extends React.Component {
 
     constructor(props) {
         super(props);
-        //this.state = {employees: ['Roma','Shora','Goring']};
+      //  this.state = {gameusers: []};
     }
 
     componentDidMount() {
     }
-    // loadFromServer(pageSize) {
+    //  loadFromServer(pageSize) {
     //     follow(client, root, [
-    //         {rel: 'employees', params: {size: pageSize}}]
-    //     ).then(employeeCollection => {
+    //         {rel: 'gameusers', params: {size: pageSize}}]
+    //     ).then(gameusersCollection => {
     //         return client({
     //             method: 'GET',
-    //             path: employeeCollection.entity._links.profile.href,
+    //             path: gameusersCollection.entity._links.profile.href,
     //             headers: {'Accept': 'application/schema+json'}
     //         }).then(schema => {
     //             this.schema = schema.entity;
     //             this.links = employeeCollection.entity._links;
-    //             return employeeCollection;
+    //             return gameusersCollection;
     //         });
-    //     }).then(employeeCollection => {
-    //         this.page = employeeCollection.entity.page;
-    //         return employeeCollection.entity._embedded.employees.map(employee =>
+    //     }).then(gameusersCollection => {
+    //         this.page = gameusersCollection.entity.page;
+    //         return gameusersCollection.entity._embedded.employees.map(gameuser =>
     //             client({
     //                 method: 'GET',
-    //                 path: employee._links.self.href
+    //                 path: gameuser._links.self.href
     //             })
     //         );
-    //     }).done(employees => {
+    //     }).done(gameusers => {
     //         this.setState({
     //             page: this.page,
-    //             employees: employees,
+    //             employees: gameusers,
     //             attributes: Object.keys(this.schema.properties),
     //             pageSize: pageSize,
     //             links: this.links
@@ -54,6 +54,7 @@ export class Games extends React.Component {
                     * Creat class team 
                     */
                     Team
+                    {this.state.gameusers.gameuser.entity.name}
                 </td>
                 <td>
                     Game Admin 
