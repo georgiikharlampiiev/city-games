@@ -1,15 +1,15 @@
 package com.citygames.repository;
 
 import com.citygames.entity.GameUser;
-import org.springframework.data.repository.Repository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(exported = false)
-public interface GameUserRepository extends Repository<GameUser, Long> {
+@Repository
+public interface GameUserRepository extends JpaRepository<GameUser, Long> {
 
-	GameUser save(GameUser manager);
-
-	GameUser findByName(String name);
-
+    @Query("from GameUser g where g.name = :name")
+    GameUser findByName(@Param("name") String name);
 }
 

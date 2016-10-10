@@ -1,7 +1,7 @@
 package com.citygames;
 
 import com.citygames.entity.GameUser;
-import com.citygames.repository.GameUserRepository;
+import com.citygames.service.GameUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
@@ -12,18 +12,18 @@ import org.springframework.stereotype.Component;
 @RepositoryEventHandler(GameUser.class)
 public class SpringDataRestEventHandler {
 
-	private final GameUserRepository managerRepository;
+	private final GameUserService gameUserService;
 
 	@Autowired
-	public SpringDataRestEventHandler(GameUserRepository managerRepository) {
-		this.managerRepository = managerRepository;
+	public SpringDataRestEventHandler(GameUserService gameUserService) {
+		this.gameUserService = gameUserService;
 	}
 
 	@HandleBeforeCreate
 	public void applyUserInformationUsingSecurityContext(GameUser employee) {
 
 		String name = SecurityContextHolder.getContext().getAuthentication().getName();
-		GameUser manager = this.managerRepository.findByName(name);
+		GameUser manager = this.gameUserService.getByName(name);
 //		if (manager == null) {
 //			Manager newManager = new Manager();
 //			newManager.setName(name);
