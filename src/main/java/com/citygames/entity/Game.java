@@ -26,4 +26,11 @@ public class Game {
   @OneToMany
   private Set<GameAdmin> gameAdmins;
 
+  public Game(){}
+
+  public Game(Long id, String name, String description){
+    this.id = id;
+    this.name = name;
+    this.description = description;
+  }
 }
