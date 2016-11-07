@@ -2,18 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8"/>
-    <title>ReactJS + Spring Data REST</title>
-    <link rel="stylesheet" href="/main.css" />
+    <title>City Games</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
 </head>
 <body>
     <!-- tag::logout[] -->
-    <div>
-        Hello, <span th:text="${#authentication.name}">user</span>.
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Log Out"/>
-        </form>
-    </div>
+    <!--<div>-->
+        <!--Hello, <span th:text="${#authentication.name}">user</span>.-->
+        <!--<form th:action="@{/logout}" method="post">-->
+            <!--<input type="submit" value="Log Out"/>-->
+        <!--</form>-->
+    <!--</div>-->
     <!-- end::logout[] -->
+
+
 
     <div id="react"></div>
 

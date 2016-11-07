@@ -1,10 +1,5 @@
 import React from 'react';
 import { Link } from "react-router";
-
-const follow = require('../follow');
-const when = require('when');
-const client = require('../client');
-const root = '/api';
 const $ = require ('jquery')
 
 export class Games extends React.Component {
@@ -15,10 +10,10 @@ export class Games extends React.Component {
     }
 
     componentDidMount() {
-        this.loadFromServer(1);
+        this.loadFromServer();
     }
 
-     loadFromServer(pageSize) {
+     loadFromServer() {
         // follow(client, root, [
         //     {rel: 'getGames', params: {size: pageSize}}]
         // ).then(gameusersCollection => {
@@ -50,7 +45,7 @@ export class Games extends React.Component {
         // });
 
          $.ajax({
-             url: '/allapi/getGames',
+             url: '/api/getGames',
              dataType: 'json',
              success: function (data) {
                  console.info(data);
@@ -63,24 +58,28 @@ export class Games extends React.Component {
          console.info(this.state.gameusers)
     }
 
+    parseGame(game) {
+        return (
+            <div key={game.name} className="row">
+                <div className="col-md-12 portfolio-item">
+                    <a href="#">
+                        <img className="img-responsive" src="http://placehold.it/700x400" alt=""/>
+                    </a>
+                    <h3>
+                        <a href="#">{game.name}</a>
+                    </h3>
+                    <p>{game.description}</p>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return (
-            <tr>
-                <td>Name</td>
-                <td>Discription</td>
-                <td>DataStart</td>
-                <td>DataFinish</td>
-                <td>
-                    /**
-                    * Creat class team 
-                    */
-                    Team
-                    {this.state.gameusers}
-                </td>
-                <td>
-                    Game Admin 
-                </td>
-            </tr>
+            <div>
+                {this.state.gameusers.map(this.parseGame)}
+            </div>
         )
     }
 }
+

@@ -24,7 +24,7 @@ public class Game {
   private Set<Team> teams;
 
   @OneToMany
-  private Set<GameAdmin> gameAdmins;
+  private Set<GameUser> gameAdmins;
 
   public Game(){}
 
