@@ -13,4 +13,6 @@ public interface GameService {
 
     List<Game> getAll();
 
+    List<Game> getAllGames(int page, int pageSize);
+
 }
