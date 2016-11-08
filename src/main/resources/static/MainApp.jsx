@@ -48,6 +48,11 @@ export default class MainApp extends React.Component {
 									</Link>
 								</li>
 								<li>
+									<Link to="/about">
+										About
+									</Link>
+								</li>
+								<li>
 									<a href="/logout">
 										Logout
 									</a>
