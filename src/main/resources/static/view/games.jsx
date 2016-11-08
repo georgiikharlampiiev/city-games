@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router";
-const $ = require ('jquery')
+var executeGetAction =  require ('../utils/utils.jsx');
 
 export class Games extends React.Component {
 
@@ -14,48 +14,21 @@ export class Games extends React.Component {
     }
 
      loadFromServer() {
-        // follow(client, root, [
-        //     {rel: 'getGames', params: {size: pageSize}}]
-        // ).then(gameusersCollection => {
-        //     return client({
-        //         method: 'GET',
-        //         path: gameusersCollection.entity._links.profile.href,
-        //         headers: {'Accept': 'application/schema+json'}
-        //     }).then(schema => {
-        //         this.schema = schema.entity;
-        //         this.links = employeeCollection.entity._links;
-        //         return gameusersCollection;
-        //     });
-        // }).then(gameusersCollection => {
-        //     this.page = gameusersCollection.entity.page;
-        //     return gameusersCollection.entity._embedded.employees.map(gameuser =>
-        //         client({
-        //             method: 'GET',
-        //             path: gameuser._links.self.href
-        //         })
-        //     );
-        // }).done(gameusers => {
-        //     this.setState({
-        //         page: this.page,
-        //         employees: gameusers,
-        //         attributes: Object.keys(this.schema.properties),
-        //         pageSize: pageSize,
-        //         links: this.links
-        //     });
-        // });
+        //
+        //  $.ajax({
+        //      url: '/api/getGames',
+        //      dataType: 'json',
+        //      async: false,
+        //      success: function (data) {
+        //          console.info("data " ,data);
+        //          this.setState({gameusers: data});
+        //      }.bind(this),
+        //      error: function (xhr, status, err) {
+        //          console.error(this.props.url, status, err.toString());
+        //      }.bind(this)
+        //  });
 
-         $.ajax({
-             url: '/api/getGames',
-             dataType: 'json',
-             success: function (data) {
-                 console.info(data);
-                 this.setState({gameusers: data});
-             }.bind(this),
-             error: function (xhr, status, err) {
-                 console.error(this.props.url, status, err.toString());
-             }.bind(this)
-         });
-         console.info(this.state.gameusers)
+         this.setState({gameusers:executeGetAction('/api/getGames')})
     }
 
     parseGame(game) {
