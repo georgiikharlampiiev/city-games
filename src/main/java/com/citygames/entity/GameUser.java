@@ -21,6 +21,8 @@ public class GameUser {
 
     private String name;
 
+    private String email;
+
     private @JsonIgnore
     String password;
 
