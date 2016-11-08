@@ -16,15 +16,15 @@ export class MyProfile extends React.Component {
 
      loadFromServer() {
 
-        console.info("executeGetAction('/api/getUserProfile')", executeGetAction('/api/getUserProfile'))
-         // this.setState({currentUser:executeGetAction('/api/getUserProfile')})
+        // console.info("executeGetAction('/api/getUserProfile')", executeGetAction('/api/getUserProfile'))
+         this.setState({currentUser:executeGetAction('/api/getUserProfile')})
     }
 
 
     render() {
         return (
             <div>
-                <form className="well form-horizontal" action=" " method="post"  id="contact_form">
+                <form className="well form-horizontal" action=" " method="post"  id="contact_form" autocomplete="off">
                     <fieldset>
 
                         {/*<!-- Form Name -->*/}
@@ -37,7 +37,7 @@ export class MyProfile extends React.Component {
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                                    <input  name="first_name" placeholder="First Name" className="form-control"  type="text"/>
+                                    <input  name="first_name" placeholder="First Name" className="form-control"  type="text" value={this.state.currentUser.name} />
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@ export class MyProfile extends React.Component {
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-envelope"></i></span>
-                                    <input name="email" placeholder="E-Mail Address" className="form-control"  type="text"/>
+                                    <input disabled name="email" placeholder="E-Mail Address" className="form-control"  type="text" value={this.state.currentUser.email} />
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@ export class MyProfile extends React.Component {
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>
-                                    <input name="phone" placeholder="(845)555-1212" className="form-control" type="text"/>
+                                    <input name="phone" placeholder="(845)555-1212" className="form-control" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@ export class MyProfile extends React.Component {
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-lock"></i></span>
-                                    <input name="address" placeholder="Address" className="form-control" type="password"/>
+                                    <input name="address" placeholder="Address" className="form-control" type="password" autocomplete="off"/>
                                 </div>
                             </div>
                         </div>
