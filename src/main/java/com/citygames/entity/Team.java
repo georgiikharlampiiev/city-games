@@ -16,6 +16,7 @@ public class Team {
     private String name;
 
     @OneToMany
+    @JoinColumn(name="TEAM_ID", referencedColumnName="ID")
     private Set<GameUser> gameUser;
 
 }

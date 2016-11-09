@@ -7,7 +7,10 @@ export class GameView extends React.Component {
 
     constructor(props) {
         super(props);
-       this.state = {currentGame: []};
+       this.state = {
+           currentGame: [],
+           currentUser: null
+       };
     }
 
     componentDidMount() {
@@ -16,24 +19,9 @@ export class GameView extends React.Component {
 
      loadFromServer() {
          this.setState({
-             currentGame:executeGetAction('/api/getGame/' + this.props.params.gameId)
+             currentGame: executeGetAction('/api/getGame/' + this.props.params.gameId),
+             currentUser: executeGetAction('/api/getUserProfile')
          });
-    }
-
-    parseGame(game) {
-        return (
-            <div key={game.name} className="row">
-                <div className="col-md-12 portfolio-item">
-                    <a href="#">
-                        <img className="img-responsive" src="http://placehold.it/700x400" alt=""/>
-                    </a>
-                    <h3>
-                        <a href="#">{game.name}</a>
-                    </h3>
-                    <p>{game.description}</p>
-                </div>
-            </div>
-        )
     }
 
     formatMillisecondsToDate(milliseconds) {
@@ -41,6 +29,16 @@ export class GameView extends React.Component {
             return moment(milliseconds).format("DD/MM/YYYY hh:mm");
         } else {
             return "";
+        }
+    }
+
+    joinGameButtonRender() {
+        const user = this.state.currentUser
+        if(user && user.teamId){
+            return (<button type="button" className="btn btn-default">Join game</button>)
+        } else {
+            return (<div className="alert alert-warning">
+                You are not a team member! Only team members can enter the game. Please, join in team ore create you own.</div>)
         }
     }
 
@@ -61,9 +59,9 @@ export class GameView extends React.Component {
                         
                         <hr/>
                         
-                        <p className="lead">{game.name}</p>
-                        <p>{game.description}</p>
-
+                        <p className="lead"> {game.name }</p>
+                        <p>{ game.description }</p>
+                        { this.joinGameButtonRender() }
                         <hr/>
 
                     </div>

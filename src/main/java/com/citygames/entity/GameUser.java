@@ -34,6 +34,9 @@ public class GameUser {
     @JoinColumn(name="id")
     private RoleTeam roleTeam;
 
+    @Column(name="TEAM_ID")
+    private Long teamId;
+
     public void setPassword(String password) {
         this.password = PASSWORD_ENCODER.encode(password);
     }

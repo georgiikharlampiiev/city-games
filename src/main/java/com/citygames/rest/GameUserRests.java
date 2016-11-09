@@ -2,6 +2,7 @@ package com.citygames.rest;
 
 
 import com.citygames.entity.GameUser;
+import com.citygames.entity.Team;
 import com.citygames.service.GameUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,4 +24,12 @@ public class GameUserRests {
 
         return gameUserService.getByName(name);
     }
+
+//    @RequestMapping("/getCurrentUserTeam")
+//    public Team getCurrentUserTeam() {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String name = auth.getName();
+//
+//        return gameUserService.getByName(name).getTeams;
+//    }
 }

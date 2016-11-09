@@ -17,14 +17,14 @@ export class MyProfile extends React.Component {
      loadFromServer() {
 
         // console.info("executeGetAction('/api/getUserProfile')", executeGetAction('/api/getUserProfile'))
-         this.setState({currentUser:executeGetAction('/api/getUserProfile')})
+         this.setState({currentUser: executeGetAction('/api/getUserProfile')})
     }
 
 
     render() {
         return (
             <div>
-                <form className="well form-horizontal" action=" " method="post"  id="contact_form" autocomplete="off">
+                <form className="well form-horizontal" action=" " method="post"  id="contact_form" autoComplete="off">
                     <fieldset>
 
                         {/*<!-- Form Name -->*/}
@@ -62,7 +62,7 @@ export class MyProfile extends React.Component {
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>
-                                    <input name="phone" placeholder="(845)555-1212" className="form-control" type="text" />
+                                    <input name="phone" placeholder="(845)555-1212" className="form-control" type="text" autoComplete="off" />
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@ export class MyProfile extends React.Component {
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-lock"></i></span>
-                                    <input name="address" placeholder="Address" className="form-control" type="password" autocomplete="off"/>
+                                    <input name="address" placeholder="Address" className="form-control" type="password" autoComplete="off"/>
                                 </div>
                             </div>
                         </div>
