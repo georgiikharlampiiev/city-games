@@ -39,7 +39,7 @@ export class Games extends React.Component {
                         <img className="img-responsive" src="http://placehold.it/700x400" alt=""/>
                     </a>
                     <h3>
-                        <a href="#">{game.name}</a>
+                        <a href={"#/game-view/" + game.id} >{game.name}</a>
                     </h3>
                     <p>{game.description}</p>
                 </div>

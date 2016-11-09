@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomeController {
 
-	@RequestMapping(value = "/home")
+	@RequestMapping(value = "/")
 	public String index() {
 		return "index";
 	}
