@@ -50,4 +50,9 @@ public class GameServiceImpl implements GameService {
         return query.getResultList();
     }
 
+    @Override
+    public Game getGameById(Long id){
+        return gameRepository.findOne(id);
+    }
+
 }
