@@ -1,0 +1,1 @@
+ALTER TABLE citygames.game ADD image TEXT NULL;

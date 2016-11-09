@@ -25,11 +25,4 @@ public class GameUserRests {
         return gameUserService.getByName(name);
     }
 
-//    @RequestMapping("/getCurrentUserTeam")
-//    public Team getCurrentUserTeam() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String name = auth.getName();
-//
-//        return gameUserService.getByName(name).getTeams;
-//    }
 }

@@ -75,6 +75,8 @@ export default class MainApp extends React.Component {
 					{/*<!-- /.container -->*/}
 				</div>
 
+				<div id="loader"></div>
+
 			</div>
 		)
 	}

@@ -44,9 +44,12 @@ export class GameView extends React.Component {
 
     render() {
         const game = this.state.currentGame;
+        var image = "http://placehold.it/900x300";
+        if(game.image) {
+            image = "data:image/png;base64," + game.image;
+        }
         return (
             <div>
-                {/*{this.state.gameusers.map(this.parseGame)}*/}
                 <div className="row">
                     
                     <div className="col-lg-8">
@@ -55,11 +58,11 @@ export class GameView extends React.Component {
 
                         <hr/>
                         
-                        <img className="img-responsive" src="http://placehold.it/900x300" alt=""/>
+                        <img className="img-responsive" src={ image } alt=""/>
                         
                         <hr/>
                         
-                        <p className="lead"> {game.name }</p>
+                        <p className="lead"> { game.name }</p>
                         <p>{ game.description }</p>
                         { this.joinGameButtonRender() }
                         <hr/>

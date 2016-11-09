@@ -26,6 +26,8 @@ public class Game {
   @OneToMany
   private Set<GameUser> gameAdmins;
 
+  private String image;
+
   public Game(){}
 
   public Game(Long id, String name, String description){

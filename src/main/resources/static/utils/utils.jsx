@@ -15,6 +15,12 @@ var executeGetAction = function(url){
             },
             error: function (xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
+            },
+            beforeSend: function(){
+                $('#loader').show();
+            },
+            complete: function(){
+                $('#loader').hide();
             }
         });
     return response;
