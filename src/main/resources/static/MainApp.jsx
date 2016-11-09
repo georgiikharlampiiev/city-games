@@ -24,6 +24,7 @@ export default class MainApp extends React.Component {
 								<span className="icon-bar"></span>
 								<span className="icon-bar"></span>
 								<span className="icon-bar"></span>
+								<span className="icon-bar"></span>
 							</button>
 							<Link to="/" activeClassName="navbar-brand">
 								City games
