@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router";
 var executeGetAction =  require ('../utils/utils.jsx');
+var moment = require('moment');
 
 export class GameView extends React.Component {
 
@@ -35,6 +36,14 @@ export class GameView extends React.Component {
         )
     }
 
+    formatMillisecondsToDate(milliseconds) {
+        if ( milliseconds ) {
+            return moment(milliseconds).format("DD/MM/YYYY hh:mm");
+        } else {
+            return "";
+        }
+    }
+
     render() {
         const game = this.state.currentGame;
         return (
@@ -43,8 +52,9 @@ export class GameView extends React.Component {
                 <div className="row">
                     
                     <div className="col-lg-8">
-                        <p><span className="glyphicon glyphicon-time"></span> {game.dataStart} </p>
-                        
+                        <p><span className="glyphicon glyphicon-time"></span> Start at { this.formatMillisecondsToDate(game.dataStart) } </p>
+                        <p><span className="glyphicon glyphicon-time"></span> Finish at { this.formatMillisecondsToDate(game.dataStop) } </p>
+
                         <hr/>
                         
                         <img className="img-responsive" src="http://placehold.it/900x300" alt=""/>
