@@ -19,11 +19,11 @@ public class SpringDataRestEventHandler {
 		this.gameUserService = gameUserService;
 	}
 
-	@HandleBeforeCreate
-	public void applyUserInformationUsingSecurityContext(GameUser employee) {
-
-		String name = SecurityContextHolder.getContext().getAuthentication().getName();
-		GameUser manager = this.gameUserService.getByName(name);
+//	@HandleBeforeCreate
+//	public void applyUserInformationUsingSecurityContext(GameUser employee) {
+//
+//		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+//		GameUser manager = this.gameUserService.getByName(name);
 //		if (manager == null) {
 //			Manager newManager = new Manager();
 //			newManager.setName(name);
@@ -31,6 +31,6 @@ public class SpringDataRestEventHandler {
 //			manager = this.managerRepository.save(newManager);
 //		}
 //		employee.setManager(manager);
-	}
+//	}
 }
 
