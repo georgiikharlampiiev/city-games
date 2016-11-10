@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router";
-var executeGetAction =  require ('../utils/utils.jsx');
+var ajaxUtils =  require ('../utils/utils.jsx');
 
 export class Games extends React.Component {
 
@@ -14,7 +14,10 @@ export class Games extends React.Component {
     }
 
     loadFromServer() {
-        this.setState({ gameUsers:  executeGetAction('/api/getGames') });
+        ajaxUtils.executeGetAction('/api/getGames',
+            (data) => { this.setState({ gameUsers:data })},
+            (e) => console.error(e)
+        );
     }
 
     parseGame(game) {

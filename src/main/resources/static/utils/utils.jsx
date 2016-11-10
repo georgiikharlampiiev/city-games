@@ -1,20 +1,17 @@
 import React from 'react';
 const $ = require ('jquery');
 
-var executeGetAction = function(url){
-
-    var response;
-
+var executeGetAction = function(url, successFunction, errorFunction){
     $.ajax({
             url: url,
-            async: false,
             dataType: 'json',
             success: function (data) {
-                console.info("executeGetAction data " ,data);
-                response = data;
+                console.info("ExecuteGetAction -> data :" ,data);
+                successFunction(data);
             },
             error: function (xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
+                console.error(url, status, err.toString());
+                errorFunction(err.toString());
             },
             beforeSend: function(){
                 $('#loader').show();
@@ -23,8 +20,29 @@ var executeGetAction = function(url){
                 $('#loader').hide();
             }
         });
-    return response;
-
 };
 
-module.exports = executeGetAction;
+var executePostAction = function(url, sendData, successFunction, errorFunction){
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: sendData,
+        dataType: 'json',
+        success: function (data) {
+            console.info("ExecutePostAction -> data :" ,data);
+            successFunction(data);
+        },
+        error: function (xhr, status, err) {
+            console.error(url, status, err.toString());
+            errorFunction(err.toString());
+        },
+        beforeSend: function(){
+            $('#loader').show();
+        },
+        complete: function(){
+            $('#loader').hide();
+        }
+    });
+};
+
+module.exports = { executeGetAction, executePostAction };

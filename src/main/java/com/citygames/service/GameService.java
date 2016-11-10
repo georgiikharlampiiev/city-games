@@ -1,6 +1,7 @@
 package com.citygames.service;
 
 import com.citygames.entity.Game;
+
 import java.util.List;
 
 public interface GameService {
@@ -17,4 +18,9 @@ public interface GameService {
 
     Game getGameById(Long id);
 
+    Boolean addApplyGameByCurrentUser(Long gameId);
+
+    Boolean deleteApplyGameByCurrentUser(Long gameId);
+
+    Boolean IsUserAppliedGame(Long gameId);
 }

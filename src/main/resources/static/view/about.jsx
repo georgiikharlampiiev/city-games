@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from "react-router";
-var executeGetAction =  require ('../utils/utils.jsx');
 
 export class About extends React.Component {
 

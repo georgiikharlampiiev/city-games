@@ -3,7 +3,7 @@ import { Link } from "react-router";
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
 
-export class GameView extends React.Component {
+export class GamePlay extends React.Component {
 
     constructor(props) {
        super(props);
@@ -13,7 +13,6 @@ export class GameView extends React.Component {
            isUserAppliedGame: false
        };
        this.applyGame = this.applyGame.bind(this);
-       this.deleteApplyGame = this.deleteApplyGame.bind(this);
        this.checkIsUserAppliedGame = this.checkIsUserAppliedGame.bind(this);
     }
 
@@ -24,11 +23,11 @@ export class GameView extends React.Component {
 
      loadFromServer() {
          ajaxUtils.executeGetAction('/api/getGame/' + this.props.params.gameId,
-             (data) => {this.setState({ currentGame:data })},
+             (data) => {this.setState({currentGame:data})},
              (e) => console.error(e)
          );
          ajaxUtils.executeGetAction('/api/getUserProfile',
-             (data) => {this.setState({ currentUser: data })},
+             (data) => {this.setState({currentUser:data})},
              (e) => console.error(e)
          );
     }
@@ -36,15 +35,7 @@ export class GameView extends React.Component {
     applyGame() {
         var params = this.props.params;
         ajaxUtils.executeGetAction('/api/applyGameByCurrentUser/' + params.gameId,
-            (data) => {this.setState({ isUserAppliedGame: data })},
-            (e) => console.error(e)
-        );
-    }
-
-    deleteApplyGame() {
-        var params = this.props.params;
-        ajaxUtils.executeGetAction('/api/deleteApplyGameByCurrentUser/' + params.gameId,
-            (data) => {this.setState({ isUserAppliedGame: !data })},
+            (data) => {this.setState({ isUserAppliedGame:data })},
             (e) => console.error(e)
         );
     }
@@ -52,7 +43,7 @@ export class GameView extends React.Component {
     checkIsUserAppliedGame() {
         var params = this.props.params;
         ajaxUtils.executeGetAction('/api/isUserAppliedGame/' + params.gameId,
-            (data) => {this.setState({ isUserAppliedGame: data })},
+            (data) => {this.setState({ isUserAppliedGame:data })},
             (e) => console.error(e)
         );
     }
@@ -65,25 +56,6 @@ export class GameView extends React.Component {
         }
     }
 
-    joinGameButtonRender() {
-        const user = this.state.currentUser;
-        const isUserAppliedGame = this.state.isUserAppliedGame;
-        const gameId = this.props.params.gameId;
-        if(user && user.teamId){
-            if(isUserAppliedGame) {
-                return (<div>
-                    <button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>Delete game apply</button>
-                    <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default" >Open current game</a></div>
-                )
-            }else {
-                return (<button type="button" className="btn btn-default" onClick={this.applyGame}>Join game</button>)
-            }
-
-        } else {
-            return (<div className="alert alert-warning">
-                You are not a team member! Only team members can enter the game. Please, join in team ore create you own.</div>)
-        }
-    }
 
     render() {
         const game = this.state.currentGame;
@@ -105,10 +77,8 @@ export class GameView extends React.Component {
                         
                         <hr/>
                         
-                        <p className="lead"> { game.name }</p>
-                        <p>{ game.description }</p>
-                        { this.joinGameButtonRender() }
-                        <hr/>
+                        <p className="lead"> JUST STUB FOR GAME PLAY!!!!!</p>
+
 
                     </div>
                 </div>

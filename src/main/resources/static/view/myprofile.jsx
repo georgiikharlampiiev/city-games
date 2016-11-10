@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router";
-var executeGetAction =  require ('../utils/utils.jsx');
+var ajaxUtils = require ('../utils/utils.jsx');
 
 
 export class MyProfile extends React.Component {
@@ -17,7 +17,10 @@ export class MyProfile extends React.Component {
      loadFromServer() {
 
         // console.info("executeGetAction('/api/getUserProfile')", executeGetAction('/api/getUserProfile'))
-         this.setState({currentUser: executeGetAction('/api/getUserProfile')})
+         ajaxUtils.executeGetAction('/api/getUserProfile',
+             (data) => {this.setState({currentUser:data})},
+             (e) => console.error(e)
+         );
     }
 
 

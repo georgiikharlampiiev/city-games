@@ -4,6 +4,7 @@ import Statistic from "./view/statistic.jsx";
 import MainApp from "./MainApp.jsx";
 import { Games } from "./view/games.jsx";
 import { GameView } from "./view/game-view.jsx";
+import { GamePlay } from "./view/game-play.jsx";
 import { MyProfile } from "./view/myprofile.jsx";
 import { About } from "./view/about.jsx";
 
@@ -16,6 +17,7 @@ const routes = (
         <Route path="myprofile" component={MyProfile} />
         <Route path="about" component={About} />
         <Route path="game-view/:gameId" component={GameView} />
+        <Route path="game-play/:gameId" component={GamePlay} />
     </Route>
 );
 

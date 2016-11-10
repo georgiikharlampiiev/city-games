@@ -1,15 +1,23 @@
 package com.citygames.service.impl;
 
 import com.citygames.entity.Game;
+import com.citygames.entity.GameUser;
+import com.citygames.entity.Team;
 import com.citygames.repository.GameRepository;
+import com.citygames.repository.TeamRepository;
 import com.citygames.service.GameService;
+import com.citygames.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -19,6 +27,12 @@ public class GameServiceImpl implements GameService {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private SecurityUtilsService securityUtilsService;
+
+    @Autowired
+    private TeamRepository teamRepository;
 
     @Override
     public Game add(Game game) {
@@ -53,6 +67,56 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game getGameById(Long id){
         return gameRepository.findOne(id);
+    }
+
+    @Override
+    public Boolean addApplyGameByCurrentUser(Long gameId){
+        GameUser user = securityUtilsService.getCurrentUser();
+        if( user != null && user.getTeamId() != null ){
+
+            Game game = gameRepository.findOne(gameId);
+            Team team = teamRepository.findOne(user.getTeamId());
+
+            if(team != null) {
+                game.getTeams().add(team);
+                this.edit(game);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean deleteApplyGameByCurrentUser(Long gameId){
+        GameUser user = securityUtilsService.getCurrentUser();
+        if( user != null && user.getTeamId() != null ){
+
+            Game game = gameRepository.findOne(gameId);
+            Team team = teamRepository.findOne(user.getTeamId());
+
+            if(team != null) {
+                Set<Team> teams = game.getTeams();
+                game.setTeams(teams.stream()
+                        .filter(t -> !t.getId().equals(user.getTeamId()))
+                        .collect(Collectors.toSet()));
+                this.edit(game);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean IsUserAppliedGame(Long gameId){
+        GameUser user = securityUtilsService.getCurrentUser();
+        if( user != null && user.getTeamId() != null ){
+            Game game = gameRepository.findOne(gameId);
+            return !game.getTeams().stream()
+                    .filter(team -> team.getId().equals(user.getTeamId()))
+                    .collect(Collectors.toList())
+                    .isEmpty();
+        }
+        return false;
     }
 
 }
