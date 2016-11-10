@@ -60,12 +60,7 @@
                 <h4 class="modal-title">Modal Header</h4>
             </div>
             <div class="modal-body">
-                <div th:if="${param.error}">
-                    Invalid username and password.
-                </div>
-                <div th:if="${param.logout}">
-                    You have been logged out.
-                </div>
+
                 <form th:action="@{/login}" method="post">
                     <div><label> User Name : <input type="text" name="username"/> </label></div>
                     <div><label> Password: <input type="password" name="password"/> </label></div>
@@ -82,7 +77,21 @@
 
 <!-- Page Content -->
 <div class="container">
-
+    <div class="row">
+        <div class="col-lg-12">
+        <div th:if="${param.error}">
+            <div class="alert alert-danger">
+                <strong>Error!</strong> Invalid username and password.
+            </div>
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+            <div class="alert alert-warning">
+                <strong>Warning!</strong> You have been logged out.
+            </div>
+        </div>
+        </div>
+    </div>
     <!-- Page Header -->
     <div class="row">
         <div class="col-lg-12">
