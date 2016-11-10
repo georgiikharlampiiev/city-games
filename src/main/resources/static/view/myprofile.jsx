@@ -7,7 +7,11 @@ export class MyProfile extends React.Component {
 
     constructor(props) {
         super(props);
-       this.state = {currentUser: []};
+        this.state = {
+            currentUser: [],
+            errorMessage: ""
+        };
+        this.sendChangesOnServer = this.sendChangesOnServer.bind(this);
     }
 
     componentDidMount() {
@@ -15,14 +19,31 @@ export class MyProfile extends React.Component {
     }
 
      loadFromServer() {
-
-        // console.info("executeGetAction('/api/getUserProfile')", executeGetAction('/api/getUserProfile'))
          ajaxUtils.executeGetAction('/api/getUserProfile',
-             (data) => {this.setState({currentUser:data})},
+             (data) => {this.setState({ currentUser:data })},
              (e) => console.error(e)
          );
     }
 
+    onFieldChange(fieldName, e){
+        var currentUser = this.state.currentUser;
+        currentUser[fieldName] = e.target.value;
+        this.setState( currentUser );
+    }
+
+    sendChangesOnServer() {
+        var currentUser = this.state.currentUser;
+        if( currentUser.name.length < 3 ){
+            this.setState( {errorMessage: "Your name is to short. Should be more 3 symbols."} );
+        }
+        if( currentUser.password.length < 6 ){
+            this.setState( {errorMessage: "Your password is to short. Should be more 6 symbols."} );
+        }
+
+        if( this.state.errorMessage != ""){
+            
+        }
+    }
 
     render() {
         return (
@@ -40,7 +61,7 @@ export class MyProfile extends React.Component {
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                                    <input  name="first_name" placeholder="First Name" className="form-control"  type="text" value={this.state.currentUser.name} />
+                                    <input name="first_name" className="form-control"  type="text" value={this.state.currentUser.name} onChange={this.onFieldChange.bind(this, "name")}/>
                                 </div>
                             </div>
                         </div>
@@ -60,15 +81,15 @@ export class MyProfile extends React.Component {
 
                         {/*<!-- Text input-->*/}
 
-                        <div className="form-group">
-                            <label className="col-md-4 control-label">Phone #</label>
-                            <div className="col-md-4 inputGroupContainer">
-                                <div className="input-group">
-                                    <span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>
-                                    <input name="phone" placeholder="(845)555-1212" className="form-control" type="text" autoComplete="off" />
-                                </div>
-                            </div>
-                        </div>
+                        {/*<div className="form-group">*/}
+                            {/*<label className="col-md-4 control-label">Phone #</label>*/}
+                            {/*<div className="col-md-4 inputGroupContainer">*/}
+                                {/*<div className="input-group">*/}
+                                    {/*<span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>*/}
+                                    {/*<input name="phone" placeholder="(845)555-1212" className="form-control" type="text" autoComplete="false" />*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
 
                         {/*<!-- Text input-->*/}
 
@@ -77,7 +98,7 @@ export class MyProfile extends React.Component {
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-lock"></i></span>
-                                    <input name="address" placeholder="Address" className="form-control" type="password" autoComplete="off"/>
+                                    <input name="password"  className="form-control" type="password" onChange={this.onFieldChange.bind(this, "password")}/>
                                 </div>
                             </div>
                         </div>
@@ -161,12 +182,13 @@ export class MyProfile extends React.Component {
 
                         {/*<!-- Success message -->*/}
                         <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i> Thanks for contacting us, we will get back to you shortly.</div>
+                        <div className="alert alert-error" role="alert" id="error_message">Error <i className="glyphicon glyphicon-thumbs-up"></i> Thanks for contacting us, we will get back to you shortly.</div>
 
                         {/*<!-- Button -->*/}
                         <div className="form-group">
                             <label className="col-md-4 control-label"></label>
                             <div className="col-md-4">
-                                <button type="submit" className="btn btn-warning" >Send <span className="glyphicon glyphicon-send"></span></button>
+                                <button type="submit" className="btn btn-warning" onClick={this.saveChanges}>Send <span className="glyphicon glyphicon-send"></span></button>
                             </div>
                         </div>
 
