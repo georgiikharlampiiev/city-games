@@ -6,7 +6,7 @@ var executeGetAction = function(url, successFunction, errorFunction){
             url: url,
             dataType: 'json',
             success: function (data) {
-                console.info("ExecuteGetAction -> data :" ,data);
+                console.info("ExecuteGetAction -> url : ", url, " data: ", data);
                 successFunction(data);
             },
             error: function (xhr, status, err) {

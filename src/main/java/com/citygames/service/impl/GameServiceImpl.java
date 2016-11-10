@@ -3,6 +3,7 @@ package com.citygames.service.impl;
 import com.citygames.entity.Game;
 import com.citygames.entity.GameUser;
 import com.citygames.entity.Team;
+import com.citygames.enums.RoleEnum;
 import com.citygames.repository.GameRepository;
 import com.citygames.repository.TeamRepository;
 import com.citygames.service.GameService;
@@ -115,6 +116,24 @@ public class GameServiceImpl implements GameService {
                     .filter(team -> team.getId().equals(user.getTeamId()))
                     .collect(Collectors.toList())
                     .isEmpty();
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean isUserGameEditor(Long gameId){
+        GameUser user = securityUtilsService.getCurrentUser();
+
+        if( user != null && user.getRoleId() != null ){
+
+            if(RoleEnum.ADMIN.getId().equals(user.getRoleId().getId())){
+                return true;
+            }
+
+            Game game = gameRepository.findOne(gameId);
+            return game.getGameAdmins()
+                    .stream()
+                    .anyMatch(a -> user.getId().equals(a.getId()));
         }
         return false;
     }

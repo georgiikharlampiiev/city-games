@@ -3,7 +3,7 @@ import { Link } from "react-router";
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
 
-export class GameView extends React.Component {
+export class GameEdit extends React.Component {
 
     constructor(props) {
        super(props);
@@ -100,9 +100,9 @@ export class GameView extends React.Component {
         const isUserGameEditor = this.state.isUserGameEditor;
         const gameId = this.props.params.gameId;
         if(isUserGameEditor) {
-            return (<p><a href={ "#/game-edit/" + gameId } type="button" className="btn btn-default" >Edit game</a></p>);
+            return (<a href={ "#/game-edit/" + gameId } type="button" className="btn btn-default" >Edit game</a>);
         }else {
-            return (<p></p>);
+            return (<div></div>);
         }
 
 
@@ -119,20 +119,7 @@ export class GameView extends React.Component {
                 <div className="row">
                     
                     <div className="col-lg-8">
-                        <p><span className="glyphicon glyphicon-time"></span> Start at { this.formatMillisecondsToDate(game.dataStart) } </p>
-                        <p><span className="glyphicon glyphicon-time"></span> Finish at { this.formatMillisecondsToDate(game.dataStop) } </p>
-                        { this.editButtonRender() }
-
-                        <hr/>
-                        
-                        <img className="img-responsive" src={ image } alt=""/>
-                        
-                        <hr/>
-                        
-                        <p className="lead"> { game.name }</p>
-                        <p>{ game.description }</p>
-                        { this.joinGameButtonRender() }
-                        <hr/>
+                  JUST STUB FOR GAME EDIT
 
                     </div>
                 </div>

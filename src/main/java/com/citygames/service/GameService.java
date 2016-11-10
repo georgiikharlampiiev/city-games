@@ -23,4 +23,6 @@ public interface GameService {
     Boolean deleteApplyGameByCurrentUser(Long gameId);
 
     Boolean IsUserAppliedGame(Long gameId);
+
+    Boolean isUserGameEditor(Long gameId);
 }
