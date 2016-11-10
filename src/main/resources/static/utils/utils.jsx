@@ -24,12 +24,16 @@ var executeGetAction = function(url, successFunction, errorFunction){
 
 var executePostAction = function(url, sendData, successFunction, errorFunction){
     $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
         type: "POST",
         url: url,
-        data: sendData,
+        data: JSON.stringify(sendData),
         dataType: 'json',
         success: function (data) {
-            console.info("ExecutePostAction -> data :" ,data);
+            console.info("ExecutePostAction -> data :", data);
             successFunction(data);
         },
         error: function (xhr, status, err) {

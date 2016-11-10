@@ -33,15 +33,37 @@ export class MyProfile extends React.Component {
 
     sendChangesOnServer() {
         var currentUser = this.state.currentUser;
+        var errorMessage = "";
         if( currentUser.name.length < 3 ){
-            this.setState( {errorMessage: "Your name is to short. Should be more 3 symbols."} );
-        }
-        if( currentUser.password.length < 6 ){
-            this.setState( {errorMessage: "Your password is to short. Should be more 6 symbols."} );
+            errorMessage = "Your name is to short. Should be more 3 symbols.";
+        }else if( currentUser.password.length < 6 && currentUser.password != ""){
+            errorMessage = "Your password is to short. Should be more 6 symbols.";
+        }else {
+            errorMessage = "";
         }
 
-        if( this.state.errorMessage != ""){
-            
+        if( errorMessage != ""){
+            this.setState({
+                    errorMessage: errorMessage},
+                    () => {$('#error_message').show()}
+                );
+        }else {
+            $('#error_message').hide()
+            ajaxUtils.executePostAction("/api/setUserProfile",
+                currentUser,
+                (currentUser) => {
+                    this.setState(
+                        {currentUser: currentUser},
+                        () => {$('#success_message').show()}
+                    );
+                },
+                (e) => {
+                    this.setState(
+                        {errorMessage: e},
+                        () => {$('#error_message').show()}
+                    );
+                }
+            )
         }
     }
 
@@ -182,13 +204,13 @@ export class MyProfile extends React.Component {
 
                         {/*<!-- Success message -->*/}
                         <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i> Thanks for contacting us, we will get back to you shortly.</div>
-                        <div className="alert alert-error" role="alert" id="error_message">Error <i className="glyphicon glyphicon-thumbs-up"></i> Thanks for contacting us, we will get back to you shortly.</div>
+                        <div className="alert alert-danger" role="alert" id="error_message">Error <i className="glyphicon glyphicon-warning-sign"></i> {this.state.errorMessage} </div>
 
                         {/*<!-- Button -->*/}
                         <div className="form-group">
                             <label className="col-md-4 control-label"></label>
                             <div className="col-md-4">
-                                <button type="submit" className="btn btn-warning" onClick={this.saveChanges}>Send <span className="glyphicon glyphicon-send"></span></button>
+                                <div className="btn btn-warning" onClick={this.sendChangesOnServer}>Send <span className="glyphicon glyphicon-send"></span></div>
                             </div>
                         </div>
 
