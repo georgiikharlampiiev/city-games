@@ -37,7 +37,9 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game add(Game game) {
-        return gameRepository.saveAndFlush(game);
+        if( isUserGameEditor(game.getId()) )
+            return gameRepository.saveAndFlush(game);
+        else return game;
     }
 
     @Override
