@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX game_user_name_uindex ON citygames.game_user (name);
