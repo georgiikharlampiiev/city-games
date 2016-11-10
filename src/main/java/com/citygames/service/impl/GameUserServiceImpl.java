@@ -14,18 +14,22 @@ public class GameUserServiceImpl implements GameUserService {
     @Autowired
     private GameUserRepository gameUserRepository;
 
+    @Override
     public GameUser add(GameUser gameUser) {
         return gameUserRepository.saveAndFlush(gameUser);
     }
 
+    @Override
     public void delete(long id) {
         gameUserRepository.delete(id);
     }
 
+    @Override
     public GameUser edit(GameUser gameUser) {
         return gameUserRepository.saveAndFlush(gameUser);
     }
 
+    @Override
     public List<GameUser> getAll() {
         return gameUserRepository.findAll();
     }

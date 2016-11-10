@@ -14,18 +14,22 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     private TeamRepository teamRepository;
 
+    @Override
     public Team add(Team team) {
         return teamRepository.saveAndFlush(team);
     }
 
+    @Override
     public void delete(long id) {
         teamRepository.delete(id);
     }
 
+    @Override
     public Team edit(Team team) {
         return teamRepository.saveAndFlush(team);
     }
 
+    @Override
     public List<Team> getAll() {
         return teamRepository.findAll();
     }

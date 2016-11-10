@@ -14,18 +14,22 @@ public class RoleTeamServiceImpl implements RoleTeamService {
     @Autowired
     private RoleTeamRepository roleTeamRepository;
 
+    @Override
     public RoleTeam add(RoleTeam roleTeam) {
         return roleTeamRepository.saveAndFlush(roleTeam);
     }
 
+    @Override
     public void delete(long id) {
         roleTeamRepository.delete(id);
     }
 
+    @Override
     public RoleTeam edit(RoleTeam roleTeam) {
         return roleTeamRepository.saveAndFlush(roleTeam);
     }
 
+    @Override
     public List<RoleTeam> getAll() {
         return roleTeamRepository.findAll();
     }

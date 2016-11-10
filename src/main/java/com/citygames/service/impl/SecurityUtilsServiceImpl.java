@@ -14,6 +14,7 @@ public class SecurityUtilsServiceImpl implements SecurityUtilsService {
     @Autowired
     private GameUserService gameUserService;
 
+    @Override
     public GameUser getCurrentUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
