@@ -25,6 +25,16 @@ CREATE TABLE IF NOT EXISTS `game_game_admins` (
   UNIQUE KEY `game_game_admins_id_uindex` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `team` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `team_id_uindex` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `team` (`id`, `name`) VALUES
+	(1, 'Team1'),
+	(2, 'Team2');
 
 CREATE TABLE IF NOT EXISTS `game_teams` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -34,11 +44,4 @@ CREATE TABLE IF NOT EXISTS `game_teams` (
   UNIQUE KEY `game_teams_id_uindex` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-CREATE TABLE IF NOT EXISTS `team` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `team_id_uindex` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
