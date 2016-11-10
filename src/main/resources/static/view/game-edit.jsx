@@ -10,54 +10,31 @@ export class GameEdit extends React.Component {
        this.state = {
            currentGame: [],
            currentUser: null,
-           isUserAppliedGame: false,
            isUserGameEditor: false
        };
-       this.applyGame = this.applyGame.bind(this);
-       this.deleteApplyGame = this.deleteApplyGame.bind(this);
-       this.checkIsUserAppliedGame = this.checkIsUserAppliedGame.bind(this);
-       this.checkIsUserGameEditor = this.checkIsUserGameEditor.bind(this);
     }
 
     componentDidMount() {
         this.loadFromServer();
-        this.checkIsUserAppliedGame();
-        this.checkIsUserGameEditor();
+        $('.click2edit').summernote({focus: true});
     }
 
      loadFromServer() {
-         ajaxUtils.executeGetAction('/api/getGame/' + this.props.params.gameId,
-             (data) => {this.setState({ currentGame:data })},
-             (e) => console.error(e)
-         );
+         const gameId = this.props.params.gameId;
+         if(gameId != 0) {
+             ajaxUtils.executeGetAction('/api/getGame/' + gameId,
+                 (data) => {this.setState({ currentGame:data })},
+                 (e) => console.error(e)
+             );
+         }
          ajaxUtils.executeGetAction('/api/getUserProfile',
              (data) => {this.setState({ currentUser: data })},
              (e) => console.error(e)
          );
-    }
-
-    applyGame() {
-        var params = this.props.params;
-        ajaxUtils.executeGetAction('/api/applyGameByCurrentUser/' + params.gameId,
-            (data) => {this.setState({ isUserAppliedGame: data })},
-            (e) => console.error(e)
-        );
-    }
-
-    deleteApplyGame() {
-        var params = this.props.params;
-        ajaxUtils.executeGetAction('/api/deleteApplyGameByCurrentUser/' + params.gameId,
-            (data) => {this.setState({ isUserAppliedGame: !data })},
-            (e) => console.error(e)
-        );
-    }
-
-    checkIsUserAppliedGame() {
-        var params = this.props.params;
-        ajaxUtils.executeGetAction('/api/isUserAppliedGame/' + params.gameId,
-            (data) => {this.setState({ isUserAppliedGame: data })},
-            (e) => console.error(e)
-        );
+         ajaxUtils.executeGetAction('/api/isUserGameEditor/' + gameId,
+             (data) => {this.setState({ isUserGameEditor: data })},
+             (e) => console.error(e)
+         );
     }
 
     formatMillisecondsToDate(milliseconds) {
@@ -68,59 +45,13 @@ export class GameEdit extends React.Component {
         }
     }
 
-    checkIsUserGameEditor() {
-        var params = this.props.params;
-        ajaxUtils.executeGetAction('/api/isUserGameEditor/' + params.gameId,
-            (data) => {this.setState({ isUserGameEditor: data })},
-            (e) => console.error(e)
-        );
-    }
-
-    joinGameButtonRender() {
-        const user = this.state.currentUser;
-        const isUserAppliedGame = this.state.isUserAppliedGame;
-        const gameId = this.props.params.gameId;
-        if(user && user.teamId){
-            if(isUserAppliedGame) {
-                return (<div>
-                    <button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>Delete game apply</button>
-                    <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default" >Open current game</a></div>
-                )
-            }else {
-                return (<button type="button" className="btn btn-default" onClick={this.applyGame}>Join game</button>)
-            }
-
-        } else {
-            return (<div className="alert alert-warning">
-                You are not a team member! Only team members can enter the game. Please, join in team ore create you own.</div>)
-        }
-    }
-
-    editButtonRender() {
-        const isUserGameEditor = this.state.isUserGameEditor;
-        const gameId = this.props.params.gameId;
-        if(isUserGameEditor) {
-            return (<a href={ "#/game-edit/" + gameId } type="button" className="btn btn-default" >Edit game</a>);
-        }else {
-            return (<div></div>);
-        }
-
-
-    }
-
     render() {
-        const game = this.state.currentGame;
-        var image = "http://placehold.it/900x300";
-        if(game.image) {
-            image = "data:image/png;base64," + game.image;
-        }
         return (
             <div>
                 <div className="row">
                     
-                    <div className="col-lg-8">
-                  JUST STUB FOR GAME EDIT
-
+                    <div className="col-lg-12">
+                        <div className="click2edit">click2edit</div>
                     </div>
                 </div>
             </div>

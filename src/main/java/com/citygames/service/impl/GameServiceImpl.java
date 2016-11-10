@@ -131,9 +131,11 @@ public class GameServiceImpl implements GameService {
             }
 
             Game game = gameRepository.findOne(gameId);
-            return game.getGameAdmins()
-                    .stream()
-                    .anyMatch(a -> user.getId().equals(a.getId()));
+            if(game != null) {
+                return game.getGameAdmins()
+                        .stream()
+                        .anyMatch(a -> user.getId().equals(a.getId()));
+            }
         }
         return false;
     }
