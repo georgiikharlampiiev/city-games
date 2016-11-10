@@ -49,6 +49,11 @@ export default class MainApp extends React.Component {
 									</Link>
 								</li>
 								<li>
+                                	<Link to="/team">
+                                		Team
+                                	</Link>
+                             	</li>
+								<li>
 									<Link to="/about">
 										About
 									</Link>
