@@ -13,6 +13,9 @@ footer {
 #success_message {
     display: none;
 }
+#error_message {
+    display: none;
+}
 
 #loader {
     position: absolute;
