@@ -6,16 +6,27 @@ export class Games extends React.Component {
 
     constructor(props) {
        super(props);
-       this.state = { gameUsers: [] };
+       this.state = {
+           gameUsers: [],
+           isUserGameEditor: false
+       };
     }
 
     componentDidMount() {
         this.loadFromServer();
+        this.checkIsUserGameEditor();
     }
 
     loadFromServer() {
         ajaxUtils.executeGetAction('/api/getGames',
             (data) => { this.setState({ gameUsers:data }) },
+            (e) => console.error(e)
+        );
+    }
+
+    checkIsUserGameEditor() {
+        ajaxUtils.executeGetAction('/api/isUserGameEditor/0',
+            (data) => {this.setState({ isUserGameEditor: data })},
             (e) => console.error(e)
         );
     }
@@ -40,9 +51,19 @@ export class Games extends React.Component {
         )
     }
 
+    editButtonRender() {
+        const isUserGameEditor = this.state.isUserGameEditor;
+        if(isUserGameEditor) {
+            return (<p><a href={ "#/game-edit/0" } type="button" className="btn btn-default" >Create new game</a></p>);
+        }else {
+            return (<p></p>);
+        }
+    }
+
     render() {
         return (
             <div>
+                { this.editButtonRender() }
                 { this.state.gameUsers.map( this.parseGame ) }
             </div>
         )
