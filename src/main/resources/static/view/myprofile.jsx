@@ -203,7 +203,8 @@ export class MyProfile extends React.Component {
                         {/*</div>*/}
 
                         {/*<!-- Success message -->*/}
-                        <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i> Thanks for contacting us, we will get back to you shortly.</div>
+                        <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i>All changes have been saved.</div>
+                        {/*<!-- Error message -->*/}
                         <div className="alert alert-danger" role="alert" id="error_message">Error <i className="glyphicon glyphicon-warning-sign"></i> {this.state.errorMessage} </div>
 
                         {/*<!-- Button -->*/}

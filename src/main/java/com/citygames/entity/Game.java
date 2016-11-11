@@ -16,9 +16,9 @@ public class Game {
 
   private String description;
 
-  private Date dataStart;
+  private Date dateStart;
 
-  private Date dataFinish;
+  private Date dateFinish;
 
   @OneToMany
   private Set<Team> teams;
@@ -28,11 +28,4 @@ public class Game {
 
   private String image;
 
-  public Game(){}
-
-  public Game(Long id, String name, String description){
-    this.id = id;
-    this.name = name;
-    this.description = description;
-  }
 }

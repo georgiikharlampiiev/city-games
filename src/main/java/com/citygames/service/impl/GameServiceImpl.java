@@ -9,13 +9,12 @@ import com.citygames.repository.TeamRepository;
 import com.citygames.service.GameService;
 import com.citygames.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,7 +36,17 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game add(Game game) {
-        return gameRepository.saveAndFlush(game);
+        if ( isUserGameEditor(game.getId()) ) {
+            if (game.getGameAdmins() != null ) {
+                game.getGameAdmins().add( securityUtilsService.getCurrentUser() );
+            }else {
+                Set<GameUser> admins = new HashSet<>();
+                admins.add( securityUtilsService.getCurrentUser() );
+                game.setGameAdmins(admins);
+            }
+            return gameRepository.saveAndFlush(game);
+        }
+        else return game;
     }
 
     @Override
@@ -57,7 +66,17 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> getAllGames(int page, int pageSize){
-        TypedQuery query = em.createQuery("select g from Game g", Game.class);
+        TypedQuery query = em.createQuery("select g from Game g ORDER BY DATE(dateStart) ASC", Game.class);
+
+        query.setFirstResult(page * pageSize);
+        query.setMaxResults(pageSize);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Game> getAllActiveGames(int page, int pageSize){
+        TypedQuery query = em.createQuery("select g from Game g WHERE dateFinish >= CURDATE() ORDER BY DATE(dateStart) ASC", Game.class);
 
         query.setFirstResult(page * pageSize);
         query.setMaxResults(pageSize);

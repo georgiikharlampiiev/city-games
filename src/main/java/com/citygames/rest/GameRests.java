@@ -3,14 +3,8 @@ package com.citygames.rest;
 import com.citygames.entity.Game;
 import com.citygames.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,7 +16,12 @@ public class GameRests {
 
     @RequestMapping("/getGames")
     public List<Game> getGames() {
-        return gameService.getAll();
+        return gameService.getAllActiveGames(0,10); //TODO: Add pagination!!!!!!
+    }
+
+    @RequestMapping(value = "/addGame", method= RequestMethod.POST)
+    public Game getGames(@RequestBody Game game) {
+        return gameService.add(game);
     }
 
     @RequestMapping("/getGame/{id}")

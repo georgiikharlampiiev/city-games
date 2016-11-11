@@ -7,7 +7,7 @@ export class Games extends React.Component {
     constructor(props) {
        super(props);
        this.state = {
-           gameUsers: [],
+           games: [],
            isUserGameEditor: false
        };
     }
@@ -19,7 +19,7 @@ export class Games extends React.Component {
 
     loadFromServer() {
         ajaxUtils.executeGetAction('/api/getGames',
-            (data) => { this.setState({ gameUsers:data }) },
+            (data) => { this.setState({ games:data }) },
             (e) => console.error(e)
         );
     }
@@ -34,11 +34,12 @@ export class Games extends React.Component {
     parseGame(game) {
         var image = "http://placehold.it/900x300";
         if(game.image) {
-            image = "data:image/png;base64," + game.image;
+            image = game.image;
         }
         return (
             <div key={ game.name } className="row">
-                <div className="col-md-12 portfolio-item">
+                <div className="col-md-9 portfolio-item">
+                    <hr/>
                     <a href={ "#/game-view/" + game.id }>
                         <img className="img-responsive" src={ image } alt=""/>
                     </a>
@@ -47,6 +48,7 @@ export class Games extends React.Component {
                     </h3>
                     <p>{ game.description }</p>
                 </div>
+                <hr/>
             </div>
         )
     }
@@ -64,7 +66,7 @@ export class Games extends React.Component {
         return (
             <div>
                 { this.editButtonRender() }
-                { this.state.gameUsers.map( this.parseGame ) }
+                { this.state.games.map( this.parseGame ) }
             </div>
         )
     }
