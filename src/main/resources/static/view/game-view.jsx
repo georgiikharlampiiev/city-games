@@ -119,8 +119,8 @@ export class GameView extends React.Component {
                 <div className="row">
                     
                     <div className="col-md-9">
-                        <p><span className="glyphicon glyphicon-time"></span> Start at { this.formatMillisecondsToDate(game.dataStart) } </p>
-                        <p><span className="glyphicon glyphicon-time"></span> Finish at { this.formatMillisecondsToDate(game.dataFinish) } </p>
+                        <p><span className="glyphicon glyphicon-time"></span> Start at { this.formatMillisecondsToDate(game.dateStart) } </p>
+                        <p><span className="glyphicon glyphicon-time"></span> Finish at { this.formatMillisecondsToDate(game.dateFinish) } </p>
                         { this.editButtonRender() }
 
                         <hr/>

@@ -16,7 +16,7 @@ public class GameRests {
 
     @RequestMapping("/getGames")
     public List<Game> getGames() {
-        return gameService.getAll();
+        return gameService.getAllActiveGames(0,10); //TODO: Add pagination!!!!!!
     }
 
     @RequestMapping(value = "/addGame", method= RequestMethod.POST)

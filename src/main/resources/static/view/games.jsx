@@ -7,7 +7,7 @@ export class Games extends React.Component {
     constructor(props) {
        super(props);
        this.state = {
-           gameUsers: [],
+           games: [],
            isUserGameEditor: false
        };
     }
@@ -19,7 +19,7 @@ export class Games extends React.Component {
 
     loadFromServer() {
         ajaxUtils.executeGetAction('/api/getGames',
-            (data) => { this.setState({ gameUsers:data }) },
+            (data) => { this.setState({ games:data }) },
             (e) => console.error(e)
         );
     }
@@ -66,7 +66,7 @@ export class Games extends React.Component {
         return (
             <div>
                 { this.editButtonRender() }
-                { this.state.gameUsers.map( this.parseGame ) }
+                { this.state.games.map( this.parseGame ) }
             </div>
         )
     }

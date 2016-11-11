@@ -96,7 +96,6 @@ export class GameEdit extends React.Component {
         fileReader.onload = function(e) {
             currentGame['image']       = e.target.result;
             thisRef.setState(currentGame);
-
         };
         var files = e.target.files;
         fileReader.readAsDataURL(files[0]);
@@ -131,7 +130,6 @@ export class GameEdit extends React.Component {
                             </div>
                         </div>
 
-
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
                             <label className="col-md-3 control-label">Description</label>
@@ -140,12 +138,11 @@ export class GameEdit extends React.Component {
                             </div>
                         </div>
 
-
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
                             <label className="col-md-3 control-label">Start time</label>
                             <div className="col-md-9 inputGroupContainer">
-                                <DateTimeField value={this.state.currentGame.dataStart} onChange={this.onDateInputChange.bind(this, "dataStart")} dateFormat="DD/MM/YYY" timeFormat="HH:mm:ss"/>
+                                <DateTimeField value={this.state.currentGame.dateStart} onChange={this.onDateInputChange.bind(this, "dateStart")} dateFormat="DD/MM/YYY" timeFormat="HH:mm:ss"/>
                             </div>
                         </div>
 
@@ -153,13 +150,14 @@ export class GameEdit extends React.Component {
                         <div className="form-group">
                             <label className="col-md-3 control-label">Finish time</label>
                             <div className="col-md-9 inputGroupContainer">
-                                <DateTimeField value={this.state.currentGame.dataFinish} onChange={this.onDateInputChange.bind(this, "dataFinish")} dateFormat="DD/MM/YYY" timeFormat="HH:mm:ss"/>
+                                <DateTimeField value={this.state.currentGame.dateFinish} onChange={this.onDateInputChange.bind(this, "dateFinish")} dateFormat="DD/MM/YYY" timeFormat="HH:mm:ss"/>
                             </div>
                         </div>
 
 
                         {/*<!-- Success message -->*/}
-                        <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i> Thanks for contacting us, we will get back to you shortly.</div>
+                        <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i> All changes have been saved.</div>
+                        {/*<!-- Error message -->*/}
                         <div className="alert alert-danger" role="alert" id="error_message">Error <i className="glyphicon glyphicon-warning-sign"></i> {this.state.errorMessage} </div>
 
                         {/*<!-- Button -->*/}
