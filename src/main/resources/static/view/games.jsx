@@ -38,7 +38,8 @@ export class Games extends React.Component {
         }
         return (
             <div key={ game.name } className="row">
-                <div className="col-md-12 portfolio-item">
+                <div className="col-md-9 portfolio-item">
+                    <hr/>
                     <a href={ "#/game-view/" + game.id }>
                         <img className="img-responsive" src={ image } alt=""/>
                     </a>
@@ -47,6 +48,7 @@ export class Games extends React.Component {
                     </h3>
                     <p>{ game.description }</p>
                 </div>
+                <hr/>
             </div>
         )
     }

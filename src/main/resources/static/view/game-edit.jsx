@@ -60,7 +60,8 @@ export class GameEdit extends React.Component {
             JSON.stringify(currentGame),
             (data) => {
                 if(data.id != 0){
-                    this.setState({currentGame: data});
+                    this.setState({currentGame: data},
+                        () => {$('#success_message').show()});
                     browserHistory.push('#/game-edit/' + data.id);
                 }
             },
@@ -112,8 +113,8 @@ export class GameEdit extends React.Component {
 
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Game image</label>
-                            <div className="col-md-8 inputGroupContainer">
+                            <label className="col-md-3 control-label">Game image</label>
+                            <div className="col-md-9 inputGroupContainer">
                                 <div className="input-group">
                                     <img src={this.state.currentGame.image} className="img-responsive"/>
                                     <input id="imageinput" name="file_name" className="form-control" type="file" onChange={this.onImageInputChange}/>
@@ -122,8 +123,8 @@ export class GameEdit extends React.Component {
                         </div>
 
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Game name</label>
-                            <div className="col-md-8 inputGroupContainer">
+                            <label className="col-md-3 control-label">Game name</label>
+                            <div className="col-md-9 inputGroupContainer">
                                 <div className="input-group">
                                     <input name="first_name" className="form-control"  type="text" value={this.state.currentGame.name} onChange={this.onInputChange.bind(this, "name")}/>
                                 </div>
@@ -133,75 +134,29 @@ export class GameEdit extends React.Component {
 
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Description</label>
-                            <div className="col-md-8 inputGroupContainer">
-                                <textarea className="form-control" rows="9" id="description" value={this.state.currentGame.description} onChange={this.onInputChange.bind(this, "description")}></textarea>
+                            <label className="col-md-3 control-label">Description</label>
+                            <div className="col-md-9 inputGroupContainer">
+                                <textarea className="form-control" rows="9" value={this.state.currentGame.description} onChange={this.onInputChange.bind(this, "description")}/>
                             </div>
                         </div>
 
 
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Start time</label>
-                            <div className="col-md-8 inputGroupContainer">
+                            <label className="col-md-3 control-label">Start time</label>
+                            <div className="col-md-9 inputGroupContainer">
                                 <DateTimeField value={this.state.currentGame.dataStart} onChange={this.onDateInputChange.bind(this, "dataStart")} dateFormat="DD/MM/YYY" timeFormat="HH:mm:ss"/>
                             </div>
                         </div>
 
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Finish time</label>
-                            <div className="col-md-8 inputGroupContainer">
+                            <label className="col-md-3 control-label">Finish time</label>
+                            <div className="col-md-9 inputGroupContainer">
                                 <DateTimeField value={this.state.currentGame.dataFinish} onChange={this.onDateInputChange.bind(this, "dataFinish")} dateFormat="DD/MM/YYY" timeFormat="HH:mm:ss"/>
                             </div>
                         </div>
 
-
-                        {/*<!-- Text input-->*/}
-
-                        {/*<div className="form-group">*/}
-                        {/*<label className="col-md-4 control-label">Phone #</label>*/}
-                        {/*<div className="col-md-4 inputGroupContainer">*/}
-                        {/*<div className="input-group">*/}
-                        {/*<span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>*/}
-                        {/*<input name="phone" placeholder="(845)555-1212" className="form-control" type="text" autoComplete="false" />*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-
-                        {/*<!-- Text input-->*/}
-
-
-                        {/*<!-- Text input-->*/}
-
-                        {/*<div className="form-group">*/}
-                        {/*<label className="col-md-4 control-label">City</label>*/}
-                        {/*<div className="col-md-4 inputGroupContainer">*/}
-                        {/*<div className="input-group">*/}
-                        {/*<span className="input-group-addon"><i className="glyphicon glyphicon-home"></i></span>*/}
-                        {/*<input name="city" placeholder="city" className="form-control"  type="text"/>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-
-                        {/*<!-- Select Basic -->*/}
-
-                        {/*<div className="form-group">*/}
-                        {/*<label className="col-md-4 control-label">State</label>*/}
-                        {/*<div className="col-md-4 selectContainer">*/}
-                        {/*<div className="input-group">*/}
-                        {/*<span className="input-group-addon"><i className="glyphicon glyphicon-list"></i></span>*/}
-                        {/*<select name="state" className="form-control selectpicker" >*/}
-                        {/*<option value=" " >Please select your state</option>*/}
-                        {/*<option>Virginia</option>*/}
-                        {/*<option >Washington</option>*/}
-                        {/*<option >West Virginia</option>*/}
-                        {/*<option>Wisconsin</option>*/}
-                        {/*<option >Wyoming</option>*/}
-                        {/*</select>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
 
                         {/*<!-- Success message -->*/}
                         <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i> Thanks for contacting us, we will get back to you shortly.</div>
