@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from "react-router";
+import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 var DateTimeField = require('react-datetime');
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
@@ -11,12 +12,14 @@ export class GameEdit extends React.Component {
        this.state = {
            currentGame: {},
            currentUser: null,
-           isUserGameEditor: false
+           isUserGameEditor: false,
+           items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6']
        };
 
        this.onInputChange = this.onInputChange.bind(this);
        this.sendChangesOnServer = this.sendChangesOnServer.bind(this);
        this.onImageInputChange = this.onImageInputChange.bind(this);
+       this.onSortEnd = this.onSortEnd.bind(this);
     }
 
     componentDidMount() {
@@ -101,6 +104,12 @@ export class GameEdit extends React.Component {
         fileReader.readAsDataURL(files[0]);
     }
 
+    onSortEnd ({oldIndex, newIndex}) {
+        this.setState({
+            items: arrayMove(this.state.items, oldIndex, newIndex)
+        });
+    };
+
     render() {
         return (
             <div>
@@ -168,6 +177,8 @@ export class GameEdit extends React.Component {
                             </div>
                         </div>
 
+                        <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
+
                     </fieldset>
                 </form>
             </div>
@@ -175,3 +186,15 @@ export class GameEdit extends React.Component {
     }
 }
 
+
+const SortableItem = SortableElement(({value}) => <li>{value}</li>);
+
+const SortableList = SortableContainer(({items}) => {
+    return (
+        <ul>
+            {items.map((value, index) =>
+                <SortableItem key={`item-${index}`} index={index} value={value} />
+            )}
+        </ul>
+    );
+});
