@@ -112,7 +112,7 @@ export class GameView extends React.Component {
         const game = this.state.currentGame;
         var image = "http://placehold.it/900x300";
         if(game.image) {
-            image = "data:image/png;base64," + game.image;
+            image = game.image;
         }
         return (
             <div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from "react-router";
+var DateTimeField = require('react-datetime');
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
 
@@ -13,8 +14,9 @@ export class GameEdit extends React.Component {
            isUserGameEditor: false
        };
 
-       this.onGameNameInputChange = this.onGameNameInputChange.bind(this);
+       this.onInputChange = this.onInputChange.bind(this);
        this.sendChangesOnServer = this.sendChangesOnServer.bind(this);
+       this.onImageInputChange = this.onImageInputChange.bind(this);
     }
 
     componentDidMount() {
@@ -53,14 +55,6 @@ export class GameEdit extends React.Component {
     sendChangesOnServer(){
         var currentGame = this.state.currentGame;
         // currentGame['description'] = $('.click2edit').summernote('code');
-        if(this.props.params.gameId == 0){
-            currentGame['dataStart'] = new Date();
-            currentGame['dataFinish'] = new Date();
-            currentGame['teams'] = [];
-            currentGame['gameAdmins'] = [];
-            currentGame['image'] = "";
-        }
-        // console.info("currentGame ", currentGame)
         ajaxUtils.executePostAction(
             "/api/addGame",
             JSON.stringify(currentGame),
@@ -82,10 +76,29 @@ export class GameEdit extends React.Component {
         }
     }
 
-    onGameNameInputChange(fieldName, e){
+    onInputChange(fieldName, e){
         var currentGame = this.state.currentGame;
         currentGame[fieldName] = e.target.value;
         this.setState(currentGame);
+    }
+
+    onDateInputChange(fieldName, e){
+        var currentGame = this.state.currentGame;
+        currentGame[fieldName] = e;
+        this.setState(currentGame);
+    }
+
+    onImageInputChange(e){
+        var thisRef = this;
+        var currentGame = thisRef.state.currentGame;
+        var fileReader = new FileReader();
+        fileReader.onload = function(e) {
+            currentGame['image']       = e.target.result;
+            thisRef.setState(currentGame);
+
+        };
+        var files = e.target.files;
+        fileReader.readAsDataURL(files[0]);
     }
 
     render() {
@@ -98,13 +111,21 @@ export class GameEdit extends React.Component {
                         <legend>Create/edit game</legend>
 
                         {/*<!-- Text input-->*/}
+                        <div className="form-group">
+                            <label className="col-md-4 control-label">Game image</label>
+                            <div className="col-md-8 inputGroupContainer">
+                                <div className="input-group">
+                                    <img src={this.state.currentGame.image} className="img-responsive"/>
+                                    <input id="imageinput" name="file_name" className="form-control" type="file" onChange={this.onImageInputChange}/>
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="form-group">
                             <label className="col-md-4 control-label">Game name</label>
                             <div className="col-md-8 inputGroupContainer">
                                 <div className="input-group">
-                                    <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                                    <input name="first_name" className="form-control"  type="text" value={this.state.currentGame.name} onChange={this.onGameNameInputChange.bind(this, "name")}/>
+                                    <input name="first_name" className="form-control"  type="text" value={this.state.currentGame.name} onChange={this.onInputChange.bind(this, "name")}/>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +135,24 @@ export class GameEdit extends React.Component {
                         <div className="form-group">
                             <label className="col-md-4 control-label">Description</label>
                             <div className="col-md-8 inputGroupContainer">
-                                <textarea className="form-control" rows="9" id="description" value={this.state.currentGame.description} onChange={this.onGameNameInputChange.bind(this, "description")}></textarea>
+                                <textarea className="form-control" rows="9" id="description" value={this.state.currentGame.description} onChange={this.onInputChange.bind(this, "description")}></textarea>
+                            </div>
+                        </div>
+
+
+                        {/*<!-- Text input-->*/}
+                        <div className="form-group">
+                            <label className="col-md-4 control-label">Start time</label>
+                            <div className="col-md-8 inputGroupContainer">
+                                <DateTimeField value={this.state.currentGame.dataStart} onChange={this.onDateInputChange.bind(this, "dataStart")} dateFormat="DD/MM/YYY" timeFormat="HH:mm:ss"/>
+                            </div>
+                        </div>
+
+                        {/*<!-- Text input-->*/}
+                        <div className="form-group">
+                            <label className="col-md-4 control-label">Finish time</label>
+                            <div className="col-md-8 inputGroupContainer">
+                                <DateTimeField value={this.state.currentGame.dataFinish} onChange={this.onDateInputChange.bind(this, "dataFinish")} dateFormat="DD/MM/YYY" timeFormat="HH:mm:ss"/>
                             </div>
                         </div>
 
