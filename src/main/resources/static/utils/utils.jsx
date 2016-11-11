@@ -30,7 +30,7 @@ var executePostAction = function(url, sendData, successFunction, errorFunction){
         },
         type: "POST",
         url: url,
-        data: JSON.stringify(sendData),
+        data: sendData,
         dataType: 'json',
         success: function (data) {
             console.info("ExecutePostAction -> data :", data);

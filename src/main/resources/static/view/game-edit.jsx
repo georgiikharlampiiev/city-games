@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router";
+import { Link, browserHistory } from "react-router";
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
 
@@ -8,7 +8,7 @@ export class GameEdit extends React.Component {
     constructor(props) {
        super(props);
        this.state = {
-           currentGame: [],
+           currentGame: {},
            currentUser: null,
            isUserGameEditor: false
        };
@@ -53,17 +53,24 @@ export class GameEdit extends React.Component {
     sendChangesOnServer(){
         var currentGame = this.state.currentGame;
         // currentGame['description'] = $('.click2edit').summernote('code');
-        console.info("currentGame ", currentGame)
+        if(this.props.params.gameId == 0){
+            currentGame['dataStart'] = new Date();
+            currentGame['dataFinish'] = new Date();
+            currentGame['teams'] = [];
+            currentGame['gameAdmins'] = [];
+            currentGame['image'] = "";
+        }
+        // console.info("currentGame ", currentGame)
         ajaxUtils.executePostAction(
             "/api/addGame",
-            currentGame,
+            JSON.stringify(currentGame),
             (data) => {
                 if(data.id != 0){
-                    this.state({currentGame: data})
-                    this.props.router.push('/game-edit/' + data.id)
+                    this.setState({currentGame: data});
+                    browserHistory.push('#/game-edit/' + data.id);
                 }
             },
-            (e) => console.info(e)
+            (e) => {console.info(e)}
         );
     }
 

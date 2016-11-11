@@ -9,8 +9,6 @@ import com.citygames.repository.TeamRepository;
 import com.citygames.service.GameService;
 import com.citygames.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
