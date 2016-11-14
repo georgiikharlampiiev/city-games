@@ -18,8 +18,7 @@ public class Question {
 
   private String description;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "GAME_ID", nullable = false)
-  private Game game;
+  @Column(name="GAME_ID")
+  private long gameId;
 
 }

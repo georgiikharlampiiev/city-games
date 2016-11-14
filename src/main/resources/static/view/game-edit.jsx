@@ -110,6 +110,12 @@ export class GameEdit extends React.Component {
         });
     };
 
+    changeQuestionField(name, index, e){
+            // var currentGame = this.state.currentGame.qu;
+            // currentGame[fieldName] = e.target.value;
+            // this.setState(currentGame);
+    }
+
     render() {
         return (
             <div>
@@ -177,7 +183,7 @@ export class GameEdit extends React.Component {
                             </div>
                         </div>
 
-                        <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
+                        <SortableList items={this.state.currentGame.questions} onSortEnd={this.onSortEnd} />
 
                     </fieldset>
                 </form>
@@ -187,14 +193,38 @@ export class GameEdit extends React.Component {
 }
 
 
-const SortableItem = SortableElement(({value}) => <li>{value}</li>);
+const SortableItem = SortableElement(({question}) =>{
+    if(question){
+       return ( <fieldset>
+
+            {/*<!-- Form Name -->*/}
+            <legend>Create/edit game</legend>
+
+            {/*<!-- Text input-->*/}
+            <div className="form-group">
+                <label className="col-md-3 control-label">Game name</label>
+                <div className="col-md-9 inputGroupContainer">
+                    <div className="input-group">
+                        <input name="question_name" className="form-control"  type="text" value={question.name} />
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+       )}
+    else {return (<div></div>)}
+});
 
 const SortableList = SortableContainer(({items}) => {
-    return (
-        <ul>
-            {items.map((value, index) =>
-                <SortableItem key={`item-${index}`} index={index} value={value} />
-            )}
-        </ul>
-    );
+    if(items){
+        return (
+            <ul>
+                {items.map((value, index) =>
+                    <SortableItem key={`item-${index}`} index={index} value={value} />
+                )}
+            </ul>
+        );
+    }else {
+        return (<div></div>)
+    }
 });

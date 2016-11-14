@@ -26,7 +26,8 @@ public class Game {
   @OneToMany
   private Set<GameUser> gameAdmins;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+  @OneToMany
+  @JoinColumn(name="GAME_ID", referencedColumnName="ID")
   private Set<Question> questions;
 
   private String image;
