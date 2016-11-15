@@ -26,7 +26,7 @@ public class Game {
   @OneToMany
   private Set<GameUser> gameAdmins;
 
-  @OneToMany
+  @OneToMany(cascade={CascadeType.PERSIST})
   @JoinColumn(name="GAME_ID", referencedColumnName="ID")
   private Set<Question> questions;
 
