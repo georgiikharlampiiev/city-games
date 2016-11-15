@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, browserHistory } from "react-router";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+import { Button, Collapse } from 'react-bootstrap';
 var DateTimeField = require('react-datetime');
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
@@ -13,7 +14,8 @@ export class GameEdit extends React.Component {
            currentGame: {},
            currentUser: null,
            isUserGameEditor: false,
-           items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6']
+           items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+           open: false
        };
 
        this.onInputChange = this.onInputChange.bind(this);
@@ -183,7 +185,7 @@ export class GameEdit extends React.Component {
                             </div>
                         </div>
 
-                        <SortableList items={this.state.currentGame.questions} onSortEnd={this.onSortEnd} />
+                        <SortableList items={{items: this.state.currentGame.questions, owner: this}} onSortEnd={this.onSortEnd} pressDelay={200} />
 
                     </fieldset>
                 </form>
@@ -193,38 +195,51 @@ export class GameEdit extends React.Component {
 }
 
 
-const SortableItem = SortableElement(({question}) =>{
-    if(question){
-       return ( <fieldset>
+const SortableItem = SortableElement(({value}) =>{
+    if(value){
+       return (<li>
+               <Button onClick={ ()=> value.owner.setState({ open: !value.owner.state.open })}>
+                   click
+               </Button>
+               <Collapse in={value.owner.state.open}>
+                   <div>
 
-            {/*<!-- Form Name -->*/}
-            <legend>Create/edit game</legend>
+                           Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                           Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
 
-            {/*<!-- Text input-->*/}
-            <div className="form-group">
-                <label className="col-md-3 control-label">Game name</label>
-                <div className="col-md-9 inputGroupContainer">
-                    <div className="input-group">
-                        <input name="question_name" className="form-control"  type="text" value={question.name} />
-                    </div>
-                </div>
-            </div>
+                   </div>
+               </Collapse>
+               {/*<!-- Form Name -->*/}
+               {/*<a href={'#'+value.id} data-toggle="collapse"><legend>Create/edit game</legend></a>*/}
+                   {/*<div id={value.id} className="collapse">*/}
+                       {/*<fieldset>*/}
+                            {/*/!*<!-- Text input-->*!/*/}
+                            {/*<div className="form-group">*/}
+                                {/*<label className="col-md-3 control-label">Game name</label>*/}
+                                {/*<div className="col-md-9 inputGroupContainer">*/}
+                                    {/*<div className="input-group">*/}
+                                        {/*<input name="question_name" className="form-control"  type="text" value={value.name} />*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
 
-        </fieldset>
+                        {/*</fieldset>*/}
+                   {/*</div>*/}
+               </li>
        )}
-    else {return (<div></div>)}
+    else {return (<li></li>)}
 });
 
 const SortableList = SortableContainer(({items}) => {
-    if(items){
+    if(items.items){
         return (
             <ul>
-                {items.map((value, index) =>
-                    <SortableItem key={`item-${index}`} index={index} value={value} />
+                {items.items.map((value, index) =>
+                    <SortableItem key={`item-${index}`} index={index} value={{value: value, owner: items.owner} } />
                 )}
             </ul>
         );
     }else {
-        return (<div></div>)
+        return (<ul></ul>)
     }
 });
