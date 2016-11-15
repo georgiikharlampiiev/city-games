@@ -1,11 +1,11 @@
-ALTER TABLE citygames.game ADD flag BOOLEAN NULL;
+ALTER TABLE citygames.game ADD flag BOOLEAN;
 
-ALTER TABLE citygames.game ADD date_flag_set DATETIME NOT NULL;
+ALTER TABLE citygames.game ADD date_flag_set DATETIME;
 
 
-update game g set g.flag=1,g.date_flag_set=current_timestamp WHERE g.date_finish is not null
-                                  and date_format(g.date_finish,'%Y.%m.%d') <=date_format(current_date,'%Y.%m.%d')
-                                  and g.flag is NULL;
+update game g set g.flag=1,g.date_flag_set=current_timestamp WHERE g.date_finish <=current_time
+                                                                   and date_format(g.date_finish,'%Y.%m.%d') <=date_format(current_date,'%Y.%m.%d')
+                                                                   and g.flag = false;
 
 
 
