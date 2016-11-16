@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, browserHistory } from "react-router";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+import { Button, Collapse } from 'react-bootstrap';
 var DateTimeField = require('react-datetime');
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
@@ -13,7 +14,7 @@ export class GameEdit extends React.Component {
            currentGame: {},
            currentUser: null,
            isUserGameEditor: false,
-           items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6']
+           open: []
        };
 
        this.onInputChange = this.onInputChange.bind(this);
@@ -41,7 +42,11 @@ export class GameEdit extends React.Component {
          const gameId = this.props.params.gameId;
          if(gameId != 0) {
              ajaxUtils.executeGetAction('/api/getGame/' + gameId,
-                 (data) => {this.setState({ currentGame:data })},
+                 (data) => {
+                     const tmpQuestions = data.questions;
+                     data['questions'] = tmpQuestions.sort((a, b) => {return a.order-b.order});
+                     this.setState({ currentGame:data })
+                 },
                  (e) => console.error(e)
              );
          }
@@ -105,10 +110,14 @@ export class GameEdit extends React.Component {
     }
 
     onSortEnd ({oldIndex, newIndex}) {
-        this.setState({
-            items: arrayMove(this.state.items, oldIndex, newIndex)
-        });
+        //TODO: CHECK ORDERS ON SAVE
+        const currentGame = this.state.currentGame;
+        const currentGameQuestions = this.state.currentGame.questions;
+        currentGame['questions'] = arrayMove(currentGameQuestions, oldIndex, newIndex);
+        this.setState({ currentGame });
+        console.info("currentGame", this.state.currentGame);
     };
+
 
     render() {
         return (
@@ -177,7 +186,13 @@ export class GameEdit extends React.Component {
                             </div>
                         </div>
 
-                        <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Questions</label>
+                            <div className="col-md-9 inputGroupContainer">
+                                <SortableList items={{items: this.state.currentGame.questions, owner: this}} onSortEnd={this.onSortEnd} pressDelay={200} />
+                            </div>
+                        </div>
+
 
                     </fieldset>
                 </form>
@@ -187,14 +202,67 @@ export class GameEdit extends React.Component {
 }
 
 
-const SortableItem = SortableElement(({value}) => <li>{value}</li>);
+const SortableItem = SortableElement(({value}) =>{
+
+    function changeQuestionField(index, name, e){
+        console.info("name", name)
+        console.info("index", index)
+        console.info("e.target", e.target)
+        console.info("e.target.value", e.target.value)
+        value.item['name'] = e.target.value;
+
+        const currentGame = value.owner.state.currentGame;
+        const questions = value.owner.state.currentGame.questions;
+        questions[index] = value.item;
+        currentGame['questions'] = questions;
+        value.owner.setState({ currentGame });
+        console.info("currentGame", value.owner.state.currentGame);
+    };
+
+    if(value){
+       return (<li>
+
+                   <Button onClick={ ()=> {
+                       const open = value.owner.state.open;
+                       open[value.index] = !value.owner.state.open[value.index];
+                       value.owner.setState({ open: open })}}>
+                        {value.item.name}
+                   </Button>
+
+                   <Collapse in={ value.owner.state.open[value.index] }>
+                       <div>
+                           <fieldset>
+                               {/*<!-- Text input-->*/}
+                               <div className="form-group">
+                                   <label className="col-md-3 control-label">Game name</label>
+                                   <div className="col-md-9 inputGroupContainer">
+                                       <div className="input-group">
+                                            <input name={ "question_name"+value.index } className="form-control"  type="text"
+                                                   value={ value.item.name }
+                                                   onChange={ changeQuestionField.bind(this, value.index, "name") } />
+                                       </div>
+                                   </div>
+                               </div>
+
+                           </fieldset>
+
+                       </div>
+                   </Collapse>
+               </li>
+       )}
+    else {return (<li></li>)}
+});
 
 const SortableList = SortableContainer(({items}) => {
-    return (
-        <ul>
-            {items.map((value, index) =>
-                <SortableItem key={`item-${index}`} index={index} value={value} />
-            )}
-        </ul>
-    );
+    if(items.items){
+        return (
+            <ul>
+                {items.items.map((value, index) =>
+                    <SortableItem key={`item-${index}`} index={index} value={ {item: value, owner: items.owner, index: index} } />
+                )}
+            </ul>
+        );
+    }else {
+        return (<ul></ul>)
+    }
 });

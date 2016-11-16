@@ -8,16 +8,16 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-@Component
-@RepositoryEventHandler(GameUser.class)
+//@Component
+//@RepositoryEventHandler(GameUser.class)
 public class SpringDataRestEventHandler {
 
-	private final GameUserService gameUserService;
-
-	@Autowired
-	public SpringDataRestEventHandler(GameUserService gameUserService) {
-		this.gameUserService = gameUserService;
-	}
+//	private final GameUserService gameUserService;
+//
+//	@Autowired
+//	public SpringDataRestEventHandler(GameUserService gameUserService) {
+//		this.gameUserService = gameUserService;
+//	}
 
 //	@HandleBeforeCreate
 //	public void applyUserInformationUsingSecurityContext(GameUser employee) {

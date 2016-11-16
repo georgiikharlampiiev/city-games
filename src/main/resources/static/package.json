@@ -13,8 +13,8 @@
     "data",
     "react"
   ],
-  "author": "Greg L. Turnquist",
-  "license": "Apache-2.0",
+  "author": "Gukulkan",
+  "license": "Commerce",
   "bugs": {
     "url": "https://github.com/spring-guides/tut-react-and-spring-data-rest/issues"
   },
@@ -25,7 +25,8 @@
     "react": "^15.3.0",
     "react-redux": "^4.4.5",
     "react-router": "2.6.1",
-    "react-datetime": "^ 2.6.2",
+    "react-datetime": "^2.6.2",
+    "react-bootstrap": "^0.30.6",
     "rest": "^1.3.1",
     "react-dom": "^15.3.0",
     "sockjs-client": "^1.0.3",
