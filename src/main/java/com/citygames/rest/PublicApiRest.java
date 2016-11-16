@@ -1,10 +1,12 @@
 package com.citygames.rest;
 
+import com.citygames.dto.UserDTO;
 import com.citygames.entity.Game;
 import com.citygames.entity.GameUser;
 import com.citygames.service.GameService;
 import com.citygames.service.GameUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +28,8 @@ public class PublicApiRest {
     }
 
     @RequestMapping("/registerUser")
-    public GameUser registerUser(GameUser gameUser) {
-        return gameUserService.add(gameUser);
+    public GameUser registerUser(@RequestBody UserDTO gameUser) {
+        //TODO: Do something for creation new user
+        return null; //gameUserService.add(gameUser);
     }
 }
