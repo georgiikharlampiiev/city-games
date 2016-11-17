@@ -5,6 +5,7 @@ import com.citygames.entity.GameUser;
 import com.citygames.entity.Team;
 import com.citygames.enums.RoleEnum;
 import com.citygames.repository.GameRepository;
+import com.citygames.repository.QuestionRepository;
 import com.citygames.repository.TeamRepository;
 import com.citygames.service.GameService;
 import com.citygames.service.SecurityUtilsService;
@@ -34,6 +35,9 @@ public class GameServiceImpl implements GameService {
     @Autowired
     private TeamRepository teamRepository;
 
+    @Autowired
+    private QuestionRepository questionRepository;
+
     @Override
     public Game add(Game game) {
         if ( isUserGameEditor(game.getId()) ) {
@@ -44,7 +48,12 @@ public class GameServiceImpl implements GameService {
                 admins.add( securityUtilsService.getCurrentUser() );
                 game.setGameAdmins(admins);
             }
-            return gameRepository.saveAndFlush(game);
+
+            if(game.getQuestions() != null && !game.getQuestions().isEmpty())
+                questionRepository.save(game.getQuestions());
+
+
+            return gameRepository.save(game);
         }
         else return game;
     }

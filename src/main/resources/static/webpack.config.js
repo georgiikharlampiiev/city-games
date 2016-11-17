@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 
 var node_dir = __dirname + '/node_modules';
 var APP_DIR = path.resolve(__dirname, '/');
@@ -30,5 +31,11 @@ module.exports = {
                 loader : 'babel'
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        })
+    ]
 };

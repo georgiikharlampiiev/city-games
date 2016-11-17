@@ -2,9 +2,14 @@ import React from 'react';
 import { Link, browserHistory } from "react-router";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import { Button, Collapse } from 'react-bootstrap';
+import ReactSummernote from 'react-summernote';
 var DateTimeField = require('react-datetime');
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
+
+import 'bootstrap/js/modal';
+import 'bootstrap/js/dropdown';
+import 'bootstrap/js/tooltip';
 
 export class GameEdit extends React.Component {
 
@@ -205,11 +210,15 @@ export class GameEdit extends React.Component {
 const SortableItem = SortableElement(({value}) =>{
 
     function changeQuestionField(index, name, e){
-        console.info("name", name)
-        console.info("index", index)
-        console.info("e.target", e.target)
-        console.info("e.target.value", e.target.value)
-        value.item['name'] = e.target.value;
+        // console.info("name", name)
+        // console.info("index", index)
+        // console.info("e", e)
+        // console.info("e.target.value", e.target.value)
+        if(name == "description"){
+            value.item[name] = e;
+        }else {
+            value.item[name] = e.target.value;
+        }
 
         const currentGame = value.owner.state.currentGame;
         const questions = value.owner.state.currentGame.questions;
@@ -220,7 +229,7 @@ const SortableItem = SortableElement(({value}) =>{
     };
 
     if(value){
-       return (<li>
+       return (<li className="list-group-item">
 
                    <Button onClick={ ()=> {
                        const open = value.owner.state.open;
@@ -240,6 +249,35 @@ const SortableItem = SortableElement(({value}) =>{
                                             <input name={ "question_name"+value.index } className="form-control"  type="text"
                                                    value={ value.item.name }
                                                    onChange={ changeQuestionField.bind(this, value.index, "name") } />
+                                       </div>
+                                   </div>
+                               </div>
+
+                               <div className="form-group">
+                                   <label className="col-md-3 control-label">Description</label>
+                                   <div className="col-md-9 inputGroupContainer">
+                                       <div className="input-group">
+                                           <ReactSummernote
+                                               value={value.item.description}
+                                               options={{
+                                                   lang: 'ru-RU',
+                                                   height: 350,
+                                                   dialogsInBody: true,
+                                                   toolbar: [
+                                                       ['style', ['style']],
+                                                       ['font', ['bold', 'underline', 'clear']],
+                                                       ['fontname', ['fontname']],
+                                                       ['para', ['ul', 'ol', 'paragraph']],
+                                                       ['table', ['table']],
+                                                       ['insert', ['link', 'picture', 'video']],
+                                                       ['view', ['fullscreen', 'codeview']]
+                                                   ]
+                                               }}
+                                               onChange={ changeQuestionField.bind(this, value.index, "description") }
+                                           />
+                                           {/*<input name={ "question_name"+value.index } className="form-control"  type="text"*/}
+                                                  {/*value={ value.item.name }*/}
+                                                  {/*onChange={ changeQuestionField.bind(this, value.index, "name") } />*/}
                                        </div>
                                    </div>
                                </div>

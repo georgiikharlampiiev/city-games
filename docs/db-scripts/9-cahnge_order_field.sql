@@ -1,0 +1,1 @@
+ALTER TABLE citygames.question CHANGE orderInGame order_in_game INT(11) NOT NULL;
