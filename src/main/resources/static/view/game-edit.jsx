@@ -26,21 +26,11 @@ export class GameEdit extends React.Component {
        this.sendChangesOnServer = this.sendChangesOnServer.bind(this);
        this.onImageInputChange = this.onImageInputChange.bind(this);
        this.onSortEnd = this.onSortEnd.bind(this);
+       this.sendQuestion = this.sendQuestion.bind(this);
     }
 
     componentDidMount() {
         this.loadFromServer();
-        // $('.click2edit').summernote({
-        //     focus: true,
-        //     toolbar: [
-        //         ['style', ['bold', 'italic', 'underline', 'clear']],
-        //         ['font', ['strikethrough', 'superscript', 'subscript']],
-        //         ['fontsize', ['fontsize']],
-        //         ['color', ['color']],
-        //         ['para', ['ul', 'ol', 'paragraph']],
-        //         ['height', ['height']]
-        //     ]
-        // });
     }
 
      loadFromServer() {
@@ -49,8 +39,8 @@ export class GameEdit extends React.Component {
              ajaxUtils.executeGetAction('/api/getGame/' + gameId,
                  (data) => {
                      const tmpQuestions = data.questions;
-                     data['questions'] = tmpQuestions.sort((a, b) => {return a.order-b.order});
-                     this.setState({ currentGame:data })
+                     data['questions'] = tmpQuestions.sort((a, b) => {return a.orderInGame-b.orderInGame});
+                     this.setState({ currentGame:data });
                  },
                  (e) => console.error(e)
              );
@@ -67,12 +57,15 @@ export class GameEdit extends React.Component {
 
     sendChangesOnServer(){
         var currentGame = this.state.currentGame;
-        // currentGame['description'] = $('.click2edit').summernote('code');
+        currentGame.questions.forEach(this.setQuestionOrder);
+        this.setState({currentGame});
         ajaxUtils.executePostAction(
             "/api/addGame",
             JSON.stringify(currentGame),
             (data) => {
                 if(data.id != 0){
+                    const tmpQuestions = data.questions;
+                    data['questions'] = tmpQuestions.sort((a, b) => {return a.orderInGame-b.orderInGame});
                     this.setState({currentGame: data},
                         () => {$('#success_message').show()});
                     browserHistory.push('#/game-edit/' + data.id);
@@ -80,6 +73,18 @@ export class GameEdit extends React.Component {
             },
             (e) => {console.info(e)}
         );
+    }
+
+    sendQuestion(){
+        const currentGame = this.state.currentGame;
+        var questions = this.state.currentGame.questions;
+        questions.push({name:"Question name",description:"Description", orderInGame: this.state.currentGame.questions.length})
+        currentGame['questions'] = questions;
+        this.setState({currentGame});
+    }
+
+    setQuestionOrder(element, index, array) {
+        element.orderInGame = index;
     }
 
     formatMillisecondsToDate(milliseconds) {
@@ -198,6 +203,12 @@ export class GameEdit extends React.Component {
                             </div>
                         </div>
 
+                        <div className="form-group">
+                            <label className="col-md-4 control-label"></label>
+                            <div className="col-md-4">
+                                <div className="btn btn-success" onClick={this.sendQuestion}>Add question <span className="glyphicon glyphicon-plus"></span></div>
+                            </div>
+                        </div>
 
                     </fieldset>
                 </form>
@@ -207,7 +218,7 @@ export class GameEdit extends React.Component {
 }
 
 
-const SortableItem = SortableElement(({value}) =>{
+var SortableItem = SortableElement(({value}) =>{
 
     function changeQuestionField(index, name, e){
         // console.info("name", name)
@@ -243,8 +254,8 @@ const SortableItem = SortableElement(({value}) =>{
                            <fieldset>
                                {/*<!-- Text input-->*/}
                                <div className="form-group">
-                                   <label className="col-md-3 control-label">Game name</label>
-                                   <div className="col-md-9 inputGroupContainer">
+                                   <label className="col-md-2 control-label">Game name</label>
+                                   <div className="col-md-10 inputGroupContainer">
                                        <div className="input-group">
                                             <input name={ "question_name"+value.index } className="form-control"  type="text"
                                                    value={ value.item.name }
@@ -254,8 +265,8 @@ const SortableItem = SortableElement(({value}) =>{
                                </div>
 
                                <div className="form-group">
-                                   <label className="col-md-3 control-label">Description</label>
-                                   <div className="col-md-9 inputGroupContainer">
+                                   <label className="col-md-2 control-label">Description</label>
+                                   <div className="col-md-10 inputGroupContainer">
                                        <div className="input-group">
                                            <ReactSummernote
                                                value={value.item.description}
