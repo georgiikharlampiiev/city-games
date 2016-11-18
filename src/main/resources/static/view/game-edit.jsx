@@ -2,9 +2,14 @@ import React from 'react';
 import { Link, browserHistory } from "react-router";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import { Button, Collapse } from 'react-bootstrap';
+import ReactSummernote from 'react-summernote';
 var DateTimeField = require('react-datetime');
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
+
+import 'bootstrap/js/modal';
+import 'bootstrap/js/dropdown';
+import 'bootstrap/js/tooltip';
 
 export class GameEdit extends React.Component {
 
@@ -21,21 +26,11 @@ export class GameEdit extends React.Component {
        this.sendChangesOnServer = this.sendChangesOnServer.bind(this);
        this.onImageInputChange = this.onImageInputChange.bind(this);
        this.onSortEnd = this.onSortEnd.bind(this);
+       this.sendQuestion = this.sendQuestion.bind(this);
     }
 
     componentDidMount() {
         this.loadFromServer();
-        // $('.click2edit').summernote({
-        //     focus: true,
-        //     toolbar: [
-        //         ['style', ['bold', 'italic', 'underline', 'clear']],
-        //         ['font', ['strikethrough', 'superscript', 'subscript']],
-        //         ['fontsize', ['fontsize']],
-        //         ['color', ['color']],
-        //         ['para', ['ul', 'ol', 'paragraph']],
-        //         ['height', ['height']]
-        //     ]
-        // });
     }
 
      loadFromServer() {
@@ -44,8 +39,8 @@ export class GameEdit extends React.Component {
              ajaxUtils.executeGetAction('/api/getGame/' + gameId,
                  (data) => {
                      const tmpQuestions = data.questions;
-                     data['questions'] = tmpQuestions.sort((a, b) => {return a.order-b.order});
-                     this.setState({ currentGame:data })
+                     data['questions'] = tmpQuestions.sort((a, b) => {return a.orderInGame-b.orderInGame});
+                     this.setState({ currentGame:data });
                  },
                  (e) => console.error(e)
              );
@@ -62,12 +57,15 @@ export class GameEdit extends React.Component {
 
     sendChangesOnServer(){
         var currentGame = this.state.currentGame;
-        // currentGame['description'] = $('.click2edit').summernote('code');
+        currentGame.questions.forEach(this.setQuestionOrder);
+        this.setState({currentGame});
         ajaxUtils.executePostAction(
             "/api/addGame",
             JSON.stringify(currentGame),
             (data) => {
                 if(data.id != 0){
+                    const tmpQuestions = data.questions;
+                    data['questions'] = tmpQuestions.sort((a, b) => {return a.orderInGame-b.orderInGame});
                     this.setState({currentGame: data},
                         () => {$('#success_message').show()});
                     browserHistory.push('#/game-edit/' + data.id);
@@ -75,6 +73,18 @@ export class GameEdit extends React.Component {
             },
             (e) => {console.info(e)}
         );
+    }
+
+    sendQuestion(){
+        const currentGame = this.state.currentGame;
+        var questions = this.state.currentGame.questions;
+        questions.push({name:"Question name",description:"Description", orderInGame: this.state.currentGame.questions.length})
+        currentGame['questions'] = questions;
+        this.setState({currentGame});
+    }
+
+    setQuestionOrder(element, index, array) {
+        element.orderInGame = index;
     }
 
     formatMillisecondsToDate(milliseconds) {
@@ -193,6 +203,12 @@ export class GameEdit extends React.Component {
                             </div>
                         </div>
 
+                        <div className="form-group">
+                            <label className="col-md-4 control-label"></label>
+                            <div className="col-md-4">
+                                <div className="btn btn-success" onClick={this.sendQuestion}>Add question <span className="glyphicon glyphicon-plus"></span></div>
+                            </div>
+                        </div>
 
                     </fieldset>
                 </form>
@@ -202,14 +218,18 @@ export class GameEdit extends React.Component {
 }
 
 
-const SortableItem = SortableElement(({value}) =>{
+var SortableItem = SortableElement(({value}) =>{
 
     function changeQuestionField(index, name, e){
-        console.info("name", name)
-        console.info("index", index)
-        console.info("e.target", e.target)
-        console.info("e.target.value", e.target.value)
-        value.item['name'] = e.target.value;
+        // console.info("name", name)
+        // console.info("index", index)
+        // console.info("e", e)
+        // console.info("e.target.value", e.target.value)
+        if(name == "description"){
+            value.item[name] = e;
+        }else {
+            value.item[name] = e.target.value;
+        }
 
         const currentGame = value.owner.state.currentGame;
         const questions = value.owner.state.currentGame.questions;
@@ -220,7 +240,7 @@ const SortableItem = SortableElement(({value}) =>{
     };
 
     if(value){
-       return (<li>
+       return (<li className="list-group-item">
 
                    <Button onClick={ ()=> {
                        const open = value.owner.state.open;
@@ -234,12 +254,41 @@ const SortableItem = SortableElement(({value}) =>{
                            <fieldset>
                                {/*<!-- Text input-->*/}
                                <div className="form-group">
-                                   <label className="col-md-3 control-label">Game name</label>
-                                   <div className="col-md-9 inputGroupContainer">
+                                   <label className="col-md-2 control-label">Game name</label>
+                                   <div className="col-md-10 inputGroupContainer">
                                        <div className="input-group">
                                             <input name={ "question_name"+value.index } className="form-control"  type="text"
                                                    value={ value.item.name }
                                                    onChange={ changeQuestionField.bind(this, value.index, "name") } />
+                                       </div>
+                                   </div>
+                               </div>
+
+                               <div className="form-group">
+                                   <label className="col-md-2 control-label">Description</label>
+                                   <div className="col-md-10 inputGroupContainer">
+                                       <div className="input-group">
+                                           <ReactSummernote
+                                               value={value.item.description}
+                                               options={{
+                                                   lang: 'ru-RU',
+                                                   height: 350,
+                                                   dialogsInBody: true,
+                                                   toolbar: [
+                                                       ['style', ['style']],
+                                                       ['font', ['bold', 'underline', 'clear']],
+                                                       ['fontname', ['fontname']],
+                                                       ['para', ['ul', 'ol', 'paragraph']],
+                                                       ['table', ['table']],
+                                                       ['insert', ['link', 'picture', 'video']],
+                                                       ['view', ['fullscreen', 'codeview']]
+                                                   ]
+                                               }}
+                                               onChange={ changeQuestionField.bind(this, value.index, "description") }
+                                           />
+                                           {/*<input name={ "question_name"+value.index } className="form-control"  type="text"*/}
+                                                  {/*value={ value.item.name }*/}
+                                                  {/*onChange={ changeQuestionField.bind(this, value.index, "name") } />*/}
                                        </div>
                                    </div>
                                </div>

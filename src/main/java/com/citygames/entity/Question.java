@@ -12,7 +12,7 @@ public class Question {
 
   private @Id @GeneratedValue Long id;
 
-  private Integer order;
+  private Integer orderInGame;
 
   private String name;
 
