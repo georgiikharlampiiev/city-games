@@ -15,4 +15,6 @@ public interface GameUserService {
 
     GameUser getByName(String name);
 
+    GameUser getByEmail(String email);
+
 }

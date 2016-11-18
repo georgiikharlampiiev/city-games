@@ -39,4 +39,7 @@ public class GameUserServiceImpl implements GameUserService {
         return gameUserRepository.findByName(name);
     }
 
+    @Override
+    public GameUser getByEmail(String email) { return gameUserRepository.findByEmail(email); }
+
 }

@@ -11,5 +11,8 @@ public interface GameUserRepository extends JpaRepository<GameUser, Long> {
 
     @Query("from GameUser g where g.name = :name")
     GameUser findByName(@Param("name") String name);
+
+    @Query("from GameUser g where g.email = :email")
+    GameUser findByEmail(@Param("email") String email);
 }
 
