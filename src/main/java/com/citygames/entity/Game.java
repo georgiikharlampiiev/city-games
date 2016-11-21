@@ -10,26 +10,31 @@ import java.util.Set;
 @Entity
 public class Game {
 
-  private @Id @GeneratedValue Long id;
+    private
+    @Id
+    @GeneratedValue
+    Long id;
 
-  private String name;
+    private String name;
 
-  private String description;
+    private String description;
 
-  private Date dateStart;
+    private Date dateStart;
 
-  private Date dateFinish;
+    private Date dateFinish;
 
-  @OneToMany
-  private Set<Team> teams;
+    private boolean flag;
 
-  @OneToMany
-  private Set<GameUser> gameAdmins;
+    @OneToMany
+    private Set<Team> teams;
 
-  @OneToMany(cascade={CascadeType.PERSIST})
-  @JoinColumn(name="GAME_ID", referencedColumnName="ID")
-  private Set<Question> questions;
+    @OneToMany
+    private Set<GameUser> gameAdmins;
 
-  private String image;
+    @OneToMany(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "GAME_ID", referencedColumnName = "ID")
+    private Set<Question> questions;
+
+    private String image;
 
 }

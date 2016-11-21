@@ -94,6 +94,16 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public List<Game> getAllDisableGames(int page, int pageSize){
+        TypedQuery query = em.createQuery("select g from Game g  WHERE g.date_finish<=current_time and date_format(g.date_finish,'%Y.%m.%d') <=date_format(current_date,'%Y.%m.%d') and g.flag = 1, ASC", Game.class);
+
+        query.setFirstResult(page * pageSize);
+        query.setMaxResults(pageSize);
+
+        return query.getResultList();
+    }
+
+    @Override
     public Game getGameById(Long id){
         return gameRepository.findOne(id);
     }

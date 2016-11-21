@@ -16,6 +16,8 @@ public interface GameService {
 
     List<Game> getAllActiveGames(int page, int pageSize);
 
+    List<Game> getAllDisableGames(int page, int pageSize);
+
     List<Game> getAllGames(int page, int pageSize);
 
     Game getGameById(Long id);
