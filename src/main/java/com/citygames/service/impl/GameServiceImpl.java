@@ -95,7 +95,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public List<Game> getAllDisableGames(int page, int pageSize) {
 
-        TypedQuery query = em.createQuery("select  dateFinish from Game   WHERE dateFinish < CURDATE() ORDER BY DATE", Game.class);
+        TypedQuery query = em.createQuery("select g from Game g  WHERE dateFinish < CURDATE() ORDER BY DATE(dateFinish)", Game.class);
 
         query.setFirstResult(page * pageSize);
         query.setMaxResults(pageSize);
