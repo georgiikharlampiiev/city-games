@@ -26,7 +26,7 @@ export class GameEdit extends React.Component {
        this.sendChangesOnServer = this.sendChangesOnServer.bind(this);
        this.onImageInputChange = this.onImageInputChange.bind(this);
        this.onSortEnd = this.onSortEnd.bind(this);
-       this.sendQuestion = this.sendQuestion.bind(this);
+       this.addQuestion = this.addQuestion.bind(this);
     }
 
     componentDidMount() {
@@ -75,10 +75,15 @@ export class GameEdit extends React.Component {
         );
     }
 
-    sendQuestion(){
+    addQuestion(){
         const currentGame = this.state.currentGame;
-        var questions = this.state.currentGame.questions;
-        questions.push({name:"Question name",description:"Description", orderInGame: this.state.currentGame.questions.length})
+        var questions = [];
+        if(!this.state.currentGame.questions) {
+            questions.push({name:"Question name",description:"Description", orderInGame: 0});
+        }else {
+            questions.push({name:"Question name",description:"Description", orderInGame: this.state.currentGame.questions.length});
+        }
+
         currentGame['questions'] = questions;
         this.setState({currentGame});
     }
@@ -206,7 +211,7 @@ export class GameEdit extends React.Component {
                         <div className="form-group">
                             <label className="col-md-4 control-label"></label>
                             <div className="col-md-4">
-                                <div className="btn btn-success" onClick={this.sendQuestion}>Add question <span className="glyphicon glyphicon-plus"></span></div>
+                                <div className="btn btn-success" onClick={this.addQuestion}>Add question <span className="glyphicon glyphicon-plus"></span></div>
                             </div>
                         </div>
 
@@ -260,6 +265,39 @@ var SortableItem = SortableElement(({value}) =>{
                                             <input name={ "question_name"+value.index } className="form-control"  type="text"
                                                    value={ value.item.name }
                                                    onChange={ changeQuestionField.bind(this, value.index, "name") } />
+                                       </div>
+                                   </div>
+                               </div>
+
+                               <div className="form-group">
+                                   <label className="col-md-2 control-label">Score</label>
+                                   <div className="col-md-10 inputGroupContainer">
+                                       <div className="input-group">
+                                           <input name={ "score"+value.index } className="form-control"  type="text"
+                                                  value={ value.item.score }
+                                                  onChange={ changeQuestionField.bind(this, value.index, "score") } />
+                                       </div>
+                                   </div>
+                               </div>
+
+                               <div className="form-group">
+                                   <label className="col-md-2 control-label">Auto Start Seconds</label>
+                                   <div className="col-md-10 inputGroupContainer">
+                                       <div className="input-group">
+                                           <input name={ "autoStartSeconds"+value.index } className="form-control"  type="text"
+                                                  value={ value.item.autoStartSeconds }
+                                                  onChange={ changeQuestionField.bind(this, value.index, "autoStartSeconds") } />
+                                       </div>
+                                   </div>
+                               </div>
+
+                               <div className="form-group">
+                                   <label className="col-md-2 control-label">Auto Finish Seconds</label>
+                                   <div className="col-md-10 inputGroupContainer">
+                                       <div className="input-group">
+                                           <input name={ "autoFinishSeconds"+value.index } className="form-control"  type="text"
+                                                  value={ value.item.autoFinishSeconds }
+                                                  onChange={ changeQuestionField.bind(this, value.index, "autoFinishSeconds") } />
                                        </div>
                                    </div>
                                </div>
