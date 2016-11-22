@@ -8,44 +8,26 @@ export class GamePlay extends React.Component {
     constructor(props) {
        super(props);
        this.state = {
-           currentGame: [],
-           currentUser: null,
-           isUserAppliedGame: false
+           currentQuestions: []
        };
-       this.applyGame = this.applyGame.bind(this);
-       this.checkIsUserAppliedGame = this.checkIsUserAppliedGame.bind(this);
+       this.applyAnswer = this.applyAnswer.bind(this);
+       this.mapQuestion = this.mapQuestion.bind(this);
+       this.mapDescription = this.mapDescription.bind(this);
     }
 
     componentDidMount() {
         this.loadFromServer();
-        this.checkIsUserAppliedGame();
     }
 
      loadFromServer() {
-         ajaxUtils.executeGetAction('/api/getGame/' + this.props.params.gameId,
-             (data) => {this.setState({currentGame:data})},
-             (e) => console.error(e)
-         );
-         ajaxUtils.executeGetAction('/api/getUserProfile',
-             (data) => {this.setState({currentUser:data})},
+         ajaxUtils.executeGetAction('/api/getQuestionsForCurrentGame/' + this.props.params.gameId,
+             (data) => {this.setState({currentQuestions:data})},
              (e) => console.error(e)
          );
     }
 
-    applyGame() {
-        var params = this.props.params;
-        ajaxUtils.executeGetAction('/api/applyGameByCurrentUser/' + params.gameId,
-            (data) => {this.setState({ isUserAppliedGame:data })},
-            (e) => console.error(e)
-        );
-    }
-
-    checkIsUserAppliedGame() {
-        var params = this.props.params;
-        ajaxUtils.executeGetAction('/api/isUserAppliedGame/' + params.gameId,
-            (data) => {this.setState({ isUserAppliedGame:data })},
-            (e) => console.error(e)
-        );
+    applyAnswer() {
+        console.info("Apply answer stub")
     }
 
     formatMillisecondsToDate(milliseconds) {
@@ -56,29 +38,35 @@ export class GamePlay extends React.Component {
         }
     }
 
+    mapQuestion(question){
+        return (
+            <div key={`question-view-${question.orderInGame}`}>
+            {/*<!-- Question -->*/}
+                <p className="lead">
+                    {question.name}
+                </p>
+                <hr/>
+
+                    <div dangerouslySetInnerHTML={this.mapDescription(question.description)} />
+
+                <hr/>
+            </div>
+        )
+    }
+
+    mapDescription(description){
+        return (
+            {__html: description}
+        )
+    }
 
     render() {
-        const game = this.state.currentGame;
-        var image = "http://placehold.it/900x300";
-        if(game.image) {
-            image = "data:image/png;base64," + game.image;
-        }
         return (
             <div>
                 <div className="row">
-                    
                     <div className="col-lg-8">
-                        <p><span className="glyphicon glyphicon-time"></span> Start at { this.formatMillisecondsToDate(game.dateStart) } </p>
-                        <p><span className="glyphicon glyphicon-time"></span> Finish at { this.formatMillisecondsToDate(game.dataStop) } </p>
 
-                        <hr/>
-                        
-                        <img className="img-responsive" src={ image } alt=""/>
-                        
-                        <hr/>
-                        
-                        <p className="lead"> JUST STUB FOR GAME PLAY!!!!!</p>
-
+                        {this.state.currentQuestions.map(this.mapQuestion)}
 
                     </div>
                 </div>
