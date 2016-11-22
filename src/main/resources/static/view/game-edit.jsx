@@ -11,6 +11,26 @@ import 'bootstrap/js/modal';
 import 'bootstrap/js/dropdown';
 import 'bootstrap/js/tooltip';
 
+import LocalizedStrings from 'react-localization';
+
+let strings = new LocalizedStrings({
+    en:{
+        question_name:"Question name",
+        description:"Description",
+        game_image:"Game image"
+    },
+    ru: {
+        question_name:"Question name",
+        description:"Description",
+        game_image:"Game image"
+    },
+    ua: {
+        question_name:"Question name",
+        description:"Description",
+        game_image:"Game image"
+    }
+});
+
 export class GameEdit extends React.Component {
 
     constructor(props) {
@@ -79,9 +99,23 @@ export class GameEdit extends React.Component {
         const currentGame = this.state.currentGame;
         var questions = [];
         if(!this.state.currentGame.questions) {
-            questions.push({name:"Question name",description:"Description", orderInGame: 0});
+            questions.push({
+                name: strings.question_name,
+                description: strings.description,
+                orderInGame: 0,
+                score: 0,
+                autoStartSeconds: 0,
+                autoFinishSeconds: 0
+            });
         }else {
-            questions.push({name:"Question name",description:"Description", orderInGame: this.state.currentGame.questions.length});
+            questions = this.state.currentGame.questions;
+            questions.push({
+                name: strings.question_name,
+                description: strings.description,
+                orderInGame: this.state.currentGame.questions.length,
+                score: 0,
+                autoStartSeconds: 0,
+                autoFinishSeconds: 0});
         }
 
         currentGame['questions'] = questions;
@@ -144,7 +178,7 @@ export class GameEdit extends React.Component {
 
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Game image</label>
+                            <label className="col-md-3 control-label">{strings.game_image}</label>
                             <div className="col-md-9 inputGroupContainer">
                                 <div className="input-group">
                                     <img src={this.state.currentGame.image} className="img-responsive fixedHeightImage img-rounded"/>
