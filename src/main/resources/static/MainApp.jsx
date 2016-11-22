@@ -1,13 +1,42 @@
 import React from 'react';
 import { Router, hashHistory, Link} from "react-router";
 
+import LocalizedStrings from 'react-localization';
+
+let strings = new LocalizedStrings({
+	en:{
+		games:"Games",
+		statistic:"Statistic",
+		my_profile:"My Profile",
+		team:"Team",
+		about:"About",
+		logout:"Logout"
+	},
+	ru: {
+		games:"Игры",
+		statistic:"Статистика",
+		my_profile:"Мой профаил",
+		team:"Моя команда",
+		about:"Про игру",
+		logout:"Выйти"
+	},
+	ua: {
+		games:"Ігри",
+		statistic:"Статистика",
+		my_profile:"Мій профаіл",
+		team:"Моя команда",
+		about:"Про гру",
+		logout:"Вийти"
+	}
+});
+
 export default class MainApp extends React.Component {
 
 	constructor(props) {
 		super(props);
 	}
 
-	
+
 	render() {
 		return (
 
@@ -35,32 +64,32 @@ export default class MainApp extends React.Component {
 							<ul className="nav navbar-nav">
 								<li>
 									<Link to="/games">
-										Games
+										{strings.games}
 									</Link>
 								</li>
 								<li>
 									<Link to="/statistic">
-										Statistic
+										{strings.statistic}
 									</Link>
 								</li>
 								<li>
 									<Link to="/myprofile">
-										My Profile
+										{strings.my_profile}
 									</Link>
 								</li>
 								<li>
                                 	<Link to="/team">
-                                		Team
+										{strings.team}
                                 	</Link>
                              	</li>
 								<li>
 									<Link to="/about">
-										About
+										{strings.about}
 									</Link>
 								</li>
 								<li>
 									<a href="/logout">
-										Logout
+										{strings.logout}
 									</a>
 								</li>
 							</ul>

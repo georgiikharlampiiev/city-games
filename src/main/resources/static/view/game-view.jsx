@@ -3,6 +3,39 @@ import { Link } from "react-router";
 var ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
 
+import LocalizedStrings from 'react-localization';
+
+let strings = new LocalizedStrings({
+    en:{
+        start_at:"Start at",
+        finish_at:"Start at",
+        edit_game:"Edit game",
+        you_are_not_a_team_member:"You are not a team member! Only team members can enter the game. Please, join in team ore create you own.",
+        join_game:"Join game",
+        open_current_game:"Open current game",
+        delete_game_apply:"Delete game apply"
+    },
+    ru: {
+        start_at:"Начало в",
+        finish_at:"Окончание в",
+        edit_game:"Редактировать игру",
+        you_are_not_a_team_member:"Вы не являетесь членом команды! Только члены команды могут принимать игры. Пожалуйста, вступите в команду или создайте свою",
+        join_game:"Подать заявку в игру",
+        open_current_game:"Открыть игру",
+        delete_game_apply:"Отклонить заявку в игру"
+    },
+    ua: {
+        start_at:"Початок о",
+        finish_at:"Закiнчуэться о",
+        edit_game:"Редагувати гру",
+        you_are_not_a_team_member:"Ви не член команди.",
+        join_game:"Подати заявку в игру",
+        open_current_game:"Вiдкрити гру",
+        delete_game_apply:"Покинути гру"
+    }
+});
+
+
 export class GameView extends React.Component {
 
     constructor(props) {
@@ -83,16 +116,16 @@ export class GameView extends React.Component {
         if(user && user.teamId){
             if(isUserAppliedGame) {
                 return (<div>
-                    <button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>Delete game apply</button>
-                    <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default " >Open current game</a></div>
+                    <button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>{strings.delete_game_apply}</button>
+                    <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default " >{strings.open_current_game}</a></div>
                 )
             }else {
-                return (<button type="button" className="btn btn-default" onClick={this.applyGame}>Join game</button>)
+                return (<button type="button" className="btn btn-default" onClick={this.applyGame}>{strings.join_game}</button>)
             }
 
         } else {
             return (<div className="alert alert-warning">
-                You are not a team member! Only team members can enter the game. Please, join in team ore create you own.</div>)
+                {strings.you_are_not_a_team_member}</div>)
         }
     }
 
@@ -100,7 +133,7 @@ export class GameView extends React.Component {
         const isUserGameEditor = this.state.isUserGameEditor;
         const gameId = this.props.params.gameId;
         if(isUserGameEditor) {
-            return (<p><a href={ "#/game-edit/" + gameId } type="button" className="btn btn-default" >Edit game</a></p>);
+            return (<p><a href={ "#/game-edit/" + gameId } type="button" className="btn btn-default" >{strings.edit_game}</a></p>);
         }else {
             return (<p></p>);
         }
@@ -119,8 +152,8 @@ export class GameView extends React.Component {
                 <div className="row">
                     
                     <div className="col-md-9">
-                        <p><span className="glyphicon glyphicon-time"></span> Start at { this.formatMillisecondsToDate(game.dateStart) } </p>
-                        <p><span className="glyphicon glyphicon-time"></span> Finish at { this.formatMillisecondsToDate(game.dateFinish) } </p>
+                        <p><span className="glyphicon glyphicon-time"></span> {strings.start_at} { this.formatMillisecondsToDate(game.dateStart) } </p>
+                        <p><span className="glyphicon glyphicon-time"></span> {strings.finish_at} { this.formatMillisecondsToDate(game.dateFinish) } </p>
                         { this.editButtonRender() }
 
                         <hr/>

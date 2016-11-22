@@ -1,6 +1,19 @@
 import React from 'react';
 import { Link } from "react-router";
 var ajaxUtils =  require ('../utils/utils.jsx');
+import LocalizedStrings from 'react-localization';
+
+let strings = new LocalizedStrings({
+    en:{
+        create_new_game:"Create new game"
+    },
+    ru: {
+        create_new_game:"Создать новую игру"
+    },
+    ua: {
+        create_new_game:"Створити нову гру"
+    }
+});
 
 export class Games extends React.Component {
 
@@ -56,7 +69,7 @@ export class Games extends React.Component {
     editButtonRender() {
         const isUserGameEditor = this.state.isUserGameEditor;
         if(isUserGameEditor) {
-            return (<p><a href={ "#/game-edit/0" } type="button" className="btn btn-default img-rounded" >Create new game</a></p>);
+            return (<p><a href={ "#/game-edit/0" } type="button" className="btn btn-default img-rounded" >{strings.create_new_game}</a></p>);
         }else {
             return (<p></p>);
         }

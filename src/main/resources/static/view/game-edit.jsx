@@ -125,7 +125,6 @@ export class GameEdit extends React.Component {
     }
 
     onSortEnd ({oldIndex, newIndex}) {
-        //TODO: CHECK ORDERS ON SAVE
         const currentGame = this.state.currentGame;
         const currentGameQuestions = this.state.currentGame.questions;
         currentGame['questions'] = arrayMove(currentGameQuestions, oldIndex, newIndex);
