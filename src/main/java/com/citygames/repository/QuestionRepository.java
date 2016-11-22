@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    List<Question> findByGameId(Long gameId);
+    List<Question> findByGameIdOrderByOrderInGameAsc(Long gameId);
 
 }
 

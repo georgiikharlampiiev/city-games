@@ -84,7 +84,7 @@ export class GameView extends React.Component {
             if(isUserAppliedGame) {
                 return (<div>
                     <button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>Delete game apply</button>
-                    <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default" >Open current game</a></div>
+                    <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default " >Open current game</a></div>
                 )
             }else {
                 return (<button type="button" className="btn btn-default" onClick={this.applyGame}>Join game</button>)
@@ -125,7 +125,7 @@ export class GameView extends React.Component {
 
                         <hr/>
                         
-                        <img className="img-responsive" src={ image } alt=""/>
+                        <img className="img-responsive fixedHeightImage img-rounded" src={ image } alt=""/>
                         
                         <hr/>
                         

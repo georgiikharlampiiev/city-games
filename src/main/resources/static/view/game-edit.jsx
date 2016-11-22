@@ -148,7 +148,7 @@ export class GameEdit extends React.Component {
                             <label className="col-md-3 control-label">Game image</label>
                             <div className="col-md-9 inputGroupContainer">
                                 <div className="input-group">
-                                    <img src={this.state.currentGame.image} className="img-responsive"/>
+                                    <img src={this.state.currentGame.image} className="img-responsive fixedHeightImage img-rounded"/>
                                     <input id="imageinput" name="file_name" className="form-control" type="file" onChange={this.onImageInputChange}/>
                                 </div>
                             </div>

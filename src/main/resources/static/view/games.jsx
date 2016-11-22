@@ -41,7 +41,7 @@ export class Games extends React.Component {
                 <div className="col-md-9 portfolio-item">
                     <hr/>
                     <a href={ "#/game-view/" + game.id }>
-                        <img className="img-responsive" src={ image } alt=""/>
+                        <img className="img-responsive img-rounded fixedHeightImage" src={ image } alt=""/>
                     </a>
                     <h3>
                         <a href={ "#/game-view/" + game.id }>{ game.name }</a>
@@ -56,7 +56,7 @@ export class Games extends React.Component {
     editButtonRender() {
         const isUserGameEditor = this.state.isUserGameEditor;
         if(isUserGameEditor) {
-            return (<p><a href={ "#/game-edit/0" } type="button" className="btn btn-default" >Create new game</a></p>);
+            return (<p><a href={ "#/game-edit/0" } type="button" className="btn btn-default img-rounded" >Create new game</a></p>);
         }else {
             return (<p></p>);
         }

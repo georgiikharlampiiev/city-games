@@ -20,7 +20,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> getQuestionsForCurrentGame(Long id){
-        return questionRepository.findByGameId(id);
+        return questionRepository.findByGameIdOrderByOrderInGameAsc(id);
     }
 
 }
