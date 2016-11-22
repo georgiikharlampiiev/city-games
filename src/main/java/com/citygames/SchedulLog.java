@@ -4,7 +4,6 @@ package com.citygames;
 import com.citygames.entity.Game;
 import com.citygames.service.GameService;
 import com.citygames.service.impl.GameServiceImpl;
-import org.hibernate.service.spi.InjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -21,19 +19,18 @@ import java.util.List;
 public class SchedulLog {
     @Autowired
     GameService gameService;
-
+   /* @Autowired
+    GameServiceImpl gameServiceImpl;
+*/
     public static final Logger log = LoggerFactory.getLogger(SchedulLog.class);
 
 
-    @Scheduled(cron = " * */2 * * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     public void cronDisableGames() {
-        log.info("Games that ended at the moment " );
-        
-/*        try {
-            log.info("Games that ended at the moment " + gameService.getAllDisableGames(0, 10));
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }*/
-    }
+        //log.info("Games that ended at the moment " );
+        //List<Game> nonActiveGame = gameServiceImpl.getAllDisableGames(0,10);
+        log.info("Games that ended at the moment " + gameService.getAllDisableGames(0, 10));
 
+
+    }
 }

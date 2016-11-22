@@ -23,7 +23,7 @@ public class Game {
 
     private Date dateFinish;
 
-    private boolean disabled_games;
+    private boolean disabled;
 
     @OneToMany
     private Set<Team> teams;
