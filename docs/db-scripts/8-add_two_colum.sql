@@ -1,14 +1,9 @@
-ALTER TABLE citygames.game ADD flag BOOLEAN;
-
-ALTER TABLE citygames.game ADD date_flag_set DATETIME;
-
-
-update game g set g.flag=1,g.date_flag_set=current_timestamp WHERE g.date_finish <=current_time
-                                                                   and date_format(g.date_finish,'%Y.%m.%d') <=date_format(current_date,'%Y.%m.%d')
-                                                                   and g.flag = false;
+ALTER TABLE citygames.game CHANGE flag disabled_games BOOLEAN;
+ALTER TABLE citygames.game ALTER COLUMN disabled_games SET DEFAULT 0;
 
 
 
-select * FROM  game g  ORDER BY g.date_flag_set DESC;
 
+/*update game g set g.disabled_games=1,  WHERE g.date_finish<=current_time and g.disabled_games = 1;*/
 
+select disabled_games From game g WHERE g.date_finish<=current_date and g.disabled_games = 1;

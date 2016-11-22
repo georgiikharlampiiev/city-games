@@ -40,22 +40,21 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game add(Game game) {
-        if ( isUserGameEditor(game.getId()) ) {
-            if (game.getGameAdmins() != null ) {
-                game.getGameAdmins().add( securityUtilsService.getCurrentUser() );
-            }else {
+        if (isUserGameEditor(game.getId())) {
+            if (game.getGameAdmins() != null) {
+                game.getGameAdmins().add(securityUtilsService.getCurrentUser());
+            } else {
                 Set<GameUser> admins = new HashSet<>();
-                admins.add( securityUtilsService.getCurrentUser() );
+                admins.add(securityUtilsService.getCurrentUser());
                 game.setGameAdmins(admins);
             }
 
-            if(game.getQuestions() != null && !game.getQuestions().isEmpty())
+            if (game.getQuestions() != null && !game.getQuestions().isEmpty())
                 questionRepository.save(game.getQuestions());
 
 
             return gameRepository.save(game);
-        }
-        else return game;
+        } else return game;
     }
 
     @Override
@@ -74,7 +73,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getAllGames(int page, int pageSize){
+    public List<Game> getAllGames(int page, int pageSize) {
         TypedQuery query = em.createQuery("select g from Game g ORDER BY DATE(dateStart) ASC", Game.class);
 
         query.setFirstResult(page * pageSize);
@@ -84,7 +83,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getAllActiveGames(int page, int pageSize){
+    public List<Game> getAllActiveGames(int page, int pageSize) {
         TypedQuery query = em.createQuery("select g from Game g WHERE dateFinish >= CURDATE() ORDER BY DATE(dateStart) ASC", Game.class);
 
         query.setFirstResult(page * pageSize);
@@ -94,8 +93,9 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getAllDisableGames(int page, int pageSize){
-        TypedQuery query = em.createQuery("select g from Game g  WHERE g.date_finish<=current_time and date_format(g.date_finish,'%Y.%m.%d') <=date_format(current_date,'%Y.%m.%d') and g.flag = 1, ASC", Game.class);
+    public List<Game> getAllDisableGames(int page, int pageSize) {
+        //this select doesn't worked
+        TypedQuery query = em.createQuery("select g from Game g WHERE g.date_finish<=current_date and g.disabled_games = 1", Game.class);
 
         query.setFirstResult(page * pageSize);
         query.setMaxResults(pageSize);
@@ -104,19 +104,19 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game getGameById(Long id){
+    public Game getGameById(Long id) {
         return gameRepository.findOne(id);
     }
 
     @Override
-    public Boolean addApplyGameByCurrentUser(Long gameId){
+    public Boolean addApplyGameByCurrentUser(Long gameId) {
         GameUser user = securityUtilsService.getCurrentUser();
-        if( user != null && user.getTeamId() != null ){
+        if (user != null && user.getTeamId() != null) {
 
             Game game = gameRepository.findOne(gameId);
             Team team = teamRepository.findOne(user.getTeamId());
 
-            if(team != null) {
+            if (team != null) {
                 game.getTeams().add(team);
                 this.edit(game);
                 return true;
@@ -126,14 +126,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Boolean deleteApplyGameByCurrentUser(Long gameId){
+    public Boolean deleteApplyGameByCurrentUser(Long gameId) {
         GameUser user = securityUtilsService.getCurrentUser();
-        if( user != null && user.getTeamId() != null ){
+        if (user != null && user.getTeamId() != null) {
 
             Game game = gameRepository.findOne(gameId);
             Team team = teamRepository.findOne(user.getTeamId());
 
-            if(team != null) {
+            if (team != null) {
                 Set<Team> teams = game.getTeams();
                 game.setTeams(teams.stream()
                         .filter(t -> !t.getId().equals(user.getTeamId()))
@@ -146,9 +146,9 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Boolean IsUserAppliedGame(Long gameId){
+    public Boolean IsUserAppliedGame(Long gameId) {
         GameUser user = securityUtilsService.getCurrentUser();
-        if( user != null && user.getTeamId() != null ){
+        if (user != null && user.getTeamId() != null) {
             Game game = gameRepository.findOne(gameId);
             return !game.getTeams().stream()
                     .filter(team -> team.getId().equals(user.getTeamId()))
@@ -159,17 +159,17 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Boolean isUserGameEditor(Long gameId){
+    public Boolean isUserGameEditor(Long gameId) {
         GameUser user = securityUtilsService.getCurrentUser();
 
-        if( user != null && user.getRoleId() != null ){
+        if (user != null && user.getRoleId() != null) {
 
-            if(RoleEnum.ADMIN.getId().equals(user.getRoleId().getId())){
+            if (RoleEnum.ADMIN.getId().equals(user.getRoleId().getId())) {
                 return true;
             }
 
             Game game = gameRepository.findOne(gameId);
-            if(game != null) {
+            if (game != null) {
                 return game.getGameAdmins()
                         .stream()
                         .anyMatch(a -> user.getId().equals(a.getId()));
