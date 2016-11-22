@@ -65,11 +65,28 @@ export class GamePlay extends React.Component {
             <div>
                 <div className="row">
                     <div className="col-lg-8">
+                        <fieldset>
+                            <div className="col-lg-6 affix">
+                                <div className="input-group">
+                                    <input type="text" className="form-control" placeholder="Answer here..."/>
+                                    <span className="input-group-btn">
+                                        <button className="btn btn-secondary" type="button">Send answer!</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
 
-                        {this.state.currentQuestions.map(this.mapQuestion)}
+                        <div style={{marginTop : "70px"}}>
+                            {this.state.currentQuestions.map(this.mapQuestion)}
+                        </div>
 
                     </div>
+
+
+
                 </div>
+
+
             </div>
         )
     }
