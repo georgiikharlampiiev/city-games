@@ -117,8 +117,8 @@ public class GameServiceImpl implements GameService {
             Team team = teamRepository.findOne(user.getTeamId());
 
             if (team != null) {
-                game.getTeams().add(team);
-                this.edit(game);
+//                game.getTeams().add(team);
+//                this.edit(game);
                 return true;
             }
         }
@@ -134,11 +134,11 @@ public class GameServiceImpl implements GameService {
             Team team = teamRepository.findOne(user.getTeamId());
 
             if (team != null) {
-                Set<Team> teams = game.getTeams();
-                game.setTeams(teams.stream()
-                        .filter(t -> !t.getId().equals(user.getTeamId()))
-                        .collect(Collectors.toSet()));
-                this.edit(game);
+//                Set<Team> teams = game.getTeams();
+//                game.setTeams(teams.stream()
+//                        .filter(t -> !t.getId().equals(user.getTeamId()))
+//                        .collect(Collectors.toSet()));
+//                this.edit(game);
                 return true;
             }
         }
@@ -150,10 +150,10 @@ public class GameServiceImpl implements GameService {
         GameUser user = securityUtilsService.getCurrentUser();
         if (user != null && user.getTeamId() != null) {
             Game game = gameRepository.findOne(gameId);
-            return !game.getTeams().stream()
-                    .filter(team -> team.getId().equals(user.getTeamId()))
-                    .collect(Collectors.toList())
-                    .isEmpty();
+//            return !game.getTeams().stream()
+//                    .filter(team -> team.getId().equals(user.getTeamId()))
+//                    .collect(Collectors.toList())
+//                    .isEmpty();
         }
         return false;
     }
