@@ -26,7 +26,6 @@ public class Game {
 
     private boolean disabled;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "game")
     private Set<TeamInGame> teamInGame;
 
