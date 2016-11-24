@@ -1,5 +1,6 @@
 package com.citygames.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,8 +26,8 @@ public class Game {
 
     private boolean disabled;
 
-    @OneToMany
-    private Set<Team> teams;
+    @OneToMany(mappedBy = "game")
+    private Set<TeamInGame> teamInGame;
 
     @OneToMany
     private Set<GameUser> gameAdmins;

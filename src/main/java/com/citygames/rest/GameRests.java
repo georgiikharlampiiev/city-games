@@ -1,5 +1,6 @@
 package com.citygames.rest;
 
+import com.citygames.dto.GameDTO;
 import com.citygames.entity.Game;
 import com.citygames.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class GameRests {
     private GameService gameService;
 
     @RequestMapping("/getGames")
-    public List<Game> getGames() {
+    public List<GameDTO> getGames() {
         return gameService.getAllActiveGames(0,10); //TODO: Add pagination!!!!!!
     }
 

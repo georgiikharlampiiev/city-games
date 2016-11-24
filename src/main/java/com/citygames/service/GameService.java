@@ -1,5 +1,6 @@
 package com.citygames.service;
 
+import com.citygames.dto.GameDTO;
 import com.citygames.entity.Game;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface GameService {
 
     List<Game> getAll();
 
-    List<Game> getAllActiveGames(int page, int pageSize);
+    List<GameDTO> getAllActiveGames(int page, int pageSize);
 
     List<Game> getAllDisableGames(int page, int pageSize);
 

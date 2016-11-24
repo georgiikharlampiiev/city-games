@@ -1,5 +1,6 @@
 package com.citygames.service.impl;
 
+import com.citygames.dto.GameDTO;
 import com.citygames.entity.Game;
 import com.citygames.entity.GameUser;
 import com.citygames.entity.Team;
@@ -18,7 +19,6 @@ import javax.persistence.TypedQuery;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -83,8 +83,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getAllActiveGames(int page, int pageSize) {
-        TypedQuery query = em.createQuery("select g from Game g WHERE dateFinish >= CURDATE() ORDER BY DATE(dateStart) ASC", Game.class);
+    public List<GameDTO> getAllActiveGames(int page, int pageSize) {
+        TypedQuery query = em.createQuery("select NEW com.citygames.dto.GameDTO(g.id, g.name, g.description, g.dateStart, g.dateFinish, g.image) from Game g WHERE dateFinish >= CURDATE() ORDER BY DATE(dateStart) ASC", GameDTO.class);
 
         query.setFirstResult(page * pageSize);
         query.setMaxResults(pageSize);
@@ -117,8 +117,8 @@ public class GameServiceImpl implements GameService {
             Team team = teamRepository.findOne(user.getTeamId());
 
             if (team != null) {
-                game.getTeams().add(team);
-                this.edit(game);
+//                game.getTeams().add(team);
+//                this.edit(game);
                 return true;
             }
         }
@@ -134,11 +134,11 @@ public class GameServiceImpl implements GameService {
             Team team = teamRepository.findOne(user.getTeamId());
 
             if (team != null) {
-                Set<Team> teams = game.getTeams();
-                game.setTeams(teams.stream()
-                        .filter(t -> !t.getId().equals(user.getTeamId()))
-                        .collect(Collectors.toSet()));
-                this.edit(game);
+//                Set<Team> teams = game.getTeams();
+//                game.setTeams(teams.stream()
+//                        .filter(t -> !t.getId().equals(user.getTeamId()))
+//                        .collect(Collectors.toSet()));
+//                this.edit(game);
                 return true;
             }
         }
@@ -150,10 +150,10 @@ public class GameServiceImpl implements GameService {
         GameUser user = securityUtilsService.getCurrentUser();
         if (user != null && user.getTeamId() != null) {
             Game game = gameRepository.findOne(gameId);
-            return !game.getTeams().stream()
-                    .filter(team -> team.getId().equals(user.getTeamId()))
-                    .collect(Collectors.toList())
-                    .isEmpty();
+//            return !game.getTeams().stream()
+//                    .filter(team -> team.getId().equals(user.getTeamId()))
+//                    .collect(Collectors.toList())
+//                    .isEmpty();
         }
         return false;
     }
