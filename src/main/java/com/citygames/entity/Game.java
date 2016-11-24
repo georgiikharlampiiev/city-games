@@ -26,13 +26,14 @@ public class Game {
 
     private boolean disabled;
 
-    @OneToMany(mappedBy = "game")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "game")
     private Set<TeamInGame> teamInGame;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<GameUser> gameAdmins;
 
-    @OneToMany(cascade = {CascadeType.PERSIST})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "GAME_ID", referencedColumnName = "ID")
     private Set<Question> questions;
 

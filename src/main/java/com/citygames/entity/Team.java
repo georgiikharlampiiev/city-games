@@ -15,10 +15,10 @@ public class Team {
 
     private String name;
 
-    @OneToMany(mappedBy = "teams")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "teams")
     private Set<TeamInGame> teamInGame;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="TEAM_ID", referencedColumnName="ID")
     private Set<GameUser> gameUser;
 

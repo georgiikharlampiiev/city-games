@@ -14,11 +14,11 @@ public class TeamInGame {
     @Column(name="approved")
     private boolean approved;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "GAME_ID")
     private Game game;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "TEAMS_ID")
     private Team teams;
 
