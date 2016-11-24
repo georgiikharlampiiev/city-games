@@ -19,18 +19,13 @@ import java.util.List;
 public class SchedulLog {
     @Autowired
     GameService gameService;
-   /* @Autowired
-    GameServiceImpl gameServiceImpl;
-*/
+
     public static final Logger log = LoggerFactory.getLogger(SchedulLog.class);
 
 
     @Scheduled(cron = "0 */2 * * * *")
     public void cronDisableGames() {
-        //log.info("Games that ended at the moment " );
-        //List<Game> nonActiveGame = gameServiceImpl.getAllDisableGames(0,10);
+
         log.info("Games that ended at the moment " + gameService.getAllDisableGames(0, 10));
-
-
     }
 }

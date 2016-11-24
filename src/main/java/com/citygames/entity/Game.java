@@ -36,5 +36,4 @@ public class Game {
     private Set<Question> questions;
 
     private String image;
-
 }
