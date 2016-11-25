@@ -1,10 +1,7 @@
 package com.citygames.service.impl;
 
 import com.citygames.dto.GameDTO;
-import com.citygames.entity.Game;
-import com.citygames.entity.GameUser;
-import com.citygames.entity.Team;
-import com.citygames.entity.TeamInGame;
+import com.citygames.entity.*;
 import com.citygames.enums.RoleEnum;
 import com.citygames.repository.GameRepository;
 import com.citygames.repository.QuestionRepository;
@@ -49,19 +46,35 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game add(Game game) {
         if (isUserGameEditor(game.getId())) {
-            if (game.getGameAdmins() != null) {
-                game.getGameAdmins().add(securityUtilsService.getCurrentUser());
+            Game priviesGame = gameRepository.findOne(game.getId());
+            if(priviesGame != null){
+                priviesGame.setImage(game.getImage());
+                priviesGame.setName(game.getName());
+                priviesGame.setDescription(game.getDescription());
+                priviesGame.setDateStart(game.getDateStart());
+                priviesGame.setDateFinish(game.getDateFinish());
+                priviesGame.setQuestions(game.getQuestions());
+                priviesGame.setGameAdmins(game.getGameAdmins());
+            }
+            if (priviesGame.getGameAdmins() != null) {
+                GameAdmin admin = new GameAdmin();
+                admin.setGame(priviesGame);
+                admin.setGameUser(securityUtilsService.getCurrentUser());
+                priviesGame.getGameAdmins().add(admin);
             } else {
-                Set<GameUser> admins = new HashSet<>();
-                admins.add(securityUtilsService.getCurrentUser());
-                game.setGameAdmins(admins);
+                Set<GameAdmin> admins = new HashSet<>();
+                GameAdmin admin = new GameAdmin();
+                admin.setGame(priviesGame);
+                admin.setGameUser(securityUtilsService.getCurrentUser());
+                admins.add(admin);
+                priviesGame.setGameAdmins(admins);
             }
 
-            if (game.getQuestions() != null && !game.getQuestions().isEmpty())
-                questionRepository.save(game.getQuestions());
+            if (priviesGame.getQuestions() != null && !priviesGame.getQuestions().isEmpty())
+                questionRepository.save(priviesGame.getQuestions());
 
 
-            return gameRepository.save(game);
+            return gameRepository.save(priviesGame);
         } else return game;
     }
 
@@ -184,7 +197,7 @@ public class GameServiceImpl implements GameService {
             if (game != null) {
                 return game.getGameAdmins()
                         .stream()
-                        .anyMatch(a -> user.getId().equals(a.getId()));
+                        .anyMatch(a -> user.getId().equals(a.getGameUser().getId()));
             }
         }
         return false;

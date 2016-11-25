@@ -23,6 +23,6 @@ public class SchedulLog {
     @Scheduled(cron = "0 */2 * * * *")
     public void cronDisableGames() {
 
-        log.info("Games that ended at the moment " + gameService.getAllDisableGames(0, 10));
+//        log.info("Games that ended at the moment " + gameService.getAllDisableGames(0, 10));
     }
 }

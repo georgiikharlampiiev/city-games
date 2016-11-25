@@ -27,14 +27,14 @@ public class Game {
     private boolean disabled;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "game", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "game")
     private Set<TeamInGame> teamInGame;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<GameUser> gameAdmins;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "game")
+    private Set<GameAdmin> gameAdmins;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "GAME_ID", referencedColumnName = "ID")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gameId", cascade = {CascadeType.REMOVE})
     private Set<Question> questions;
 
     private String image;
