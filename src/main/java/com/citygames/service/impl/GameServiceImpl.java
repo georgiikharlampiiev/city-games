@@ -53,7 +53,6 @@ public class GameServiceImpl implements GameService {
             priviesGame.setDescription(game.getDescription());
             priviesGame.setDateStart(game.getDateStart());
             priviesGame.setDateFinish(game.getDateFinish());
-            priviesGame.setQuestions(game.getQuestions());
             priviesGame.setGameAdmins(game.getGameAdmins());
 
             if (priviesGame.getGameAdmins() != null) {
@@ -72,7 +71,16 @@ public class GameServiceImpl implements GameService {
 
             Game newGame = gameRepository.save(priviesGame);
 
-            if (priviesGame.getQuestions() != null && !priviesGame.getQuestions().isEmpty()) {
+            if ( game.getQuestions() != null && !game.getQuestions().isEmpty() ) {
+                if( priviesGame.getQuestions() != null && !priviesGame.getQuestions().isEmpty()
+                        && priviesGame.getQuestions().size() > game.getQuestions().size() ){
+                    Set<Question> forDelete = priviesGame.getQuestions();
+                    forDelete.removeAll(game.getQuestions());
+                    questionRepository.delete(forDelete);
+                    priviesGame.setQuestions(game.getQuestions());
+                }else{
+                    priviesGame.setQuestions(game.getQuestions());
+                }
                 priviesGame.getQuestions().stream().forEach(q -> q.setGameId(newGame.getId()));
                 questionRepository.save(priviesGame.getQuestions());
             }

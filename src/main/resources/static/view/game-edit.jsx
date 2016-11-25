@@ -17,17 +17,20 @@ let strings = new LocalizedStrings({
     en:{
         question_name:"Question name",
         description:"Description",
-        game_image:"Game image"
+        game_image:"Game image",
+        delete_question:"Delete Question"
     },
     ru: {
         question_name:"Question name",
         description:"Description",
-        game_image:"Game image"
+        game_image:"Game image",
+        delete_question:"Удалить задание"
     },
     ua: {
         question_name:"Question name",
         description:"Description",
-        game_image:"Game image"
+        game_image:"Game image",
+        delete_question:"Game image"
     }
 });
 
@@ -47,6 +50,7 @@ export class GameEdit extends React.Component {
        this.onImageInputChange = this.onImageInputChange.bind(this);
        this.onSortEnd = this.onSortEnd.bind(this);
        this.addQuestion = this.addQuestion.bind(this);
+       this.removeQuestion = this.removeQuestion.bind(this);
     }
 
     componentDidMount() {
@@ -164,8 +168,15 @@ export class GameEdit extends React.Component {
         currentGame['questions'] = arrayMove(currentGameQuestions, oldIndex, newIndex);
         this.setState({ currentGame });
         console.info("currentGame", this.state.currentGame);
-    };
+    }
 
+    removeQuestion (index) {
+        const currentGame = this.state.currentGame;
+        const currentGameQuestions = this.state.currentGame.questions;
+        currentGame['questions'] = currentGameQuestions.slice(index);
+        this.setState({ currentGame });
+        console.info("currentGame", this.state.currentGame);
+    }
 
     render() {
         return (
@@ -357,13 +368,20 @@ var SortableItem = SortableElement(({value}) =>{
                                                }}
                                                onChange={ changeQuestionField.bind(this, value.index, "description") }
                                            />
-                                           {/*<input name={ "question_name"+value.index } className="form-control"  type="text"*/}
-                                                  {/*value={ value.item.name }*/}
-                                                  {/*onChange={ changeQuestionField.bind(this, value.index, "name") } />*/}
+
                                        </div>
                                    </div>
                                </div>
 
+                               <Button onClick={ ()=> {
+                                   const currentGame = value.owner.state.currentGame;
+                                   var currentGameQuestions = value.owner.state.currentGame.questions;
+                                   currentGameQuestions.splice(value.index, 1);
+                                   currentGame['questions'] = currentGameQuestions;
+                                   value.owner.setState({ currentGame });
+                               }}>
+                                   {strings.delete_question}
+                               </Button>
                            </fieldset>
 
                        </div>
