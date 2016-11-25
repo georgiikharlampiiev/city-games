@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router";
-var ajaxUtils =  require ('../utils/utils.jsx');
+let ajaxUtils =  require ('../utils/utils.jsx');
 var moment = require('moment');
 
 import LocalizedStrings from 'react-localization';
@@ -10,6 +10,7 @@ let strings = new LocalizedStrings({
         start_at:"Start at",
         finish_at:"Start at",
         edit_game:"Edit game",
+        teams_in_game:"Teams in game",
         you_are_not_a_team_member:"You are not a team member! Only team members can enter the game. Please, join in team ore create you own.",
         join_game:"Join game",
         open_current_game:"Open current game",
@@ -19,6 +20,7 @@ let strings = new LocalizedStrings({
         start_at:"Начало в",
         finish_at:"Окончание в",
         edit_game:"Редактировать игру",
+        teams_in_game:"Команды в игре",
         you_are_not_a_team_member:"Вы не являетесь членом команды! Только члены команды могут принимать игры. Пожалуйста, вступите в команду или создайте свою",
         join_game:"Подать заявку в игру",
         open_current_game:"Открыть игру",
@@ -28,6 +30,7 @@ let strings = new LocalizedStrings({
         start_at:"Початок о",
         finish_at:"Закiнчуэться о",
         edit_game:"Редагувати гру",
+        teams_in_game:"Команды в игре",
         you_are_not_a_team_member:"Ви не член команди.",
         join_game:"Подати заявку в игру",
         open_current_game:"Вiдкрити гру",
@@ -133,7 +136,11 @@ export class GameView extends React.Component {
         const isUserGameEditor = this.state.isUserGameEditor;
         const gameId = this.props.params.gameId;
         if(isUserGameEditor) {
-            return (<p><a href={ "#/game-edit/" + gameId } type="button" className="btn btn-default" >{strings.edit_game}</a></p>);
+            return (
+                <p>
+                    <a href={ "#/game-edit/" + gameId } type="button" className="btn btn-default" >{strings.edit_game}</a>
+                    <a href={ "#/game-teams/" + gameId } type="button" className="btn btn-default" >{strings.teams_in_game}</a>
+                </p>);
         }else {
             return (<p></p>);
         }

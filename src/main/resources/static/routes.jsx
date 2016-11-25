@@ -6,6 +6,7 @@ import { Games } from "./view/games.jsx";
 import { GameView } from "./view/game-view.jsx";
 import { GamePlay } from "./view/game-play.jsx";
 import { GameEdit } from "./view/game-edit.jsx";
+import { GameTeams } from "./view/game-teams.jsx";
 import { MyProfile } from "./view/myprofile.jsx";
 import { About } from "./view/about.jsx";
 import { Team } from "./view/team.jsx";
@@ -20,6 +21,7 @@ const routes = (
         <Route path="game-view/:gameId" component={GameView} />
         <Route path="game-play/:gameId" component={GamePlay} />
         <Route path="game-edit/:gameId" component={GameEdit} />
+        <Route path="game-teams/:gameId" component={GameTeams} />
         <Route path="team" component={Team} />
     </Route>
 );
