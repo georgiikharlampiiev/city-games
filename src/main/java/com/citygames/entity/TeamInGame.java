@@ -1,6 +1,5 @@
 package com.citygames.entity;
 
-
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +13,9 @@ public class TeamInGame {
     @Column(name="approved")
     private boolean approved;
 
+    @Column(name="deleted")
+    private boolean deleted;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "GAME_ID")
     private Game game;
@@ -22,8 +24,43 @@ public class TeamInGame {
     @JoinColumn(name = "TEAMS_ID")
     private Team teams;
 
-    public Team getTeams(){
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Team getTeams() {
         return teams;
     }
 
+    public void setTeams(Team teams) {
+        this.teams = teams;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

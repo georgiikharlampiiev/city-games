@@ -4,9 +4,11 @@ import com.citygames.dto.GameDTO;
 import com.citygames.entity.Game;
 import com.citygames.entity.GameUser;
 import com.citygames.entity.Team;
+import com.citygames.entity.TeamInGame;
 import com.citygames.enums.RoleEnum;
 import com.citygames.repository.GameRepository;
 import com.citygames.repository.QuestionRepository;
+import com.citygames.repository.TeamInGameRepository;
 import com.citygames.repository.TeamRepository;
 import com.citygames.service.GameService;
 import com.citygames.service.SecurityUtilsService;
@@ -16,11 +18,14 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class GameServiceImpl implements GameService {
 
     @PersistenceContext
@@ -37,6 +42,9 @@ public class GameServiceImpl implements GameService {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private TeamInGameRepository teamInGameRepository;
 
     @Override
     public Game add(Game game) {
@@ -117,8 +125,15 @@ public class GameServiceImpl implements GameService {
             Team team = teamRepository.findOne(user.getTeamId());
 
             if (team != null) {
-//                game.getTeams().add(team);
-//                this.edit(game);
+                TeamInGame teamInGame = teamInGameRepository.findByGameIdAndTeamsId(game.getId(), team.getId());
+                if(teamInGame == null) {
+                    teamInGame = new TeamInGame();
+                    teamInGame.setGame(game);
+                    teamInGame.setTeams(team);
+                    teamInGame.setApproved(false);
+                }
+                teamInGame.setDeleted(false);
+                teamInGameRepository.save(teamInGame);
                 return true;
             }
         }
@@ -134,11 +149,9 @@ public class GameServiceImpl implements GameService {
             Team team = teamRepository.findOne(user.getTeamId());
 
             if (team != null) {
-//                Set<Team> teams = game.getTeams();
-//                game.setTeams(teams.stream()
-//                        .filter(t -> !t.getId().equals(user.getTeamId()))
-//                        .collect(Collectors.toSet()));
-//                this.edit(game);
+                TeamInGame teamInGame = teamInGameRepository.findByGameIdAndTeamsId(game.getId(), team.getId());
+                teamInGame.setDeleted(true);
+                teamInGameRepository.save(teamInGame);
                 return true;
             }
         }
@@ -150,10 +163,9 @@ public class GameServiceImpl implements GameService {
         GameUser user = securityUtilsService.getCurrentUser();
         if (user != null && user.getTeamId() != null) {
             Game game = gameRepository.findOne(gameId);
-//            return !game.getTeams().stream()
-//                    .filter(team -> team.getId().equals(user.getTeamId()))
-//                    .collect(Collectors.toList())
-//                    .isEmpty();
+            Team team = teamRepository.findOne(user.getTeamId());
+            TeamInGame teamInGame = teamInGameRepository.findByGameIdAndTeamsId(game.getId(), team.getId());
+            return teamInGame != null && !teamInGame.isDeleted();
         }
         return false;
     }

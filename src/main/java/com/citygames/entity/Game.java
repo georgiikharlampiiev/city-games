@@ -27,7 +27,7 @@ public class Game {
     private boolean disabled;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "game")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "game", orphanRemoval = true)
     private Set<TeamInGame> teamInGame;
 
     @OneToMany(fetch = FetchType.EAGER)
