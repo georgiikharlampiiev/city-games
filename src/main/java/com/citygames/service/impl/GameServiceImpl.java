@@ -46,16 +46,16 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game add(Game game) {
         if (isUserGameEditor(game.getId())) {
-            Game priviesGame = gameRepository.findOne(game.getId());
-            if(priviesGame != null){
-                priviesGame.setImage(game.getImage());
-                priviesGame.setName(game.getName());
-                priviesGame.setDescription(game.getDescription());
-                priviesGame.setDateStart(game.getDateStart());
-                priviesGame.setDateFinish(game.getDateFinish());
-                priviesGame.setQuestions(game.getQuestions());
-                priviesGame.setGameAdmins(game.getGameAdmins());
-            }
+            Game priviesGame = game.getId() != null ? gameRepository.findOne(game.getId()) : new Game();
+
+            priviesGame.setImage(game.getImage());
+            priviesGame.setName(game.getName());
+            priviesGame.setDescription(game.getDescription());
+            priviesGame.setDateStart(game.getDateStart());
+            priviesGame.setDateFinish(game.getDateFinish());
+            priviesGame.setQuestions(game.getQuestions());
+            priviesGame.setGameAdmins(game.getGameAdmins());
+
             if (priviesGame.getGameAdmins() != null) {
                 GameAdmin admin = new GameAdmin();
                 admin.setGame(priviesGame);
@@ -70,11 +70,14 @@ public class GameServiceImpl implements GameService {
                 priviesGame.setGameAdmins(admins);
             }
 
-            if (priviesGame.getQuestions() != null && !priviesGame.getQuestions().isEmpty())
+            Game newGame = gameRepository.save(priviesGame);
+
+            if (priviesGame.getQuestions() != null && !priviesGame.getQuestions().isEmpty()) {
+                priviesGame.getQuestions().stream().forEach(q -> q.setGameId(newGame.getId()));
                 questionRepository.save(priviesGame.getQuestions());
+            }
 
-
-            return gameRepository.save(priviesGame);
+            return newGame;
         } else return game;
     }
 

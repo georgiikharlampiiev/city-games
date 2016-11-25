@@ -34,7 +34,7 @@ public class Game {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "game")
     private Set<GameAdmin> gameAdmins;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gameId", cascade = {CascadeType.REMOVE})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gameId", cascade = {CascadeType.MERGE})
     private Set<Question> questions;
 
     private String image;
