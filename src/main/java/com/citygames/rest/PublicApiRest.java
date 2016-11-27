@@ -33,14 +33,16 @@ public class PublicApiRest {
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
     public GameUser registerUser(@RequestBody UserDTO newUser) {
         GameUser gameUser = new GameUser();
-        if (gameUserService.getByName(newUser.getName()) == null) {
-            if (gameUserService.getByEmail(newUser.getEmail()) == null) {
-                gameUser.setName(newUser.getName());
-                gameUser.setEmail(newUser.getEmail());
-                gameUser.setPassword(newUser.getPassword());
-                gameUserService.add(gameUser);
-            }
-        }
+        if (!newUser.getName().isEmpty() && !newUser.getEmail().isEmpty() && !newUser.getPassword().isEmpty()) {
+            if (gameUserService.getByName(newUser.getName()) == null) {
+                if (gameUserService.getByEmail(newUser.getEmail()) == null) {
+                    gameUser.setName(newUser.getName());
+                    gameUser.setEmail(newUser.getEmail());
+                    gameUser.setPassword(newUser.getPassword());
+                    gameUserService.add(gameUser);
+                } else throw new RuntimeException("This email has been used!");
+            } else throw new RuntimeException("The user has been registered already!");
+        } else throw new RuntimeException("All the fields must be filled in!");
         return gameUser;
     }
 }

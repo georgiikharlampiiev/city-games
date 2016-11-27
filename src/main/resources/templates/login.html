@@ -28,7 +28,8 @@
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -61,27 +62,37 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h1 class="text-center">Sign in</h1>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form col-md-12 center-block">
+                        <div class="form-group">
+                            <input type="text" id="username" class="form-control input-lg" placeholder="Username"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="email" class="form-control input-lg" placeholder="E-mail"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="password" class="form-control input-lg" placeholder="Password"/>
+                        </div>
+                        <div class="form-group">
+                            <a class="btn btn-primary btn-lg btn-block" id="regButton" onclick="regUser()">Sign me up!</a>
+                        </div>
+                        <!-- Success message -->
+                        <div class="alert alert-success" id="success_message"><strong>Success!</strong> You are
+                            registered
+                        </div>
+                        <!-- Error message -->
+                        <div class="alert alert-danger" id="error_message_name"><strong>Error!</strong> This name or
+                            e-mail has been use already
+                        </div>
+                        <div class="alert alert-danger" id="error_message_fields"><strong>Error!</strong> All the fields
+                            must be filled in!
+                        </div>
+                    </form>
+                </div>
+
             </div>
-
-            <div class="modal-body">
-                <form class="form col-md-12 center-block">
-                    <div class="form-group">
-                        <input type="text" id ="username" class="form-control input-lg" placeholder="Username"/>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id ="email" class="form-control input-lg" placeholder="E-mail"/>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" id ="password" class="form-control input-lg" placeholder="Password"/>
-                    </div>
-                    <div class="form-group">
-                        <a class="btn btn-primary btn-lg btn-block" onclick="regUser()">Sign me up!</a>
-                     </div>
-                </form>
-
-            </div>
-          </div>
-
         </div>
     </div>
 </div>
@@ -118,17 +129,17 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-        <div th:if="${param.error}">
-            <div class="alert alert-danger">
-                <strong>Error!</strong> Invalid username and password.
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">
+                    <strong>Error!</strong> Invalid username and password.
+                </div>
             </div>
-        </div>
-        <div th:if="${param.logout}">
-            You have been logged out.
-            <div class="alert alert-warning">
-                <strong>Warning!</strong> You have been logged out.
+            <div th:if="${param.logout}">
+                You have been logged out.
+                <div class="alert alert-warning">
+                    <strong>Warning!</strong> You have been logged out.
+                </div>
             </div>
-        </div>
         </div>
     </div>
     <!-- Page Header -->
@@ -150,7 +161,8 @@
             <h3>
                 <a href="#">Game Name</a>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae.</p>
         </div>
         <div class="col-md-4 portfolio-item">
             <a href="#">
@@ -159,7 +171,8 @@
             <h3>
                 <a href="#">Game Name</a>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae.</p>
         </div>
         <div class="col-md-4 portfolio-item">
             <a href="#">
@@ -168,7 +181,8 @@
             <h3>
                 <a href="#">Game Name</a>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae.</p>
         </div>
     </div>
     <!-- /.row -->
@@ -182,7 +196,8 @@
             <h3>
                 <a href="#">Game Name</a>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae.</p>
         </div>
         <div class="col-md-4 portfolio-item">
             <a href="#">
@@ -191,7 +206,8 @@
             <h3>
                 <a href="#">Game Name</a>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae.</p>
         </div>
         <div class="col-md-4 portfolio-item">
             <a href="#">
@@ -200,7 +216,8 @@
             <h3>
                 <a href="#">Game Name</a>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae.</p>
         </div>
     </div>
 
@@ -213,7 +230,8 @@
             <h3>
                 <a href="#">Game Name</a>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae.</p>
         </div>
         <div class="col-md-4 portfolio-item">
             <a href="#">
@@ -222,7 +240,8 @@
             <h3>
                 <a href="#">Game Name</a>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae.</p>
         </div>
         <div class="col-md-4 portfolio-item">
             <a href="#">
@@ -231,7 +250,8 @@
             <h3>
                 <a href="#">Game Name</a>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae.</p>
         </div>
     </div>
     <!-- /.row -->
@@ -289,36 +309,46 @@
 <script src="custom-js/bootstrap.min.js"></script>
 
 <script>
-         function regUser() {
+    function regUser() {
 
-            var userJson = {};
-            userJson["name"] = $("#username").val();
-            userJson["email"] = $("#email").val();
-            userJson["password"] = $("#password").val();
-            console.info(userJson);
+        var userJson = {};
+        userJson["name"] = $("#username").val();
+        userJson["email"] = $("#email").val();
+        userJson["password"] = $("#password").val();
+        console.info(userJson);
 
-            $.ajax({
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                type: "POST",
-                url: "public/api/registerUser",
-                data: JSON.stringify(userJson),
-                dataType: 'json',
-                success: function (data) {
-                    console.info("ExecutePostAction -> data :", data);
-                },
-                error: function (xhr, status, err) {
-                    console.error(status, err.toString());
-                },
-                beforeSend: function(){
-                    $('#loader').show();
-                },
-                complete: function(){
-                    $('#loader').hide();
-                }
-            });
+        $( "#regButton" ).click(function() {
+            $('#success_message').hide();
+            $('#error_message_fields').hide();
+            $('#error_message_name').hide();
+        });
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            url: "public/api/registerUser",
+            data: JSON.stringify(userJson),
+            dataType: 'json',
+            success: function (data) {
+                $('#success_message').show();
+                console.info("ExecutePostAction -> data :", data);
+            },
+            error: function (xhr, status, err) {
+                var err = eval("(" + xhr.responseText + ")");
+                if(err.message == "All the fields must be filled in!")
+                    $('#error_message_fields').show();
+                else $('#error_message_name').show();
+            },
+            beforeSend: function () {
+                $('#loader').show();
+            },
+            complete: function () {
+                $('#loader').hide();
+            }
+        });
     }
 </script>
 

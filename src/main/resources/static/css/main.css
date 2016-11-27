@@ -20,7 +20,12 @@ footer {
 #error_message {
     display: none;
 }
-
+#error_message_name {
+    display: none;
+}
+#error_message_fields {
+    display: none;
+}
 #loader {
     position: absolute;
     left: 50%;
