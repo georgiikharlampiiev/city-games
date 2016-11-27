@@ -1,5 +1,6 @@
 package com.citygames.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,26 +11,31 @@ import java.util.Set;
 @Entity
 public class Game {
 
-  private @Id @GeneratedValue Long id;
+    private
+    @Id
+    @GeneratedValue
+    Long id;
 
-  private String name;
+    private String name;
 
-  private String description;
+    private String description;
 
-  private Date dateStart;
+    private Date dateStart;
 
-  private Date dateFinish;
+    private Date dateFinish;
 
-  @OneToMany
-  private Set<Team> teams;
+    private boolean disabled;
 
-  @OneToMany
-  private Set<GameUser> gameAdmins;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "game")
+    private Set<TeamInGame> teamInGame;
 
-  @OneToMany(cascade={CascadeType.PERSIST})
-  @JoinColumn(name="GAME_ID", referencedColumnName="ID")
-  private Set<Question> questions;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "game")
+    private Set<GameAdmin> gameAdmins;
 
-  private String image;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gameId", cascade = {CascadeType.MERGE})
+    private Set<Question> questions;
 
+    private String image;
 }

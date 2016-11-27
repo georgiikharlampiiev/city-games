@@ -2,6 +2,37 @@ import React from 'react';
 import { Link } from "react-router";
 var ajaxUtils = require ('../utils/utils.jsx');
 
+import LocalizedStrings from 'react-localization';
+
+let strings = new LocalizedStrings({
+    en:{
+        name_login:"Name/Login",
+        new_password:"New Password",
+        my_profile:"My Profile",
+        save_changes:"Save Changes",
+        success:"Success",
+        error:"Error",
+        success_message: "All changes have been saved."
+    },
+    ru: {
+        name_login:"Имя/Логин",
+        new_password:"Новый пароль",
+        my_profile:"Мой профаил",
+        save_changes:"Сохранить изменения",
+        success:"Успешно",
+        error:"Ошибка",
+        success_message: "Все изменения сохранены."
+    },
+    ua: {
+        name_login:"Имя/Логин",
+        new_password:"Новий пароль",
+        my_profile:"Мiй профаил",
+        save_changes:"Зберегти змiни",
+        success:"Успiшно",
+        error:"Помилка",
+        success_message: "Всi змiни збереженi."
+    }
+});
 
 export class MyProfile extends React.Component {
 
@@ -74,12 +105,12 @@ export class MyProfile extends React.Component {
                     <fieldset>
 
                         {/*<!-- Form Name -->*/}
-                        <legend>My profile</legend>
+                        <legend>{strings.my_profile}</legend>
 
                         {/*<!-- Text input-->*/}
 
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Name/Login</label>
+                            <label className="col-md-4 control-label">{strings.name_login}</label>
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
@@ -116,7 +147,7 @@ export class MyProfile extends React.Component {
                         {/*<!-- Text input-->*/}
 
                         <div className="form-group">
-                            <label className="col-md-4 control-label">New Password</label>
+                            <label className="col-md-4 control-label">{strings.new_password}</label>
                             <div className="col-md-4 inputGroupContainer">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="glyphicon glyphicon-lock"></i></span>
@@ -203,15 +234,15 @@ export class MyProfile extends React.Component {
                         {/*</div>*/}
 
                         {/*<!-- Success message -->*/}
-                        <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i>All changes have been saved.</div>
+                        <div className="alert alert-success" role="alert" id="success_message">{strings.success} <i className="glyphicon glyphicon-thumbs-up"></i>{strings.success_message}</div>
                         {/*<!-- Error message -->*/}
-                        <div className="alert alert-danger" role="alert" id="error_message">Error <i className="glyphicon glyphicon-warning-sign"></i> {this.state.errorMessage} </div>
+                        <div className="alert alert-danger" role="alert" id="error_message">{strings.error} <i className="glyphicon glyphicon-warning-sign"></i> {this.state.errorMessage} </div>
 
                         {/*<!-- Button -->*/}
                         <div className="form-group">
                             <label className="col-md-4 control-label"></label>
                             <div className="col-md-4">
-                                <div className="btn btn-warning" onClick={this.sendChangesOnServer}>Send <span className="glyphicon glyphicon-send"></span></div>
+                                <div className="btn btn-warning" onClick={this.sendChangesOnServer}>{strings.save_changes} <span className="glyphicon glyphicon-send"></span></div>
                             </div>
                         </div>
 

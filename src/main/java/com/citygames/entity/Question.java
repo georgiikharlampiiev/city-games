@@ -21,4 +21,9 @@ public class Question {
   @Column(name="GAME_ID")
   private long gameId;
 
+  private Integer score;
+
+  private Integer autoStartSeconds;
+
+  private Integer autoFinishSeconds;
 }

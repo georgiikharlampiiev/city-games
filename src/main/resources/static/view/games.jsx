@@ -1,6 +1,19 @@
 import React from 'react';
 import { Link } from "react-router";
 var ajaxUtils =  require ('../utils/utils.jsx');
+import LocalizedStrings from 'react-localization';
+
+let strings = new LocalizedStrings({
+    en:{
+        create_new_game:"Create new game"
+    },
+    ru: {
+        create_new_game:"Создать новую игру"
+    },
+    ua: {
+        create_new_game:"Створити нову гру"
+    }
+});
 
 export class Games extends React.Component {
 
@@ -41,7 +54,7 @@ export class Games extends React.Component {
                 <div className="col-md-9 portfolio-item">
                     <hr/>
                     <a href={ "#/game-view/" + game.id }>
-                        <img className="img-responsive" src={ image } alt=""/>
+                        <img className="img-responsive img-rounded fixedHeightImage" src={ image } alt=""/>
                     </a>
                     <h3>
                         <a href={ "#/game-view/" + game.id }>{ game.name }</a>
@@ -56,7 +69,7 @@ export class Games extends React.Component {
     editButtonRender() {
         const isUserGameEditor = this.state.isUserGameEditor;
         if(isUserGameEditor) {
-            return (<p><a href={ "#/game-edit/0" } type="button" className="btn btn-default" >Create new game</a></p>);
+            return (<p><a href={ "#/game-edit/0" } type="button" className="btn btn-default img-rounded" >{strings.create_new_game}</a></p>);
         }else {
             return (<p></p>);
         }

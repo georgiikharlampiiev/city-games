@@ -1,13 +1,11 @@
 package com.citygames.rest;
 
+import com.citygames.dto.GameDTO;
 import com.citygames.dto.UserDTO;
-import com.citygames.entity.Game;
 import com.citygames.entity.GameUser;
 import com.citygames.service.GameService;
 import com.citygames.service.GameUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +24,7 @@ public class PublicApiRest {
     private GameUserService gameUserService;
 
     @RequestMapping("/getGames")
-    public List<Game> getGamesOnIndex() {
+    public List<GameDTO> getGamesOnIndex() {
         return gameService.getAllActiveGames(0, 10);
     }
 

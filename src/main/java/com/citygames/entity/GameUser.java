@@ -26,11 +26,11 @@ public class GameUser {
     private @JsonIgnore
     String password;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="id")
     private UserRole roleId;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="id")
     private RoleTeam roleTeam;
 

@@ -282,3 +282,9 @@ td.rdtYear:hover {
     font-size: 1.2em;
     margin-top: 37px;
 }
+
+
+/*Image fixed size*/
+.fixedHeightImage {
+    height: 450px!important;
+}
