@@ -15,15 +15,15 @@ let strings = new LocalizedStrings({
 	ru: {
 		games:"Игры",
 		statistic:"Статистика",
-		my_profile:"Мой профаил",
+		my_profile:"Мой профиль",
 		team:"Моя команда",
-		about:"Про игру",
+		about:"Об игре",
 		logout:"Выйти"
 	},
 	ua: {
 		games:"Ігри",
 		statistic:"Статистика",
-		my_profile:"Мій профаіл",
+		my_profile:"Мій профіль",
 		team:"Моя команда",
 		about:"Про гру",
 		logout:"Вийти"
