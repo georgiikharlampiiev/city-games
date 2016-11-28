@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, browserHistory } from "react-router";
 import { GameEditStorm } from './game-edit-component/game-edit-storm.jsx';
 import { GameEditLiner } from './game-edit-component/game-edit-liner.jsx';
+import { GameEditPubQuiz } from './game-edit-component/game-edit-pub-quiz.jsx';
 
 let ajaxUtils =  require ('../utils/utils.jsx');
 
@@ -26,8 +27,12 @@ export class GameEdit extends React.Component {
         this.state = {
             currentGame: {},
             currentUser: null,
-            isUserGameEditor: false
+            isUserGameEditor: false,
+            gameType: "storm"
         };
+
+        this.renderEditFields = this.renderEditFields.bind(this);
+        this.changeGameTypeListener = this.changeGameTypeListener.bind(this);
     }
 
     componentDidMount() {
@@ -56,7 +61,41 @@ export class GameEdit extends React.Component {
         );
     }
 
+    changeGameTypeListener(e){
+        console.info("changeGameTypeListener ", e.target.value)
+        this.setState({gameType: e.target.value})
+    }
+
+    renderEditFields(){
+        if(this.state.gameType == "storm"){
+            return (
+                <GameEditStorm
+                    params={this.props.params}
+                    currentGame={this.state.currentGame}
+                    currentUser={this.state.currentUser}
+                    isUserGameEditor={this.state.isUserGameEditor}
+                />)
+        }else if(this.state.gameType == "liner"){
+            return (
+                <GameEditLiner
+                    params={this.props.params}
+                    currentGame={this.state.currentGame}
+                    currentUser={this.state.currentUser}
+                    isUserGameEditor={this.state.isUserGameEditor}
+                />)
+        }else {
+            return (
+                <GameEditPubQuiz
+                    params={this.props.params}
+                    currentGame={this.state.currentGame}
+                    currentUser={this.state.currentUser}
+                    isUserGameEditor={this.state.isUserGameEditor}
+                />)
+        }
+    }
+
     render() {
+
         return (
             <form className="well form-horizontal" action=" " method="post"  id="contact_form" autoComplete="off">
                 <fieldset>
@@ -66,21 +105,17 @@ export class GameEdit extends React.Component {
                         <div className="col-md-4 selectContainer">
                             <div className="input-group">
                                 <span className="input-group-addon"><i className="glyphicon glyphicon-list"></i></span>
-                                <select name="team" className="form-control selectpicker" >
-                                    <option value="1" >Storm</option>
-                                    <option value="2" >Liner</option>
-                                    <option value="3" >Pub quiz</option>
+                                <select name="team" className="form-control selectpicker" onChange={this.changeGameTypeListener.bind(this)} >
+                                    <option value="storm" >Storm</option>
+                                    <option value="liner" >Liner</option>
+                                    <option value="pubquiz" >Pub quiz</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <GameEditStorm
-                        params={this.props.params}
-                        currentGame={this.state.currentGame}
-                        currentUser={this.state.currentUser}
-                        isUserGameEditor={this.state.isUserGameEditor}
-                    />
+                    {this.renderEditFields()}
+
                 </fieldset>
             </form>)
     }

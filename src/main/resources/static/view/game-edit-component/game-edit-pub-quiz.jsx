@@ -34,7 +34,7 @@ let strings = new LocalizedStrings({
     }
 });
 
-export class GameEditStorm extends React.Component {
+export class GameEditPubQuiz extends React.Component {
 
     constructor(props) {
        super(props);
@@ -167,7 +167,7 @@ export class GameEditStorm extends React.Component {
         return (
             <div>
                 {/*<!-- Form Name -->*/}
-                <legend>Create/edit game type storm</legend>
+                <legend>Create/edit game type pub-quiz</legend>
 
                 {/*<!-- Text input-->*/}
                 <div className="form-group">
@@ -230,7 +230,7 @@ export class GameEditStorm extends React.Component {
                 <div className="form-group">
                     <label className="col-md-3 control-label">Questions</label>
                     <div className="col-md-9 inputGroupContainer">
-                        <SortableList items={{items: this.state.currentGame.questions, owner: this}} onSortEnd={this.onSortEnd} pressDelay={200} />
+                        {/*<SortableList items={{items: this.state.currentGame.questions, owner: this}} onSortEnd={this.onSortEnd} pressDelay={200} />*/}
                     </div>
                 </div>
 
@@ -247,140 +247,140 @@ export class GameEditStorm extends React.Component {
 }
 
 
-var SortableItem = SortableElement(({value}) =>{
-
-    function changeQuestionField(index, name, e){
-        // console.info("name", name)
-        // console.info("index", index)
-        // console.info("e", e)
-        // console.info("e.target.value", e.target.value)
-        if(name == "description"){
-            value.item[name] = e;
-        }else {
-            value.item[name] = e.target.value;
-        }
-
-        const currentGame = value.owner.state.currentGame;
-        const questions = value.owner.state.currentGame.questions;
-        questions[index] = value.item;
-        currentGame['questions'] = questions;
-        value.owner.setState({ currentGame });
-        console.info("currentGame", value.owner.state.currentGame);
-    };
-
-    if(value){
-       return (<li className="list-group-item">
-
-                   <Button onClick={ ()=> {
-                       const open = value.owner.state.open;
-                       open[value.index] = !value.owner.state.open[value.index];
-                       value.owner.setState({ open: open })}}>
-                        {value.item.name}
-                   </Button>
-
-                   <Collapse in={ value.owner.state.open[value.index] }>
-                       <div>
-                           <fieldset>
-                               {/*<!-- Text input-->*/}
-                               <div className="form-group">
-                                   <label className="col-md-2 control-label">Game name</label>
-                                   <div className="col-md-10 inputGroupContainer">
-                                       <div className="input-group">
-                                            <input name={ "question_name"+value.index } className="form-control"  type="text"
-                                                   value={ value.item.name }
-                                                   onChange={ changeQuestionField.bind(this, value.index, "name") } />
-                                       </div>
-                                   </div>
-                               </div>
-
-                               <div className="form-group">
-                                   <label className="col-md-2 control-label">Score</label>
-                                   <div className="col-md-10 inputGroupContainer">
-                                       <div className="input-group">
-                                           <input name={ "score"+value.index } className="form-control"  type="text"
-                                                  value={ value.item.score }
-                                                  onChange={ changeQuestionField.bind(this, value.index, "score") } />
-                                       </div>
-                                   </div>
-                               </div>
-
-                               <div className="form-group">
-                                   <label className="col-md-2 control-label">Auto Start Seconds</label>
-                                   <div className="col-md-10 inputGroupContainer">
-                                       <div className="input-group">
-                                           <input name={ "autoStartSeconds"+value.index } className="form-control"  type="text"
-                                                  value={ value.item.autoStartSeconds }
-                                                  onChange={ changeQuestionField.bind(this, value.index, "autoStartSeconds") } />
-                                       </div>
-                                   </div>
-                               </div>
-
-                               <div className="form-group">
-                                   <label className="col-md-2 control-label">Auto Finish Seconds</label>
-                                   <div className="col-md-10 inputGroupContainer">
-                                       <div className="input-group">
-                                           <input name={ "autoFinishSeconds"+value.index } className="form-control"  type="text"
-                                                  value={ value.item.autoFinishSeconds }
-                                                  onChange={ changeQuestionField.bind(this, value.index, "autoFinishSeconds") } />
-                                       </div>
-                                   </div>
-                               </div>
-
-                               <div className="form-group">
-                                   <label className="col-md-2 control-label">Description</label>
-                                   <div className="col-md-10 inputGroupContainer">
-                                       <div className="input-group">
-                                           <ReactSummernote
-                                               value={value.item.description}
-                                               options={{
-                                                   lang: 'ru-RU',
-                                                   height: 350,
-                                                   dialogsInBody: true,
-                                                   toolbar: [
-                                                       ['style', ['style']],
-                                                       ['font', ['bold', 'underline', 'clear']],
-                                                       ['fontname', ['fontname']],
-                                                       ['para', ['ul', 'ol', 'paragraph']],
-                                                       ['table', ['table']],
-                                                       ['insert', ['link', 'picture', 'video']],
-                                                       ['view', ['fullscreen', 'codeview']]
-                                                   ]
-                                               }}
-                                               onChange={ changeQuestionField.bind(this, value.index, "description") }
-                                           />
-
-                                       </div>
-                                   </div>
-                               </div>
-
-                               <Button onClick={ ()=> {
-                                   const currentGame = value.owner.state.currentGame;
-                                   var currentGameQuestions = value.owner.state.currentGame.questions;
-                                   currentGameQuestions.splice(value.index, 1);
-                                   currentGame['questions'] = currentGameQuestions;
-                                   value.owner.setState({ currentGame });
-                               }}>
-                                   {strings.delete_question}
-                               </Button>
-                           </fieldset>
-
-                       </div>
-                   </Collapse>
-               </li>
-       )}
-    else {return (<li></li>)}
-});
-
-const SortableList = SortableContainer(({items}) => {
-    if(items.items){
-        return (
-            <ul>
-                {items.items.map((value, index) =>
-                    <SortableItem key={`item-${index}`} index={index} value={ {item: value, owner: items.owner, index: index} } />
-                )}
-            </ul>
-        );
-    }else {
-        return (<ul></ul>)
-    }
-});
+// var SortableItem = SortableElement(({value}) =>{
+//
+//     function changeQuestionField(index, name, e){
+//         // console.info("name", name)
+//         // console.info("index", index)
+//         // console.info("e", e)
+//         // console.info("e.target.value", e.target.value)
+//         if(name == "description"){
+//             value.item[name] = e;
+//         }else {
+//             value.item[name] = e.target.value;
+//         }
+//
+//         const currentGame = value.owner.state.currentGame;
+//         const questions = value.owner.state.currentGame.questions;
+//         questions[index] = value.item;
+//         currentGame['questions'] = questions;
+//         value.owner.setState({ currentGame });
+//         console.info("currentGame", value.owner.state.currentGame);
+//     };
+//
+//     if(value){
+//        return (<li className="list-group-item">
+//
+//                    <Button onClick={ ()=> {
+//                        const open = value.owner.state.open;
+//                        open[value.index] = !value.owner.state.open[value.index];
+//                        value.owner.setState({ open: open })}}>
+//                         {value.item.name}
+//                    </Button>
+//
+//                    <Collapse in={ value.owner.state.open[value.index] }>
+//                        <div>
+//                            <fieldset>
+//                                {/*<!-- Text input-->*/}
+//                                <div className="form-group">
+//                                    <label className="col-md-2 control-label">Game name</label>
+//                                    <div className="col-md-10 inputGroupContainer">
+//                                        <div className="input-group">
+//                                             <input name={ "question_name"+value.index } className="form-control"  type="text"
+//                                                    value={ value.item.name }
+//                                                    onChange={ changeQuestionField.bind(this, value.index, "name") } />
+//                                        </div>
+//                                    </div>
+//                                </div>
+//
+//                                <div className="form-group">
+//                                    <label className="col-md-2 control-label">Score</label>
+//                                    <div className="col-md-10 inputGroupContainer">
+//                                        <div className="input-group">
+//                                            <input name={ "score"+value.index } className="form-control"  type="text"
+//                                                   value={ value.item.score }
+//                                                   onChange={ changeQuestionField.bind(this, value.index, "score") } />
+//                                        </div>
+//                                    </div>
+//                                </div>
+//
+//                                <div className="form-group">
+//                                    <label className="col-md-2 control-label">Auto Start Seconds</label>
+//                                    <div className="col-md-10 inputGroupContainer">
+//                                        <div className="input-group">
+//                                            <input name={ "autoStartSeconds"+value.index } className="form-control"  type="text"
+//                                                   value={ value.item.autoStartSeconds }
+//                                                   onChange={ changeQuestionField.bind(this, value.index, "autoStartSeconds") } />
+//                                        </div>
+//                                    </div>
+//                                </div>
+//
+//                                <div className="form-group">
+//                                    <label className="col-md-2 control-label">Auto Finish Seconds</label>
+//                                    <div className="col-md-10 inputGroupContainer">
+//                                        <div className="input-group">
+//                                            <input name={ "autoFinishSeconds"+value.index } className="form-control"  type="text"
+//                                                   value={ value.item.autoFinishSeconds }
+//                                                   onChange={ changeQuestionField.bind(this, value.index, "autoFinishSeconds") } />
+//                                        </div>
+//                                    </div>
+//                                </div>
+//
+//                                <div className="form-group">
+//                                    <label className="col-md-2 control-label">Description</label>
+//                                    <div className="col-md-10 inputGroupContainer">
+//                                        <div className="input-group">
+//                                            <ReactSummernote
+//                                                value={value.item.description}
+//                                                options={{
+//                                                    lang: 'ru-RU',
+//                                                    height: 350,
+//                                                    dialogsInBody: true,
+//                                                    toolbar: [
+//                                                        ['style', ['style']],
+//                                                        ['font', ['bold', 'underline', 'clear']],
+//                                                        ['fontname', ['fontname']],
+//                                                        ['para', ['ul', 'ol', 'paragraph']],
+//                                                        ['table', ['table']],
+//                                                        ['insert', ['link', 'picture', 'video']],
+//                                                        ['view', ['fullscreen', 'codeview']]
+//                                                    ]
+//                                                }}
+//                                                onChange={ changeQuestionField.bind(this, value.index, "description") }
+//                                            />
+//
+//                                        </div>
+//                                    </div>
+//                                </div>
+//
+//                                <Button onClick={ ()=> {
+//                                    const currentGame = value.owner.state.currentGame;
+//                                    var currentGameQuestions = value.owner.state.currentGame.questions;
+//                                    currentGameQuestions.splice(value.index, 1);
+//                                    currentGame['questions'] = currentGameQuestions;
+//                                    value.owner.setState({ currentGame });
+//                                }}>
+//                                    {strings.delete_question}
+//                                </Button>
+//                            </fieldset>
+//
+//                        </div>
+//                    </Collapse>
+//                </li>
+//        )}
+//     else {return (<li></li>)}
+// });
+//
+// const SortableList = SortableContainer(({items}) => {
+//     if(items.items){
+//         return (
+//             <ul>
+//                 {items.items.map((value, index) =>
+//                     <SortableItem key={`item-${index}`} index={index} value={ {item: value, owner: items.owner, index: index} } />
+//                 )}
+//             </ul>
+//         );
+//     }else {
+//         return (<ul></ul>)
+//     }
+// });
