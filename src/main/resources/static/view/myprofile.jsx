@@ -17,20 +17,20 @@ let strings = new LocalizedStrings({
     ru: {
         name_login:"Имя/Логин",
         new_password:"Новый пароль",
-        my_profile:"Мой профаил",
+        my_profile:"Мой профиль",
         save_changes:"Сохранить изменения",
         success:"Успешно",
         error:"Ошибка",
         success_message: "Все изменения сохранены."
     },
     ua: {
-        name_login:"Имя/Логин",
+        name_login:"Ім'я/Логін",
         new_password:"Новий пароль",
-        my_profile:"Мiй профаил",
+        my_profile:"Мiй профіль",
         save_changes:"Зберегти змiни",
         success:"Успiшно",
         error:"Помилка",
-        success_message: "Всi змiни збереженi."
+        success_message: "Всi змiни збережено."
     }
 });
 

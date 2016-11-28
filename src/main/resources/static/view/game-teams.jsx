@@ -16,10 +16,10 @@ let strings = new LocalizedStrings({
         game_teams:"Teams who apply"
     },
     ru: {
-        game_teams:"Команды которые подали заяку"
+        game_teams:"Команды, которые подали заявку"
     },
     ua: {
-        game_teams:"Teams who apply"
+        game_teams:"Команди, які подали заявку"
     }
 });
 
