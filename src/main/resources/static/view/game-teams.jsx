@@ -19,13 +19,13 @@ let strings = new LocalizedStrings({
     },
     ru: {
         game_teams:"Команды которые подали заяку",
-        approve:"Approve",
-        delete_approve:"Delete approve"
+        approve:"Подтвердить",
+        delete_approve:"Удалить подтверждение"
     },
     ua: {
-        game_teams:"Teams who apply",
-        approve:"Approve",
-        delete_approve:"Delete approve"
+        game_teams:"Команди, які подали заявку",
+        approve:"Підтвердити",
+        delete_approve:"Видалити підтвердження"
     }
 });
 
