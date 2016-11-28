@@ -286,5 +286,5 @@ td.rdtYear:hover {
 
 /*Image fixed size*/
 .fixedHeightImage {
-    height: 450px!important;
+    max-height: 450px!important;
 }
