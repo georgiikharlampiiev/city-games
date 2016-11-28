@@ -45,6 +45,11 @@ public class GameRests {
         return gameService.IsUserAppliedGame(id);
     }
 
+    @RequestMapping("/isUserApprovedForGame/{id}")
+    public Boolean isUserApprovedForGame(@PathVariable Long id) {
+        return gameService.IsUserApprovedForGame(id);
+    }
+
     @RequestMapping("/isUserGameEditor/{id}")
     public Boolean isUserGameEditor(@PathVariable Long id) {
         return gameService.isUserGameEditor(id);

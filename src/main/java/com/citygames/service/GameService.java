@@ -29,5 +29,7 @@ public interface GameService {
 
     Boolean IsUserAppliedGame(Long gameId);
 
+    Boolean IsUserApprovedForGame(Long gameId);
+
     Boolean isUserGameEditor(Long gameId);
 }

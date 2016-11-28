@@ -47,17 +47,20 @@ export class GameView extends React.Component {
            currentGame: [],
            currentUser: null,
            isUserAppliedGame: false,
+           isUserApprovedGame: false,
            isUserGameEditor: false
        };
        this.applyGame = this.applyGame.bind(this);
        this.deleteApplyGame = this.deleteApplyGame.bind(this);
        this.checkIsUserAppliedGame = this.checkIsUserAppliedGame.bind(this);
+       this.checkIsUserApprovedForGame = this.checkIsUserApprovedForGame.bind(this);
        this.checkIsUserGameEditor = this.checkIsUserGameEditor.bind(this);
     }
 
     componentDidMount() {
         this.loadFromServer();
         this.checkIsUserAppliedGame();
+        this.checkIsUserApprovedForGame();
         this.checkIsUserGameEditor();
     }
 
@@ -81,7 +84,7 @@ export class GameView extends React.Component {
     }
 
     deleteApplyGame() {
-        var params = this.props.params;
+        let params = this.props.params;
         ajaxUtils.executeGetAction('/api/deleteApplyGameByCurrentUser/' + params.gameId,
             (data) => {this.setState({ isUserAppliedGame: !data })},
             (e) => console.error(e)
@@ -89,9 +92,17 @@ export class GameView extends React.Component {
     }
 
     checkIsUserAppliedGame() {
-        var params = this.props.params;
+        let params = this.props.params;
         ajaxUtils.executeGetAction('/api/isUserAppliedGame/' + params.gameId,
             (data) => {this.setState({ isUserAppliedGame: data })},
+            (e) => console.error(e)
+        );
+    }
+
+    checkIsUserApprovedForGame() {
+        let params = this.props.params;
+        ajaxUtils.executeGetAction('/api/isUserApprovedForGame/' + params.gameId,
+            (data) => {this.setState({ isUserApprovedGame: data })},
             (e) => console.error(e)
         );
     }
@@ -115,14 +126,20 @@ export class GameView extends React.Component {
     joinGameButtonRender() {
         const user = this.state.currentUser;
         const isUserAppliedGame = this.state.isUserAppliedGame;
+        const isUserApprovedGame = this.state.isUserApprovedGame;
         const gameId = this.props.params.gameId;
         if(user && user.teamId){
-            if(isUserAppliedGame) {
-                return (<div>
-                    <button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>{strings.delete_game_apply}</button>
-                    <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default " >{strings.open_current_game}</a></div>
+            if(isUserAppliedGame && isUserApprovedGame) {
+                return (
+                    <div>
+                        <button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>{strings.delete_game_apply}</button>
+                        <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default " >{strings.open_current_game}</a>
+                    </div>
                 )
-            }else {
+            }if(isUserAppliedGame && !isUserApprovedGame) {
+                return (<button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>{strings.delete_game_apply}</button> )
+            }
+            else {
                 return (<button type="button" className="btn btn-default" onClick={this.applyGame}>{strings.join_game}</button>)
             }
 

@@ -194,6 +194,18 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Boolean IsUserApprovedForGame(Long gameId) {
+        GameUser user = securityUtilsService.getCurrentUser();
+        if (user != null && user.getTeamId() != null) {
+            Game game = gameRepository.findOne(gameId);
+            Team team = teamRepository.findOne(user.getTeamId());
+            TeamInGame teamInGame = teamInGameRepository.findByGameIdAndTeamsId(game.getId(), team.getId());
+            return teamInGame != null && !teamInGame.isDeleted() && teamInGame.isApproved();
+        }
+        return false;
+    }
+
+    @Override
     public Boolean isUserGameEditor(Long gameId) {
         GameUser user = securityUtilsService.getCurrentUser();
 
