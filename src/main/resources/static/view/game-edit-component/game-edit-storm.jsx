@@ -344,7 +344,12 @@ var SortableItem = SortableElement(({value}) =>{
                                                        ['table', ['table']],
                                                        ['insert', ['link', 'picture', 'video']],
                                                        ['view', ['fullscreen', 'codeview']]
-                                                   ]
+                                                   ],
+                                                   codemirror: {
+                                                       htmlMode: true,
+                                                       lineNumbers: true,
+                                                       mode: 'text/html'
+                                                   }
                                                }}
                                                onChange={ changeQuestionField.bind(this, value.index, "description") }
                                            />
