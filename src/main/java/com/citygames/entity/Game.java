@@ -40,7 +40,8 @@ public class Game {
 
     private String image;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<TypeGame> typeGames;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="GAME_TYPE")
+    private TypeGame typeGame;
 
 }

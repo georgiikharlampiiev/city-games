@@ -4,3 +4,7 @@ CREATE TABLE IF NOT EXISTS `type_game` (
   `type` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
+
+INSERT INTO citygames.type_game (id, type) VALUES (0, 'Storm');
+INSERT INTO citygames.type_game (id, type) VALUES (1, 'Liner');
+INSERT INTO citygames.type_game (id, type) VALUES (2, 'Pub-quiz');
