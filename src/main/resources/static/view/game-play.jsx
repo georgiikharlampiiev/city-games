@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router";
-var ajaxUtils =  require ('../utils/utils.jsx');
-var moment = require('moment');
+const ajaxUtils = require('../utils/utils.jsx');
+const moment = require('moment');
 
 export class GamePlay extends React.Component {
 

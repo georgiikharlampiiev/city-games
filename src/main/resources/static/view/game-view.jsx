@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router";
 let ajaxUtils =  require ('../utils/utils.jsx');
-var moment = require('moment');
+const moment = require('moment');
 
 import LocalizedStrings from 'react-localization';
 
@@ -76,7 +76,7 @@ export class GameView extends React.Component {
     }
 
     applyGame() {
-        var params = this.props.params;
+        const params = this.props.params;
         ajaxUtils.executeGetAction('/api/applyGameByCurrentUser/' + params.gameId,
             (data) => {this.setState({ isUserAppliedGame: data })},
             (e) => console.error(e)
@@ -107,7 +107,7 @@ export class GameView extends React.Component {
         );
     }
 
-    formatMillisecondsToDate(milliseconds) {
+    static formatMillisecondsToDate(milliseconds) {
         if ( milliseconds ) {
             return moment(milliseconds).format("DD/MM/YYYY hh:mm");
         } else {
@@ -116,7 +116,7 @@ export class GameView extends React.Component {
     }
 
     checkIsUserGameEditor() {
-        var params = this.props.params;
+        const params = this.props.params;
         ajaxUtils.executeGetAction('/api/isUserGameEditor/' + params.gameId,
             (data) => {this.setState({ isUserGameEditor: data })},
             (e) => console.error(e)
@@ -176,8 +176,8 @@ export class GameView extends React.Component {
                 <div className="row">
                     
                     <div className="col-md-9">
-                        <p><span className="glyphicon glyphicon-time"></span> {strings.start_at} { this.formatMillisecondsToDate(game.dateStart) } </p>
-                        <p><span className="glyphicon glyphicon-time"></span> {strings.finish_at} { this.formatMillisecondsToDate(game.dateFinish) } </p>
+                        <p><span className="glyphicon glyphicon-time"/> {strings.start_at} { GameView.formatMillisecondsToDate(game.dateStart) } </p>
+                        <p><span className="glyphicon glyphicon-time"/> {strings.finish_at} { GameView.formatMillisecondsToDate(game.dateFinish) } </p>
                         { this.editButtonRender() }
 
                         <hr/>
