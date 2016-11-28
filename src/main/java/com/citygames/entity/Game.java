@@ -26,6 +26,7 @@ public class Game {
 
     private boolean disabled;
 
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "game")
     private Set<TeamInGame> teamInGame;
@@ -38,4 +39,8 @@ public class Game {
     private Set<Question> questions;
 
     private String image;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<TypeGame> typeGames;
+
 }
