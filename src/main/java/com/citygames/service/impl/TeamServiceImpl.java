@@ -71,7 +71,8 @@ public class TeamServiceImpl implements TeamService {
 
         TeamInGame teamInGame = teamInGameRepository.findByGameIdAndTeamsId(gameId, teamId);
 
-        teamInGame.setApproved(true);
+        boolean approveStatus = teamInGame.isApproved();
+        teamInGame.setApproved(!approveStatus);
 
         teamInGameRepository.save(teamInGame);
 
