@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS `type_game` (
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
-INSERT INTO citygames.type_game (id, type) VALUES (0, 'Storm');
-INSERT INTO citygames.type_game (id, type) VALUES (1, 'Liner');
-INSERT INTO citygames.type_game (id, type) VALUES (2, 'Pub-quiz');
+INSERT INTO citygames.type_game (id, type) VALUES (0, 'storm');
+INSERT INTO citygames.type_game (id, type) VALUES (1, 'liner');
+INSERT INTO citygames.type_game (id, type) VALUES (2, 'pub-quiz');

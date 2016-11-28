@@ -14,8 +14,8 @@ public class QuestionRests {
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping("/getQuestionsForCurrentGame/{id}")
-    public List<Question> getQuestionsForCurrentGame(@PathVariable Long id) {
+    @RequestMapping("/getQuestionsForCurrentGameStorm/{id}")
+    public List<Question> getQuestionsForCurrentGameStorm(@PathVariable Long id) {
         return questionService.getQuestionsForCurrentGame(id);
     }
 
