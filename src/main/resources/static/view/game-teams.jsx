@@ -13,13 +13,19 @@ import LocalizedStrings from 'react-localization';
 
 let strings = new LocalizedStrings({
     en:{
-        game_teams:"Teams who apply"
+        game_teams:"Teams who apply",
+        approve:"Approve",
+        delete_approve:"Delete approve"
     },
     ru: {
-        game_teams:"Команды которые подали заяку"
+        game_teams:"Команды которые подали заяку",
+        approve:"Approve",
+        delete_approve:"Delete approve"
     },
     ua: {
-        game_teams:"Teams who apply"
+        game_teams:"Teams who apply",
+        approve:"Approve",
+        delete_approve:"Delete approve"
     }
 });
 
@@ -32,8 +38,9 @@ export class GameTeams extends React.Component {
            teams: []
        };
 
-       this.sendChangesOnServer = this.sendChangesOnServer.bind(this);
+       this.loadTeamsFromServer = this.loadTeamsFromServer.bind(this);
        this.renderTeam = this.renderTeam.bind(this);
+       this.sendApplyOrUnapply = this.sendApplyOrUnapply.bind(this);
     }
 
     componentDidMount() {
@@ -45,46 +52,43 @@ export class GameTeams extends React.Component {
          if(gameId != 0) {
              ajaxUtils.executeGetAction('/api/getGame/' + gameId,
                  (data) => {
-                     const tmpQuestions = data.questions;
-                     data['questions'] = tmpQuestions.sort((a, b) => {return a.orderInGame-b.orderInGame});
                      this.setState({ currentGame:data });
                  },
                  (e) => console.error(e)
              );
+             this.loadTeamsFromServer();
          }
-         ajaxUtils.executeGetAction('/api/getTeamsForGame/' + gameId,
-             (data) => {this.setState({ teams: data })},
-             (e) => console.error(e)
-         );
     }
 
-    sendChangesOnServer(){
-        var currentGame = this.state.currentGame;
-        currentGame.questions.forEach(this.setQuestionOrder);
-        this.setState({currentGame});
-        ajaxUtils.executePostAction(
-            "/api/addGame",
-            JSON.stringify(currentGame),
-            (data) => {
-                if(data.id != 0){
-                    const tmpQuestions = data.questions;
-                    data['questions'] = tmpQuestions.sort((a, b) => {return a.orderInGame-b.orderInGame});
-                    this.setState({currentGame: data},
-                        () => {$('#success_message').show()});
-                    browserHistory.push('#/game-edit/' + data.id);
-                }
-            },
-            (e) => {console.info(e)}
+    loadTeamsFromServer(){
+        const gameId = this.props.params.gameId;
+        ajaxUtils.executeGetAction('/api/getTeamsForGame/' + gameId,
+            (data) => {this.setState({ teams: data })},
+            (e) => console.error(e)
         );
     }
 
-   renderTeam(team){
+    sendApplyOrUnapply(idTeam){
+        const thisRef = this;
+        const gameId = thisRef.props.params.gameId;
+        ajaxUtils.executeGetAction('/api/addApproveGameForTeam/' + gameId + '/' + idTeam,
+            (data) => thisRef.loadTeamsFromServer(),
+            (e) => console.error(e)
+        );
+    }
+
+    renderTeam(team){
+        var buttonText = strings.approve;
+        if(team.approved){
+            buttonText = strings.delete_approve
+        }
         return (
             <li key={team.id} className="list-group-item">
                 {team.name}
+                <Button onClick={ () => this.sendApplyOrUnapply(team.id) }> { buttonText } </Button>
             </li>
-        )
-   }
+         )
+    }
 
     render() {
         return (
