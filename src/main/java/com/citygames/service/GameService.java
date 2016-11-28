@@ -2,6 +2,7 @@ package com.citygames.service;
 
 import com.citygames.dto.GameDTO;
 import com.citygames.entity.Game;
+import com.citygames.entity.TypeGame;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public interface GameService {
     List<Game> getAllDisableGames(int page, int pageSize);
 
     List<Game> getAllGames(int page, int pageSize);
+
+    List<TypeGame> getAllGameTypes();
 
     Game getGameById(Long id);
 

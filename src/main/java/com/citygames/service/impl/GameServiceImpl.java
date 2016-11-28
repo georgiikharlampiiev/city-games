@@ -3,10 +3,7 @@ package com.citygames.service.impl;
 import com.citygames.dto.GameDTO;
 import com.citygames.entity.*;
 import com.citygames.enums.RoleEnum;
-import com.citygames.repository.GameRepository;
-import com.citygames.repository.QuestionRepository;
-import com.citygames.repository.TeamInGameRepository;
-import com.citygames.repository.TeamRepository;
+import com.citygames.repository.*;
 import com.citygames.service.GameService;
 import com.citygames.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +39,9 @@ public class GameServiceImpl implements GameService {
     @Autowired
     private TeamInGameRepository teamInGameRepository;
 
+    @Autowired
+    private TypeGameRepository typeGameRepository;
+
     @Override
     public Game add(Game game) {
         if (isUserGameEditor(game.getId())) {
@@ -53,6 +53,7 @@ public class GameServiceImpl implements GameService {
             priviesGame.setDateStart(game.getDateStart());
             priviesGame.setDateFinish(game.getDateFinish());
             priviesGame.setGameAdmins(game.getGameAdmins());
+            priviesGame.setTypeGame(game.getTypeGame());
 
             if (priviesGame.getGameAdmins() != null) {
                 GameAdmin admin = new GameAdmin();
@@ -132,6 +133,11 @@ public class GameServiceImpl implements GameService {
         query.setMaxResults(pageSize);
 
         return query.getResultList();
+    }
+
+    @Override
+    public List<TypeGame> getAllGameTypes(){
+        return typeGameRepository.findAll();
     }
 
     @Override
