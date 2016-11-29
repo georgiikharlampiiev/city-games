@@ -49,7 +49,8 @@ export class GameEditStorm extends React.Component {
            currentGame: props.currentGame,
            currentUser: props.currentUser,
            isUserGameEditor: props.isUserGameEditor,
-           open: []
+           open: [],
+           openAnswer: []
        };
 
        this.onInputChange = this.onInputChange.bind(this);
@@ -130,7 +131,7 @@ export class GameEditStorm extends React.Component {
     }
 
     onInputChange(fieldName, e){
-        var currentGame = this.state.currentGame;
+        const currentGame = this.state.currentGame;
         currentGame[fieldName] = e.target.value;
         this.setState(currentGame);
     }
@@ -221,15 +222,15 @@ export class GameEditStorm extends React.Component {
 
 
                 {/*<!-- Success message -->*/}
-                <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up"></i> All changes have been saved.</div>
+                <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up" /> All changes have been saved.</div>
                 {/*<!-- Error message -->*/}
-                <div className="alert alert-danger" role="alert" id="error_message">Error <i className="glyphicon glyphicon-warning-sign"></i> {this.state.errorMessage} </div>
+                <div className="alert alert-danger" role="alert" id="error_message">Error <i className="glyphicon glyphicon-warning-sign" /> {this.state.errorMessage} </div>
 
                 {/*<!-- Button -->*/}
                 <div className="form-group">
-                    <label className="col-md-4 control-label"></label>
+                    {/*<label className="col-md-4 control-label"></label>*/}
                     <div className="col-md-4">
-                        <div className="btn btn-warning" onClick={this.sendChangesOnServer}>Send <span className="glyphicon glyphicon-send"></span></div>
+                        <div className="btn btn-warning" onClick={this.sendChangesOnServer}>Send <span className="glyphicon glyphicon-send" /></div>
                     </div>
                 </div>
 
@@ -241,9 +242,9 @@ export class GameEditStorm extends React.Component {
                 </div>
 
                 <div className="form-group">
-                    <label className="col-md-4 control-label"></label>
+                    {/*<label className="col-md-4 control-label"></label>*/}
                     <div className="col-md-4">
-                        <div className="btn btn-success" onClick={this.addQuestion}>Add question <span className="glyphicon glyphicon-plus"></span></div>
+                        <div className="btn btn-success" onClick={this.addQuestion}>Add question <span className="glyphicon glyphicon-plus" /></div>
                     </div>
                 </div>
 
@@ -253,16 +254,22 @@ export class GameEditStorm extends React.Component {
 }
 
 
-var AnswerListItem  = ({value}) =>{
+var AnswerListItem  = ({value, index, parent}) =>{
 
     if(value){
-        return (<li key={value.id} className="list-group-item">
+        return (<li className="list-group-item">
 
-            <Button onClick={ ()=> { }}>
+            <Button onClick={ ()=> {
+                console.info("index ", index);
+                console.info("parrentIndex ", parent.index);
+                const openAnswer = parent.owner.state.openAnswer;
+                openAnswer[parent.index +'+'+ index] = !parent.owner.state.openAnswer[parent.index +'+'+ index];
+                parent.owner.setState({ openAnswer: openAnswer })
+            }}>
                 {value.name}
             </Button>
 
-            <Collapse in={ false }>
+            <Collapse in={ parent.owner.state.openAnswer[parent.index +'+'+ index] }>
                 <div>
                     <fieldset>
                         {/*<!-- Text input-->*/}
@@ -404,7 +411,9 @@ var SortableQuestion = SortableElement(({value}) =>{
                                    <label className="col-md-2 control-label">Answers</label>
                                    <div className="col-md-10 inputGroupContainer">
                                        <div className="input-group">
-                                           {value.item.answers.map((ans) => {return(<AnswerListItem key={ans.id} value={ans} />)})}
+                                           <ul>
+                                                {value.item.answers.map((ans, index) => {return(<AnswerListItem key={ans.id} value={ans} parent={value} index={index} />)})}
+                                            </ul>
                                        </div>
 
                                        <Button onClick={ ()=> {}}>
