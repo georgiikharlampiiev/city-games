@@ -21,16 +21,16 @@ let strings = new LocalizedStrings({
         delete_question:"Delete Question"
     },
     ru: {
-        question_name:"Question name",
-        description:"Description",
-        game_image:"Game image",
+        question_name:"Название задания",
+        description:"Описание",
+        game_image:"Изображение игры",
         delete_question:"Удалить задание"
     },
     ua: {
-        question_name:"Question name",
-        description:"Description",
-        game_image:"Game image",
-        delete_question:"Game image"
+        question_name:"Назва завдання",
+        description:"Опис",
+        game_image:"Зображення гри",
+        delete_question:"Видалити завдання"
     }
 });
 

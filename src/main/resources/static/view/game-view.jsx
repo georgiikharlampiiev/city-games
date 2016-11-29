@@ -34,7 +34,7 @@ let strings = new LocalizedStrings({
         you_are_not_a_team_member:"Ви не є учасником команды! Лише учасники команди можуть приймати ігри. Будь ласка, виберіть команду або створіть свою",
         join_game:"Подати заявку до гри",
         open_current_game:"Вiдкрити гру",
-        delete_game_apply:"Покинути гру"
+        delete_game_apply:"Відхилити заявку до гри"
     }
 });
 

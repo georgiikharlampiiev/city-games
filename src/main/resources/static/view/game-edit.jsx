@@ -13,10 +13,10 @@ let strings = new LocalizedStrings({
         game_type:"Game type"
     },
     ru: {
-        game_type:"Game type"
+        game_type:"Тип игры"
     },
     ua: {
-        game_type:"Game type"
+        game_type:"Тип гри"
     }
 });
 
