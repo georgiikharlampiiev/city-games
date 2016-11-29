@@ -2,6 +2,7 @@ package com.citygames.rest;
 
 import com.citygames.dto.GameDTO;
 import com.citygames.entity.Game;
+import com.citygames.entity.TypeGame;
 import com.citygames.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,11 @@ public class GameRests {
     @RequestMapping("/getGames")
     public List<GameDTO> getGames() {
         return gameService.getAllActiveGames(0,10); //TODO: Add pagination!!!!!!
+    }
+
+    @RequestMapping("/getTypeGames")
+    public List<TypeGame> getTypeGames() {
+        return gameService.getAllGameTypes(); //TODO: Add pagination!!!!!!
     }
 
     @RequestMapping(value = "/addGame", method= RequestMethod.POST)

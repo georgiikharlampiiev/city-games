@@ -40,8 +40,8 @@ public class Game {
 
     private String image;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="GAME_TYPE")
-    private TypeGame typeGame;
+//    @ManyToOne(fetch = FetchType.EAGER, cascade={ CascadeType.ALL })
+    @Column(name="GAME_TYPE")
+    private Long typeGame;
 
 }

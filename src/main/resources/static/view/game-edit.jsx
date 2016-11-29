@@ -10,13 +10,22 @@ import LocalizedStrings from 'react-localization';
 
 let strings = new LocalizedStrings({
     en:{
-        game_type:"Game type"
+        game_type:"Game type",
+        storm: "Storm",
+        liner: "Liner",
+        pub_quiz: "Pub-quiz"
     },
     ru: {
-        game_type:"Тип игры"
+        game_type:"Game type",
+        storm: "Storm",
+        liner: "Liner",
+        pub_quiz: "Pub-quiz"
     },
     ua: {
-        game_type:"Тип гри"
+        game_type:"Game type",
+        storm: "Storm",
+        liner: "Liner",
+        pub_quiz: "Pub-quiz"
     }
 });
 
@@ -28,7 +37,7 @@ export class GameEdit extends React.Component {
             currentGame: {},
             currentUser: null,
             isUserGameEditor: false,
-            gameType: "storm"
+            gameTypes: []
         };
 
         this.renderEditFields = this.renderEditFields.bind(this);
@@ -59,15 +68,22 @@ export class GameEdit extends React.Component {
             (data) => {this.setState({ isUserGameEditor: data })},
             (e) => console.error(e)
         );
+        ajaxUtils.executeGetAction('/api/getTypeGames',
+            (data) => {this.setState({ gameTypes: data })},
+            (e) => console.error(e)
+        );
     }
 
     changeGameTypeListener(e){
         console.info("changeGameTypeListener ", e.target.value)
-        this.setState({gameType: e.target.value})
+        let currentGame = this.state.currentGame;
+        currentGame['typeGame'] = e.target.value;
+        this.setState({currentGame})
     }
 
     renderEditFields(){
-        if(this.state.gameType == "storm"){
+        let typeGame = this.state.currentGame.typeGame;
+        if (typeGame == '0') {
             return (
                 <GameEditStorm
                     params={this.props.params}
@@ -75,7 +91,7 @@ export class GameEdit extends React.Component {
                     currentUser={this.state.currentUser}
                     isUserGameEditor={this.state.isUserGameEditor}
                 />)
-        }else if(this.state.gameType == "liner"){
+        } else if (typeGame == 1) {
             return (
                 <GameEditLiner
                     params={this.props.params}
@@ -83,7 +99,7 @@ export class GameEdit extends React.Component {
                     currentUser={this.state.currentUser}
                     isUserGameEditor={this.state.isUserGameEditor}
                 />)
-        }else {
+        } else {
             return (
                 <GameEditPubQuiz
                     params={this.props.params}
@@ -91,7 +107,15 @@ export class GameEdit extends React.Component {
                     currentUser={this.state.currentUser}
                     isUserGameEditor={this.state.isUserGameEditor}
                 />)
+
         }
+        return (<div></div>)
+    }
+
+    renderGameType(type){
+        return (
+            <option key={type.id} value={type.id}> {strings[type.type]} </option>
+        )
     }
 
     render() {
@@ -105,10 +129,8 @@ export class GameEdit extends React.Component {
                         <div className="col-md-4 selectContainer">
                             <div className="input-group">
                                 <span className="input-group-addon"><i className="glyphicon glyphicon-list"></i></span>
-                                <select name="team" className="form-control selectpicker" onChange={this.changeGameTypeListener.bind(this)} >
-                                    <option value="storm" >Storm</option>
-                                    <option value="liner" >Liner</option>
-                                    <option value="pubquiz" >Pub quiz</option>
+                                <select name="team" value={this.state.currentGame.typeGame} className="form-control selectpicker" onChange={this.changeGameTypeListener.bind(this)} >
+                                    {this.state.gameTypes.map(this.renderGameType)}
                                 </select>
                             </div>
                         </div>

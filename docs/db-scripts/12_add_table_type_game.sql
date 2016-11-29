@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS `type_game` (
 
 INSERT INTO citygames.type_game (id, type) VALUES (0, 'storm');
 INSERT INTO citygames.type_game (id, type) VALUES (1, 'liner');
-INSERT INTO citygames.type_game (id, type) VALUES (2, 'pub-quiz');
+INSERT INTO citygames.type_game (id, type) VALUES (2, 'pub_quiz');
