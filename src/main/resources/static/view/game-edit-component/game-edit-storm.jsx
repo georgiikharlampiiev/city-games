@@ -23,20 +23,20 @@ let strings = new LocalizedStrings({
         delete_answer:"Delete Answer"
     },
     ru: {
-        question_name:"Question name",
-        description:"Description",
-        game_image:"Game image",
+        question_name:"Название задания",
+        description:"Описание",
+        game_image:"Изображение игры",
         delete_question:"Удалить задание",
-        add_answer:"Add Answer",
-        delete_answer:"Delete Answer"
+        add_answer:"Добавить ответ",
+        delete_answer:"Удалить ответ"
     },
     ua: {
-        question_name:"Question name",
-        description:"Description",
-        game_image:"Game image",
-        delete_question:"Game image",
-        add_answer:"Add Answer",
-        delete_answer:"Delete Answer"
+        question_name:"Назва завдання",
+        description:"Опис",
+        game_image:"Зображення гри",
+        delete_question:"Видалити завдання",
+        add_answer:"Додати відповідь",
+        delete_answer:"Видалити відповідь"
     }
 });
 
