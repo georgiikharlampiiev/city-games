@@ -18,19 +18,25 @@ let strings = new LocalizedStrings({
         question_name:"Question name",
         description:"Description",
         game_image:"Game image",
-        delete_question:"Delete Question"
+        delete_question:"Delete Question",
+        add_answer:"Add Answer",
+        delete_answer:"Delete Answer"
     },
     ru: {
         question_name:"Question name",
         description:"Description",
         game_image:"Game image",
-        delete_question:"Удалить задание"
+        delete_question:"Удалить задание",
+        add_answer:"Add Answer",
+        delete_answer:"Delete Answer"
     },
     ua: {
         question_name:"Question name",
         description:"Description",
         game_image:"Game image",
-        delete_question:"Game image"
+        delete_question:"Game image",
+        add_answer:"Add Answer",
+        delete_answer:"Delete Answer"
     }
 });
 
@@ -247,7 +253,44 @@ export class GameEditStorm extends React.Component {
 }
 
 
-var SortableItem = SortableElement(({value}) =>{
+var AnswerListItem  = ({value}) =>{
+
+    if(value){
+        return (<li key={value.id} className="list-group-item">
+
+            <Button onClick={ ()=> { }}>
+                {value.name}
+            </Button>
+
+            <Collapse in={ false }>
+                <div>
+                    <fieldset>
+                        {/*<!-- Text input-->*/}
+                        <div className="form-group">
+                            <label className="col-md-2 control-label">Game name</label>
+                            <div className="col-md-10 inputGroupContainer">
+                                <div className="input-group">
+                                    <input name={ "question_name"+value.index } className="form-control"  type="text"
+                                           value={ value.name }
+                                           onChange={() => {} } />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <Button onClick={ ()=> {
+                        }}>
+                            {strings.delete_answer}
+                        </Button>
+                    </fieldset>
+
+                </div>
+            </Collapse>
+        </li>)}
+    else {return (<li></li>)}
+};
+
+var SortableQuestion = SortableElement(({value}) =>{
 
     function changeQuestionField(index, name, e){
         // console.info("name", name)
@@ -357,10 +400,25 @@ var SortableItem = SortableElement(({value}) =>{
                                        </div>
                                    </div>
                                </div>
+                               <div className="form-group">
+                                   <label className="col-md-2 control-label">Answers</label>
+                                   <div className="col-md-10 inputGroupContainer">
+                                       <div className="input-group">
+                                           {value.item.answers.map((ans) => {return(<AnswerListItem key={ans.id} value={ans} />)})}
+                                       </div>
+
+                                       <Button onClick={ ()=> {}}>
+                                           {strings.add_answer}
+                                       </Button>
+
+                                   </div>
+                               </div>
+
+
 
                                <Button onClick={ ()=> {
                                    const currentGame = value.owner.state.currentGame;
-                                   var currentGameQuestions = value.owner.state.currentGame.questions;
+                                   const currentGameQuestions = value.owner.state.currentGame.questions;
                                    currentGameQuestions.splice(value.index, 1);
                                    currentGame['questions'] = currentGameQuestions;
                                    value.owner.setState({ currentGame });
@@ -381,7 +439,7 @@ const SortableList = SortableContainer(({items}) => {
         return (
             <ul>
                 {items.items.map((value, index) =>
-                    <SortableItem key={`item-${index}`} index={index} value={ {item: value, owner: items.owner, index: index} } />
+                    <SortableQuestion key={`item-${index}`} index={index} value={ {item: value, owner: items.owner, index: index} } />
                 )}
             </ul>
         );

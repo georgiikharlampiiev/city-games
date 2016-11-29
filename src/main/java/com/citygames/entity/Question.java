@@ -26,4 +26,7 @@ public class Question {
   private Integer autoStartSeconds;
 
   private Integer autoFinishSeconds;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionId", cascade = {CascadeType.MERGE})
+  private Set<Answer> answers;
 }
