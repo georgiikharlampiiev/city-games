@@ -101,7 +101,8 @@ export class GameEditStorm extends React.Component {
                 orderInGame: 0,
                 score: 0,
                 autoStartSeconds: 0,
-                autoFinishSeconds: 0
+                autoFinishSeconds: 0,
+                answers:[]
             });
         }else {
             questions = this.state.currentGame.questions;
@@ -111,7 +112,9 @@ export class GameEditStorm extends React.Component {
                 orderInGame: this.state.currentGame.questions.length,
                 score: 0,
                 autoStartSeconds: 0,
-                autoFinishSeconds: 0});
+                autoFinishSeconds: 0,
+                answers:[]
+            });
         }
 
         currentGame['questions'] = questions;
@@ -254,7 +257,22 @@ export class GameEditStorm extends React.Component {
 }
 
 
-var AnswerListItem  = ({value, index, parent}) =>{
+const AnswerListItem  = ({value, index, parent}) =>{
+
+    function changeAnswerField( name, e){
+        const currentGame = parent.owner.state.currentGame;
+        const currentGameQuestions = parent.owner.state.currentGame.questions;
+        const currentQuestion = parent.owner.state.currentGame.questions[parent.index];
+        const currentAnswers = parent.owner.state.currentGame.questions[parent.index].answers;
+
+        value[name] = e.target.value;
+        currentAnswers[index] = value;
+
+        currentQuestion['answers'] = currentAnswers;
+        currentGameQuestions[parent.index] = currentQuestion;
+        currentGame['questions'] = currentGameQuestions;
+        parent.owner.setState({ currentGame });
+    }
 
     if(value){
         return (<li className="list-group-item">
@@ -274,18 +292,27 @@ var AnswerListItem  = ({value, index, parent}) =>{
                     <fieldset>
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
-                            <label className="col-md-2 control-label">Game name</label>
-                            <div className="col-md-10 inputGroupContainer">
+                            <label className="col-md-3 control-label">Game name</label>
+                            <div className="col-md-9 inputGroupContainer">
                                 <div className="input-group">
                                     <input name={ "question_name"+value.index } className="form-control"  type="text"
                                            value={ value.name }
-                                           onChange={() => {} } />
+                                           onChange={ changeAnswerField.bind(this,  "name") }  />
                                 </div>
                             </div>
                         </div>
 
 
                         <Button onClick={ ()=> {
+                            const currentGame = parent.owner.state.currentGame;
+                            const currentGameQuestions = parent.owner.state.currentGame.questions;
+                            const currentQuestion = parent.owner.state.currentGame.questions[parent.index];
+                            const currentAnswers = parent.owner.state.currentGame.questions[parent.index].answers;
+                            currentAnswers.splice(index, 1);
+                            currentQuestion['answers'] = currentAnswers;
+                            currentGameQuestions[parent.index] = currentQuestion;
+                            currentGame['questions'] = currentGameQuestions;
+                            parent.owner.setState({ currentGame });
                         }}>
                             {strings.delete_answer}
                         </Button>
@@ -297,7 +324,7 @@ var AnswerListItem  = ({value, index, parent}) =>{
     else {return (<li></li>)}
 };
 
-var SortableQuestion = SortableElement(({value}) =>{
+const SortableQuestion = SortableElement(({value}) =>{
 
     function changeQuestionField(index, name, e){
         // console.info("name", name)
@@ -316,7 +343,15 @@ var SortableQuestion = SortableElement(({value}) =>{
         currentGame['questions'] = questions;
         value.owner.setState({ currentGame });
         console.info("currentGame", value.owner.state.currentGame);
-    };
+    }
+
+    function addAnswer(){
+        const currentGame = value.owner.state.currentGame;
+        const questions = value.owner.state.currentGame.questions;
+        questions[value.index].answers.push({questionId: value.index, name: "answer name", nextQuestion: 0});
+        currentGame['questions'] = questions;
+        value.owner.setState({ currentGame });
+    }
 
     if(value){
        return (<li className="list-group-item">
@@ -412,11 +447,11 @@ var SortableQuestion = SortableElement(({value}) =>{
                                    <div className="col-md-10 inputGroupContainer">
                                        <div className="input-group">
                                            <ul>
-                                                {value.item.answers.map((ans, index) => {return(<AnswerListItem key={ans.id} value={ans} parent={value} index={index} />)})}
+                                                {value.item.answers.map((ans, index) => {return(<AnswerListItem key={index} value={ans} parent={value} index={index} />)})}
                                             </ul>
                                        </div>
 
-                                       <Button onClick={ ()=> {}}>
+                                       <Button onClick={ ()=> {addAnswer()}}>
                                            {strings.add_answer}
                                        </Button>
 

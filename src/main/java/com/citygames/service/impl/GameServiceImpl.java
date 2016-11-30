@@ -16,6 +16,8 @@ import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -41,6 +43,9 @@ public class GameServiceImpl implements GameService {
 
     @Autowired
     private TypeGameRepository typeGameRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
 
     @Override
     public Game add(Game game) {
@@ -72,6 +77,14 @@ public class GameServiceImpl implements GameService {
             Game newGame = gameRepository.save(priviesGame);
 
             if ( game.getQuestions() != null && !game.getQuestions().isEmpty() ) {
+
+                Set<Answer> priviesAnswers = new HashSet<>();
+                priviesGame.getQuestions().stream().forEach(q -> {
+                    priviesAnswers.addAll(q.getAnswers());
+                });
+
+                answerRepository.delete(priviesAnswers);
+
                 if( priviesGame.getQuestions() != null && !priviesGame.getQuestions().isEmpty()
                         && priviesGame.getQuestions().size() > game.getQuestions().size() ){
                     Set<Question> forDelete = priviesGame.getQuestions();
@@ -82,7 +95,16 @@ public class GameServiceImpl implements GameService {
                     priviesGame.setQuestions(game.getQuestions());
                 }
                 priviesGame.getQuestions().stream().forEach(q -> q.setGameId(newGame.getId()));
-                questionRepository.save(priviesGame.getQuestions());
+                List<Question> savedQuestions = questionRepository.save(priviesGame.getQuestions());
+
+                Set<Answer> answers = new HashSet<>();
+                savedQuestions.stream().forEach(q -> {
+                    q.getAnswers().forEach( answer -> answer.setQuestionId(q.getId()));
+                    answers.addAll(q.getAnswers());
+                });
+
+                answerRepository.save(answers);
+
             }
 
             return newGame;

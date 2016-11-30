@@ -288,3 +288,8 @@ td.rdtYear:hover {
 .fixedHeightImage {
     max-height: 450px!important;
 }
+
+.input-group {
+    width: 100%;
+    padding: 4px;
+}
