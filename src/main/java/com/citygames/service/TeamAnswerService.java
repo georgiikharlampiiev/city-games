@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TeamAnswerService {
 
-    TeamAnswerDTO add(TeamAnswerDTO teamAnswerDTO);
+    TeamAnswer add(TeamAnswer teamAnswer);
 
     void delete(long id);
 

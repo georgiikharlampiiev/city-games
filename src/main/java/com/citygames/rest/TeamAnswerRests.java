@@ -2,6 +2,7 @@ package com.citygames.rest;
 
 
 import com.citygames.dto.TeamAnswerDTO;
+import com.citygames.entity.TeamAnswer;
 import com.citygames.service.TeamAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,9 +17,15 @@ public class TeamAnswerRests {
     @Autowired
     private TeamAnswerService teamAnswerService;
 
-    @RequestMapping(value = "/addAnswer", method= RequestMethod.POST)
-    public TeamAnswerDTO getGames(@RequestBody TeamAnswerDTO teamAnswerDTO) {
-        return teamAnswerService.add(teamAnswerDTO);
+    @RequestMapping(value = "/addAnswer", method = RequestMethod.POST)
+    public TeamAnswer addAnswer(@RequestBody TeamAnswerDTO teamAnswerDTO) {
+        TeamAnswer teamAnswer = new TeamAnswer();
+        if (teamAnswerDTO != null) {
+            teamAnswer.setAnswer(teamAnswerDTO.getAnswer());
+            teamAnswer.setCorrect(teamAnswerDTO.getCorrect());
+            teamAnswerService.add(teamAnswer);
+        } else throw new RuntimeException("Team answer is null!");
+        return teamAnswer;
     }
 
 }

@@ -2,7 +2,9 @@ package com.citygames.service.impl;
 
 import com.citygames.dto.TeamAnswerDTO;
 import com.citygames.entity.TeamAnswer;
+import com.citygames.repository.TeamAnswerRepository;
 import com.citygames.service.TeamAnswerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,10 +14,12 @@ import java.util.List;
 @Transactional
 public class TeamAnswerServiceImpl implements TeamAnswerService {
 
+    @Autowired
+    TeamAnswerRepository teamAnswerRepository;
 
     @Override
-    public TeamAnswerDTO add(TeamAnswerDTO teamAnswerDTO) {
-        return null;
+    public TeamAnswer add(TeamAnswer teamAnswer) {
+        return teamAnswerRepository.saveAndFlush(teamAnswer);
     }
 
     @Override
