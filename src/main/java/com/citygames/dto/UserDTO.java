@@ -7,8 +7,6 @@ import javax.persistence.*;
 @Data
 public class UserDTO {
 
-    @Id
-    @GeneratedValue
     private Long id;
 
     private String name;

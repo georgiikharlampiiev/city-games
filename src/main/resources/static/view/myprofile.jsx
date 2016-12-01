@@ -57,13 +57,13 @@ export class MyProfile extends React.Component {
     }
 
     onFieldChange(fieldName, e){
-        var currentUser = this.state.currentUser;
+        const currentUser = this.state.currentUser;
         currentUser[fieldName] = e.target.value;
         this.setState( currentUser );
     }
 
     sendChangesOnServer() {
-        var currentUser = this.state.currentUser;
+        const currentUser = this.state.currentUser;
         var errorMessage = "";
         if( currentUser.name.length < 3 ){
             errorMessage = "Your name is to short. Should be more 3 symbols.";
@@ -79,9 +79,10 @@ export class MyProfile extends React.Component {
                     () => {$('#error_message').show()}
                 );
         }else {
-            $('#error_message').hide()
+            $('#error_message').hide();
+
             ajaxUtils.executePostAction("/api/setUserProfile",
-                currentUser,
+                JSON.stringify(currentUser),
                 (currentUser) => {
                     this.setState(
                         {currentUser: currentUser},
