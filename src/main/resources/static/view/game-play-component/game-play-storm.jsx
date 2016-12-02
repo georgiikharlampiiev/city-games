@@ -85,7 +85,7 @@ export class GamePlayStorm extends React.Component {
                         <div className="input-group">
                             <input type="text" className="form-control" placeholder="Answer here..." onChange={this.onChangeAnswer.bind(this)}/>
                             <span className="input-group-btn">
-                                <button className="btn btn-secondary" type="button" onClick={this.applyAnswer()}>Send answer!</button>
+                                <button className="btn btn-secondary" type="button" onClick={this.applyAnswer.bind(this)}>Send answer!</button>
                             </span>
                         </div>
                     </div>
