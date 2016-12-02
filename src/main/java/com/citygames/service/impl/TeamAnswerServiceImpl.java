@@ -1,6 +1,5 @@
 package com.citygames.service.impl;
 
-import com.citygames.dto.TeamAnswerDTO;
 import com.citygames.entity.TeamAnswer;
 import com.citygames.repository.TeamAnswerRepository;
 import com.citygames.service.TeamAnswerService;

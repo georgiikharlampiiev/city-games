@@ -30,11 +30,12 @@ export class GamePlay extends React.Component {
 
     renderByGameType(){
         const currentGame = this.state.currentGame;
-        if(currentGame.typeGame){
-            if(currentGame.typeGame.type == "storm"){
-                return (<GamePlayStorm props={this.props} gameId={currentGame.id} />)
-            }
+        console.info("typeGame ", currentGame.typeGame )
+        console.info("currentGame.typeGame == 0 ", currentGame.typeGame == 0 )
+        if(currentGame.typeGame == 0){
+            return (<GamePlayStorm props={this.props} gameId={currentGame.id} />)
         }
+
         return (<div></div>)
 
     }
