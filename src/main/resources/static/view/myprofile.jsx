@@ -89,10 +89,10 @@ export class MyProfile extends React.Component {
                         () => {$('#success_message').show()}
                     );
                 },
-                (e) => {
-                    this.setState(
-                        {errorMessage: e},
-                        () => {$('#error_message').show()}
+                            (e) => {
+                                this.setState(
+                                    {errorMessage: e},
+                                    () => {$('#error_message').show()}
                     );
                 }
             )

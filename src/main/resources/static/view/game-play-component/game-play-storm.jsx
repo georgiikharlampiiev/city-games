@@ -38,8 +38,26 @@ export class GamePlayStorm extends React.Component {
     }
 
     applyAnswer() {
-        console.info("Apply answer stub")
-        console.info("inputAnswer ", this.state.inputAnswer)
+        console.info("inputAnswer ", this.state.inputAnswer);
+        const answer = {
+            id: 0,
+            answer: this.state.inputAnswer,
+            gameId: this.props.gameId,
+            teamId:0,
+            correct: false
+        };
+
+        console.info("answer ", JSON.stringify(answer));
+        console.info("answer ", answer);
+        ajaxUtils.executePostAction("/api/addAnswer",
+            JSON.stringify(answer),
+            (answer) => {
+                console.info("come back answer ", answer);
+            },
+            (e) => {
+                console.info("come back e ", e);
+            }
+        )
     }
 
     formatMillisecondsToDate(milliseconds) {
