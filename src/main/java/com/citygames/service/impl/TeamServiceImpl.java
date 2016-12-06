@@ -32,6 +32,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public Team get(Long teamId) {
+        return teamRepository.findOne(teamId);
+    }
+
+    @Override
     public void delete(long id) {
         teamRepository.delete(id);
     }

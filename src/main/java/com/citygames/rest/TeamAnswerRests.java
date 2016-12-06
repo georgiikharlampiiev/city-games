@@ -18,16 +18,8 @@ public class TeamAnswerRests {
     private TeamAnswerService teamAnswerService;
 
     @RequestMapping(value = "/addAnswer", method = RequestMethod.POST)
-    public TeamAnswer addAnswer(@RequestBody TeamAnswerDTO teamAnswerDTO) {
-//        TeamAnswer teamAnswer = new TeamAnswer();
-//        if (teamAnswerDTO != null) {
-//            teamAnswer.setAnswer(teamAnswerDTO.getAnswer());
-//            teamAnswer.setCorrect(teamAnswerDTO.getCorrect());
-//            teamAnswerService.add(teamAnswer);
-//        } else throw new RuntimeException("Team answer is null!");
-//        return teamAnswer;
-
-        return null;
+    public TeamAnswerDTO addAnswer(@RequestBody TeamAnswerDTO teamAnswerDTO) {
+        return TeamAnswerDTO.convetToDTO(teamAnswerService.add(teamAnswerDTO));
     }
 
 }

@@ -16,7 +16,7 @@ public class QuestionRests {
 
     @RequestMapping("/getQuestionsForCurrentGameStorm/{id}")
     public List<Question> getQuestionsForCurrentGameStorm(@PathVariable Long id) {
-        return questionService.getQuestionsForCurrentGame(id);
+        return questionService.getQuestionsForCurrentGameStorm(id);
     }
 
 }

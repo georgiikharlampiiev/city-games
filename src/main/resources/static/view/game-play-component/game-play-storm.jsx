@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from "react-router";
 const ajaxUtils = require('../../utils/utils.jsx');
 const moment = require('moment');
+const $ = require ('jquery');
 
 export class GamePlayStorm extends React.Component {
 
@@ -10,9 +11,11 @@ export class GamePlayStorm extends React.Component {
        this.state = {
            currentQuestions: [],
            gameId: 0,
-           inputAnswer: ""
+           inputAnswer: "",
+           cameBackAnswer:""
        };
        this.applyAnswer = this.applyAnswer.bind(this);
+       this.loadFromServer = this.loadFromServer.bind(this);
        this.onChangeAnswer = this.onChangeAnswer.bind(this);
        this.mapQuestion = this.mapQuestion.bind(this);
        this.mapDescription = this.mapDescription.bind(this);
@@ -47,12 +50,21 @@ export class GamePlayStorm extends React.Component {
             correct: false
         };
 
-        console.info("answer ", JSON.stringify(answer));
-        console.info("answer ", answer);
         ajaxUtils.executePostAction("/api/addAnswer",
             JSON.stringify(answer),
             (answer) => {
-                console.info("come back answer ", answer);
+                this.setState({
+                    cameBackAnswer: answer.answer,
+                    inputAnswer: ""
+                });
+                if(answer.correct){
+                    $('.text-success').removeClass('hidden');
+                    $('.text-danger').addClass('hidden');
+                }else {
+                    $('.text-danger').removeClass('hidden');
+                    $('.text-success').addClass('hidden');
+                }
+                this.loadFromServer();
             },
             (e) => {
                 console.info("come back e ", e);
@@ -90,6 +102,12 @@ export class GamePlayStorm extends React.Component {
         )
     }
 
+    mapAnswer(description){
+        return (
+            {__html: description}
+        )
+    }
+
     onChangeAnswer(e){
         this.setState({inputAnswer: e.target.value});
     }
@@ -99,13 +117,15 @@ export class GamePlayStorm extends React.Component {
             <div>
 
                 <fieldset>
-                    <div className="col-lg-6 affix">
+                    <div className="col-lg-6 affix" style={{"background-color": "#fff"}}>
                         <div className="input-group">
                             <input type="text" className="form-control" placeholder="Answer here..." onChange={this.onChangeAnswer.bind(this)}/>
                             <span className="input-group-btn">
                                 <button className="btn btn-secondary" type="button" onClick={this.applyAnswer.bind(this)}>Send answer!</button>
                             </span>
                         </div>
+                        <p className="text-success hidden">Correct answer : {this.state.cameBackAnswer}</p>
+                        <p className="text-danger hidden">Incorrect answer : {this.state.cameBackAnswer}</p>
                     </div>
                 </fieldset>
 

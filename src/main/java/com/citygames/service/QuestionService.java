@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface QuestionService {
 
-    List<Question> getQuestionsForCurrentGame(Long id);
+    List<Question> getQuestionsForCurrentGameStorm(Long id);
 
 }

@@ -49,7 +49,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game add(Game game) {
-        if (isUserGameEditor(game.getId())) {
+        GameUser gameUser = securityUtilsService.getCurrentUser();
+        if (isUserGameEditor(gameUser, game.getId())) {
             Game priviesGame = game.getId() != null ? gameRepository.findOne(game.getId()) : new Game();
 
             priviesGame.setImage(game.getImage());
@@ -63,13 +64,13 @@ public class GameServiceImpl implements GameService {
             if (priviesGame.getGameAdmins() != null) {
                 GameAdmin admin = new GameAdmin();
                 admin.setGame(priviesGame);
-                admin.setGameUser(securityUtilsService.getCurrentUser());
+                admin.setGameUser(gameUser);
                 priviesGame.getGameAdmins().add(admin);
             } else {
                 Set<GameAdmin> admins = new HashSet<>();
                 GameAdmin admin = new GameAdmin();
                 admin.setGame(priviesGame);
-                admin.setGameUser(securityUtilsService.getCurrentUser());
+                admin.setGameUser(gameUser);
                 admins.add(admin);
                 priviesGame.setGameAdmins(admins);
             }
@@ -224,6 +225,11 @@ public class GameServiceImpl implements GameService {
     @Override
     public Boolean IsUserApprovedForGame(Long gameId) {
         GameUser user = securityUtilsService.getCurrentUser();
+        return this.IsUserApprovedForGame(user, gameId);
+    }
+
+    @Override
+    public Boolean IsUserApprovedForGame(GameUser user, Long gameId) {
         if (user != null && user.getTeamId() != null) {
             Game game = gameRepository.findOne(gameId);
             Team team = teamRepository.findOne(user.getTeamId());
@@ -236,6 +242,12 @@ public class GameServiceImpl implements GameService {
     @Override
     public Boolean isUserGameEditor(Long gameId) {
         GameUser user = securityUtilsService.getCurrentUser();
+
+        return this.isUserGameEditor(user, gameId);
+    }
+
+    @Override
+    public Boolean isUserGameEditor(GameUser user, Long gameId) {
 
         if (user != null && user.getRoleId() != null) {
 

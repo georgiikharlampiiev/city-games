@@ -2,6 +2,7 @@ package com.citygames.service;
 
 import com.citygames.dto.GameDTO;
 import com.citygames.entity.Game;
+import com.citygames.entity.GameUser;
 import com.citygames.entity.TypeGame;
 
 import java.util.List;
@@ -34,5 +35,9 @@ public interface GameService {
 
     Boolean IsUserApprovedForGame(Long gameId);
 
+    Boolean IsUserApprovedForGame(GameUser user, Long gameId);
+
     Boolean isUserGameEditor(Long gameId);
+
+    Boolean isUserGameEditor(GameUser user, Long gameId);
 }

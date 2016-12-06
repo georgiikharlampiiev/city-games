@@ -1,7 +1,7 @@
 import React from 'react';
 const $ = require ('jquery');
 
-var executeGetAction = function(url, successFunction, errorFunction){
+const executeGetAction = function(url, successFunction, errorFunction){
     $.ajax({
             url: url,
             dataType: 'json',
@@ -22,7 +22,7 @@ var executeGetAction = function(url, successFunction, errorFunction){
         });
 };
 
-var executePostAction = function(url, sendData, successFunction, errorFunction){
+const executePostAction = function(url, sendData, successFunction, errorFunction){
     $.ajax({
         headers: {
             'Accept': 'application/json',

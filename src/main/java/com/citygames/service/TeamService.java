@@ -9,6 +9,8 @@ public interface TeamService {
 
     Team add(Team team);
 
+    Team get(Long teamId);
+
     void delete(long id);
 
     Team edit(Team team);
