@@ -25,7 +25,7 @@ public class PublicApiRest {
 
     @RequestMapping("/getGames")
     public List<GameDTO> getGamesOnIndex() {
-        return gameService.getAllActiveGames(0, 10);
+        return gameService.getAllActiveGames(0, 3);
     }
 
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)

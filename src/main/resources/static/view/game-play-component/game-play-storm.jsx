@@ -87,25 +87,24 @@ export class GamePlayStorm extends React.Component {
                 <p className="lead">
                     {question.name}
                 </p>
-                <hr/>
-
-                    <div dangerouslySetInnerHTML={this.mapDescription(question.description)} />
-
+                <div dangerouslySetInnerHTML={this.mapDescription(question)} />
+                <p>Your answers: </p>
+                <u>
+                    { question.answers.map((a) => <li key={a.id}>{a.name}</li>) }
+                </u>
                 <hr/>
             </div>
         )
     }
 
-    mapDescription(description){
-        return (
-            {__html: description}
-        )
-    }
-
-    mapAnswer(description){
-        return (
-            {__html: description}
-        )
+    mapDescription(question){
+        if(question.answers.filter( (a) => a.name == "***").length > 0){
+            return (
+                {__html: question.description}
+            )
+        }else {
+            <div></div>
+        }
     }
 
     onChangeAnswer(e){
@@ -117,7 +116,7 @@ export class GamePlayStorm extends React.Component {
             <div>
 
                 <fieldset>
-                    <div className="col-lg-6 affix" style={{"background-color": "#fff"}}>
+                    <div className="col-lg-6 affix" style={{ backgroundColor : "#fff"}}>
                         <div className="input-group">
                             <input type="text" className="form-control" placeholder="Answer here..." onChange={this.onChangeAnswer.bind(this)}/>
                             <span className="input-group-btn">

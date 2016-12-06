@@ -1,6 +1,7 @@
 package com.citygames.service.impl;
 
 import com.citygames.entity.Answer;
+import com.citygames.entity.GameUser;
 import com.citygames.entity.Question;
 import com.citygames.entity.TeamAnswer;
 import com.citygames.repository.QuestionRepository;
@@ -10,6 +11,7 @@ import com.citygames.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,10 +30,16 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> getQuestionsForCurrentGameStorm(Long id){
+        GameUser gameUser =  securityUtilsService.getCurrentUser();
+
+        if(gameUser == null){
+            return Collections.EMPTY_LIST;
+        }
+
         List<Question> questions = questionRepository.findByGameIdOrderByOrderInGameAsc(id);
         List<Long> questionIds = questions.stream().map(Question::getId).collect(Collectors.toList());
 
-        List<TeamAnswer> teamAnswers = teamAnswerRepository.findByTeamIdAndQuestionIdIn(id, questionIds).stream().filter((TeamAnswer::isCorrect)).collect(Collectors.toList());
+        List<TeamAnswer> teamAnswers = teamAnswerRepository.findByTeamIdAndQuestionIdIn(gameUser.getTeamId(), questionIds).stream().filter((TeamAnswer::isCorrect)).collect(Collectors.toList());
 
         for(Question q :questions){
             for(Answer a : q.getAnswers()){
