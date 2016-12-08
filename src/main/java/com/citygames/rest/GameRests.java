@@ -23,7 +23,7 @@ public class GameRests {
 
     @RequestMapping("/getTypeGames")
     public List<TypeGame> getTypeGames() {
-        return gameService.getAllGameTypes(); //TODO: Add pagination!!!!!!
+        return gameService.getAllGameTypes();
     }
 
     @RequestMapping(value = "/addGame", method= RequestMethod.POST)
@@ -34,6 +34,11 @@ public class GameRests {
     @RequestMapping("/getGame/{id}")
     public Game getGameById(@PathVariable Long id) {
         return gameService.getGameById(id);
+    }
+
+    @RequestMapping("/getGameForPlay/{id}")
+    public GameDTO getGameForPlay(@PathVariable Long id) {
+        return gameService.getGameForPlay(id);
     }
 
     @RequestMapping("/applyGameByCurrentUser/{id}")

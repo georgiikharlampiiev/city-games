@@ -18,6 +18,8 @@ public class GameDTO {
 
     private String image;
 
+    private Long typeGame;
+
     public GameDTO() {
     }
 
@@ -28,5 +30,13 @@ public class GameDTO {
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
         this.image = image;
+    }
+
+    public GameDTO(long id, String name,  Date dateStart, Date dateFinish, Long typeGame){
+        this.id = id;
+        this.name = name;
+        this.dateStart = dateStart;
+        this.dateFinish = dateFinish;
+        this.typeGame = typeGame;
     }
 }

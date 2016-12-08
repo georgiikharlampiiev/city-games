@@ -40,7 +40,8 @@
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
     "react-sortable-hoc": "^0.2.0",
-    "react-localization": "^0.0.8"
+    "react-localization": "^0.0.8",
+    "react-countdown-clock": "^1.0.9"
   },
   "scripts": {
     "watch": "webpack --watch -d"

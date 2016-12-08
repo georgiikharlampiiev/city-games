@@ -12,7 +12,8 @@ export class GamePlayStorm extends React.Component {
            currentQuestions: [],
            gameId: 0,
            inputAnswer: "",
-           cameBackAnswer:""
+           cameBackAnswer:"",
+           timer: null
        };
        this.applyAnswer = this.applyAnswer.bind(this);
        this.loadFromServer = this.loadFromServer.bind(this);
@@ -31,12 +32,24 @@ export class GamePlayStorm extends React.Component {
 
     componentDidMount() {
         this.loadFromServer();
+        const that = this;
+        const intervalHandler = setInterval(that.loadFromServer.bind(that), 10000);
+        this.setState({
+            timer: intervalHandler
+        })
     }
 
+    componentWillUnmount() {
+        if (this.state.timer) {
+            clearInterval(this.state.timer);
+            this.setState({timer: null});
+        }
+    }
      loadFromServer() {
          ajaxUtils.executeGetAction('/api/getQuestionsForCurrentGameStorm/' + this.props.gameId,
-             (data) => {this.setState({currentQuestions:data})},
-             (e) => console.error(e)
+             (data) => {this.setState({ currentQuestions:data })},
+             (e) => console.error(e),
+             false
          );
     }
 

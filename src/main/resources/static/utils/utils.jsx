@@ -1,7 +1,7 @@
 import React from 'react';
 const $ = require ('jquery');
 
-const executeGetAction = function(url, successFunction, errorFunction){
+const executeGetAction = function(url, successFunction, errorFunction, showLoader = true){
     $.ajax({
             url: url,
             dataType: 'json',
@@ -14,7 +14,9 @@ const executeGetAction = function(url, successFunction, errorFunction){
                 errorFunction(err.toString());
             },
             beforeSend: function(){
-                $('#loader').show();
+                if(showLoader){
+                    $('#loader').show();
+                }
             },
             complete: function(){
                 $('#loader').hide();

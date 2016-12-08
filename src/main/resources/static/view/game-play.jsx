@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router";
+import ReactCountdownClock  from "react-countdown-clock";
 
 import { GamePlayStorm } from "./game-play-component/game-play-storm.jsx";
 
@@ -22,7 +23,7 @@ export class GamePlay extends React.Component {
     }
 
     loadFromServer() {
-        ajaxUtils.executeGetAction('/api/getGame/' + this.props.params.gameId,
+        ajaxUtils.executeGetAction('/api/getGameForPlay/' + this.props.params.gameId,
             (data) => {this.setState({ currentGame:data })},
             (e) => console.error(e)
         );
@@ -30,9 +31,16 @@ export class GamePlay extends React.Component {
 
     renderByGameType(){
         const currentGame = this.state.currentGame;
-        console.info("typeGame ", currentGame.typeGame )
-        console.info("currentGame.typeGame == 0 ", currentGame.typeGame == 0 )
-        if(currentGame.typeGame == 0){
+        console.info("typeGame ", currentGame.typeGame );
+        const timeNow =  new Date;
+        if(currentGame.dateStart > timeNow.getTime()){
+            const seconds = (currentGame.dateStart - timeNow.getTime())/1000;
+            return (<ReactCountdownClock seconds={seconds}
+                                         color="#000"
+                                         alpha={0.9}
+                                         size={300}
+                                         onComplete={this.loadFromServer.bind(this)} />)
+        }else if(currentGame.typeGame == 0){
             return (<GamePlayStorm props={this.props} gameId={currentGame.id} />)
         }
 

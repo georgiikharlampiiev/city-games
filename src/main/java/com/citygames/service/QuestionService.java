@@ -1,9 +1,11 @@
 package com.citygames.service;
 
+import com.citygames.entity.Question;
+
 import java.util.List;
 
 public interface QuestionService {
 
-    List getQuestionsForCurrentGameStorm(Long id);
+    List<Question> getQuestionsForCurrentGameStorm(Long id);
 
 }

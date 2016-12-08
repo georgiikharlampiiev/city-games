@@ -27,6 +27,8 @@ public interface GameService {
 
     Game getGameById(Long id);
 
+    GameDTO getGameForPlay(Long id);
+
     Boolean addApplyGameByCurrentUser(Long gameId);
 
     Boolean deleteApplyGameByCurrentUser(Long gameId);

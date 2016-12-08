@@ -8,5 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RepositoryRestResource(exported = false)
 public interface GameRepository extends JpaRepository<Game, Long> {
+
+
+
 }
 

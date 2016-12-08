@@ -169,6 +169,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public GameDTO getGameForPlay(Long gameId) {
+        TypedQuery query = em.createQuery("select NEW com.citygames.dto.GameDTO(g.id, g.name, g.dateStart, g.dateFinish, g.typeGame) from Game g WHERE g.id = :gameId", GameDTO.class);
+
+        return (GameDTO)query.setParameter("gameId", gameId).getSingleResult();
+    }
+
+
+    @Override
     public Boolean addApplyGameByCurrentUser(Long gameId) {
         GameUser user = securityUtilsService.getCurrentUser();
         if (user != null && user.getTeamId() != null) {
