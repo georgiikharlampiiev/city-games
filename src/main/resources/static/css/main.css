@@ -286,7 +286,8 @@ td.rdtYear:hover {
 
 /*Image fixed size*/
 .fixedHeightImage {
-    max-height: 450px!important;
+    max-height: 300px!important;
+    max-width: 700px!important;
 }
 
 .input-group {

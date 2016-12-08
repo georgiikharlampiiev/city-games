@@ -45,24 +45,28 @@ export class Games extends React.Component {
     }
 
     parseGame(game) {
-        var image = "http://placehold.it/900x300";
+        var image = "http://placehold.it/700x300";
         if(game.image) {
             image = game.image;
         }
         return (
+
             <div key={ game.name } className="row">
-                <div className="col-md-9 portfolio-item">
-                    <hr/>
+                <hr/>
+                <div className="col-md-7">
                     <a href={ "#/game-view/" + game.id }>
                         <img className="img-responsive img-rounded fixedHeightImage" src={ image } alt=""/>
                     </a>
+                </div>
+                <div className="col-md-5">
                     <h3>
                         <a href={ "#/game-view/" + game.id }>{ game.name }</a>
                     </h3>
+                    <h4>Subheading</h4>
                     <p>{ game.description }</p>
                 </div>
-                <hr/>
             </div>
+
         )
     }
 
