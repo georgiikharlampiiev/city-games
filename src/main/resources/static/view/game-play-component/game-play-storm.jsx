@@ -13,7 +13,10 @@ export class GamePlayStorm extends React.Component {
            gameId: 0,
            inputAnswer: "",
            cameBackAnswer:"",
-           timer: null
+           timer: null,
+           counterHandler: null,
+           counter: "",
+           isFinished: false
        };
        this.applyAnswer = this.applyAnswer.bind(this);
        this.loadFromServer = this.loadFromServer.bind(this);
@@ -34,18 +37,34 @@ export class GamePlayStorm extends React.Component {
         this.loadFromServer();
         const that = this;
         const intervalHandler = setInterval(that.loadFromServer.bind(that), 10000);
+        const counterHandler = setInterval(() => {
+            const currentTime = new Date();
+            if(currentTime.getTime() > that.props.dateFinish){
+                that.setState({isFinished: true});
+            }else {
+                that.setState({
+                    counter: (that.props.dateFinish - currentTime.getTime())
+                });
+            }
+        } , 1000);
         this.setState({
-            timer: intervalHandler
+            timer: intervalHandler,
+            counterHandler: counterHandler
         })
     }
 
     componentWillUnmount() {
         if (this.state.timer) {
             clearInterval(this.state.timer);
-            this.setState({timer: null});
+            clearInterval(this.state.counterHandler);
+            this.setState({
+                timer: null,
+                counterHandler: null
+            });
         }
     }
-     loadFromServer() {
+
+    loadFromServer() {
          ajaxUtils.executeGetAction('/api/getQuestionsForCurrentGameStorm/' + this.props.gameId,
              (data) => {this.setState({ currentQuestions:data })},
              (e) => console.error(e),
@@ -93,6 +112,16 @@ export class GamePlayStorm extends React.Component {
         }
     }
 
+    formatMillisecondsToCounter(milliseconds) {
+        if ( milliseconds ) {
+            const time = moment.duration(milliseconds);
+            return time.days()+':'+time.hours()+':'+time.minutes()+':'+time.seconds();
+        } else {
+            return "";
+        }
+    }
+
+
     mapQuestion(question){
         return (
             <div key={`question-view-${question.orderInGame}`}>
@@ -124,6 +153,14 @@ export class GamePlayStorm extends React.Component {
         this.setState({inputAnswer: e.target.value});
     }
 
+    renderQuestions(currentQuestions){
+        if(this.state.isFinished){
+            return (<Link to={"/game-statistic/"+ this.props.gameId} className="btn btn-default " >Game is over click here for Statistic</Link>)
+         }else {
+            return (<div>{currentQuestions.map(this.mapQuestion)}</div>)
+        }
+    }
+
     render() {
         return (
             <div>
@@ -142,7 +179,8 @@ export class GamePlayStorm extends React.Component {
                 </fieldset>
 
                 <div style={{marginTop : "70px"}}>
-                    {this.state.currentQuestions.map(this.mapQuestion)}
+                    <p><span className="glyphicon glyphicon-time"/> To end of the game: { this.formatMillisecondsToCounter(this.state.counter) } </p>
+                    {this.renderQuestions(this.state.currentQuestions)}
                 </div>
 
             </div>

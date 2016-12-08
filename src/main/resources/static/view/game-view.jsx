@@ -130,12 +130,16 @@ export class GameView extends React.Component {
         const gameId = this.props.params.gameId;
         if(user && user.teamId){
             if(isUserAppliedGame && isUserApprovedGame) {
-                return (
-                    <div>
-                        <button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>{strings.delete_game_apply}</button>
-                        <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default " >{strings.open_current_game}</a>
-                    </div>
-                )
+                if(this.state.currentGame.dateFinish > new Date().getTime()){
+                    return (
+                        <div>
+                            <button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>{strings.delete_game_apply}</button>
+                            <a href={ "#/game-play/" + gameId } type="button" className="btn btn-default " >{strings.open_current_game}</a>
+                        </div>
+                    )
+                }else {
+                    return (<Link to={"/game-statistic/"+ gameId} className="btn btn-default " >Game is over click here for Statistic</Link>)
+                }
             }if(isUserAppliedGame && !isUserApprovedGame) {
                 return (<button type="button" className="btn btn-default" onClick={this.deleteApplyGame}>{strings.delete_game_apply}</button> )
             }
