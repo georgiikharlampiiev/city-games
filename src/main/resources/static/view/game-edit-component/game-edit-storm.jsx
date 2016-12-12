@@ -292,16 +292,26 @@ const AnswerListItem  = ({value, index, parent}) =>{
                     <fieldset>
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Game name</label>
+                            <label className="col-md-3 control-label">Answer name</label>
                             <div className="col-md-9 inputGroupContainer">
                                 <div className="input-group">
-                                    <input name={ "question_name"+value.index } className="form-control"  type="text"
+                                    <input name={ "answer_name"+value.index } className="form-control"  type="text"
                                            value={ value.name }
                                            onChange={ changeAnswerField.bind(this,  "name") }  />
                                 </div>
                             </div>
                         </div>
 
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Answers</label>
+                            <div className="col-md-9 inputGroupContainer">
+                                <div className="input-group">
+                                    <input name={ "answer_tags"+value.index } className="form-control"  type="text"
+                                           value={ value.answerTags }
+                                           onChange={ changeAnswerField.bind(this,  "answerTags") }  />
+                                </div>
+                            </div>
+                        </div>
 
                         <Button onClick={ ()=> {
                             const currentGame = parent.owner.state.currentGame;
