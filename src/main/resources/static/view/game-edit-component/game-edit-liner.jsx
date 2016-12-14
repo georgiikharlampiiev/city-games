@@ -279,8 +279,10 @@ const AnswerListItem  = ({value, index, parent}) =>{
         const currentQuestion = parent.owner.state.currentGame.questions[parent.index];
         const currentAnswers = parent.owner.state.currentGame.questions[parent.index].answers;
 
-        if(name == "answerTags"){
+        if (name == "answerTags"){
             value[name] = e;
+        }else if (name == "isCloseQuestion") {
+            value[name] = e.target.checked;
         }else {
             value[name] = e.target.value;
         }
@@ -315,7 +317,7 @@ const AnswerListItem  = ({value, index, parent}) =>{
                                 <div className="input-group">
                                     <input name={ "question_name"+value.index } className="form-control"  type="text"
                                            value={ value.name }
-                                           onChange={ changeAnswerField.bind(this,  "name") }  />
+                                           onChange={ changeAnswerField.bind(this, "name") }  />
                                 </div>
                             </div>
                         </div>
@@ -337,7 +339,20 @@ const AnswerListItem  = ({value, index, parent}) =>{
                                 <div className="input-group">
                                     <input name={ "answer_score"+value.index } className="form-control"  type="text"
                                            value={ value.score }
-                                           onChange={ changeAnswerField.bind(this,  "score") }  />
+                                           onChange={ changeAnswerField.bind(this, "score") }  />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Is close question</label>
+                            <div className="col-md-9 inputGroupContainer">
+                                <div className="input-group">
+                                    <input name={ "answer_close_q"+value.index }
+                                           type="checkbox"
+                                           defaultChecked={value.isCloseQuestion}
+                                           onChange={ changeAnswerField.bind(this, "isCloseQuestion") }
+                                    />
                                 </div>
                             </div>
                         </div>
