@@ -3,6 +3,8 @@ import { Link, browserHistory } from "react-router";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import { Button, Collapse } from 'react-bootstrap';
 import ReactSummernote from 'react-summernote';
+import TagsInput from 'react-tagsinput';
+
 let DateTimeField = require('react-datetime');
 let ajaxUtils =  require ('../../utils/utils.jsx');
 let moment = require('moment');
@@ -259,13 +261,29 @@ export class GameEditLiner extends React.Component {
 
 const AnswerListItem  = ({value, index, parent}) =>{
 
+    function handleChangeTags(tags) {
+        changeAnswerField( "answerTags", tags.join("  "));
+    }
+
+    function prepareTags(tags) {
+        if(tags){
+            return tags.split("  ");
+        }else {
+            return []
+        }
+    }
+
     function changeAnswerField( name, e){
         const currentGame = parent.owner.state.currentGame;
         const currentGameQuestions = parent.owner.state.currentGame.questions;
         const currentQuestion = parent.owner.state.currentGame.questions[parent.index];
         const currentAnswers = parent.owner.state.currentGame.questions[parent.index].answers;
 
-        value[name] = e.target.value;
+        if(name == "answerTags"){
+            value[name] = e;
+        }else {
+            value[name] = e.target.value;
+        }
         currentAnswers[index] = value;
 
         currentQuestion['answers'] = currentAnswers;
@@ -306,12 +324,12 @@ const AnswerListItem  = ({value, index, parent}) =>{
                             <label className="col-md-3 control-label">Answers</label>
                             <div className="col-md-9 inputGroupContainer">
                                 <div className="input-group">
-                                    <input name={ "answer_tags"+value.index } className="form-control"  type="text"
-                                           value={ value.answerTags }
-                                           onChange={ changeAnswerField.bind(this,  "answerTags") }  />
+                                    <TagsInput value={prepareTags(value.answerTags)} onChange={handleChangeTags} />
                                 </div>
                             </div>
                         </div>
+
+
 
                         <div className="form-group">
                             <label className="col-md-3 control-label">Score</label>
