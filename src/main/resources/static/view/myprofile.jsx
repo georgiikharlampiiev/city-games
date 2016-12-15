@@ -12,7 +12,11 @@ let strings = new LocalizedStrings({
         save_changes:"Save Changes",
         success:"Success",
         error:"Error",
-        success_message: "All changes have been saved."
+        success_message: "All changes have been saved.",
+        my_team:"My team",
+        teams:"Choose the team",
+        team:"Team name",
+        send_request_to_team:"Send request to team"
     },
     ru: {
         name_login:"Имя/Логин",
@@ -21,7 +25,13 @@ let strings = new LocalizedStrings({
         save_changes:"Сохранить изменения",
         success:"Успешно",
         error:"Ошибка",
-        success_message: "Все изменения сохранены."
+        success_message: "Все изменения сохранены.",
+        my_team:"Моя команда",
+        teams:"Выбор команды",
+        team:"Имя команды",
+        send_request_to_team:"Отправить заявку в команду",
+        approve:"Approve",
+        delete_approve:"Delete approve"
     },
     ua: {
         name_login:"Ім'я/Логін",
@@ -30,7 +40,11 @@ let strings = new LocalizedStrings({
         save_changes:"Зберегти змiни",
         success:"Успiшно",
         error:"Помилка",
-        success_message: "Всi змiни збережено."
+        success_message: "Всi змiни збережено.",
+        my_team:"Моя команда",
+        teams:"Choose the team",
+        team:"Team name",
+        send_request_to_team:"Send request to team"
     }
 });
 
@@ -40,9 +54,15 @@ export class MyProfile extends React.Component {
         super(props);
         this.state = {
             currentUser: [],
-            errorMessage: ""
+            errorMessage: "",
+            teams: [],
+            team: "",
+            teamUsers: []
         };
         this.sendChangesOnServer = this.sendChangesOnServer.bind(this);
+        this.sendRequestToTeamOnServer = this.sendRequestToTeamOnServer.bind(this);
+        this.changeTeam = this.changeTeam.bind(this);
+        this.renderTeamMembers = this.renderTeamMembers.bind(this);
     }
 
     componentDidMount() {
@@ -52,6 +72,14 @@ export class MyProfile extends React.Component {
      loadFromServer() {
          ajaxUtils.executeGetAction('/api/getUserProfile',
              (data) => {this.setState({ currentUser:data })},
+             (e) => console.error(e)
+         );
+         ajaxUtils.executeGetAction('/api/getAllTeams',
+             (data) => {this.setState({teams:data})},
+             (e) => console.error(e)
+         );
+         ajaxUtils.executeGetAction('/api/getTeam',
+             (data) => {this.setState({team:data})},
              (e) => console.error(e)
          );
     }
@@ -89,17 +117,153 @@ export class MyProfile extends React.Component {
                         () => {$('#success_message').show()}
                     );
                 },
-                            (e) => {
-                                this.setState(
-                                    {errorMessage: e},
-                                    () => {$('#error_message').show()}
+                (e) => {
+                    this.setState(
+                        {errorMessage: e},
+                        () => {$('#error_message').show()}
                     );
                 }
             )
         }
     }
 
+    changeTeam(e){
+        console.info("changeTeam ", e.target.value)
+        this.setState({team:e.target.value});
+        console.info("team ", this.state.team)
+    }
+
+    renderTeamMembers(){
+        var buttonText = strings.approve;
+        if(team.approved){
+            buttonText = strings.delete_approve
+        }
+        return (
+            <li key={team.id} className="list-group-item">
+                {team.name}
+                <Button onClick={ () => this.sendApplyOrUnapply(team.id) }> { buttonText } </Button>
+            </li>
+        )
+    }
+
+
+    generateMyTeamGroup() {
+        var currentUser = this.state.currentUser;
+        var options = this.state.teams.map(function(opt, i){
+            return <option key={opt.id} value={opt.id}>{opt.name}</option>;
+        }, this);
+
+        if (currentUser.teamId == null){
+            return (
+                <div>
+                    <div className="form-group">
+                        <label className="col-md-4 control-label">Team</label>
+                        <div className="col-md-4 selectContainer">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="glyphicon glyphicon-list"></i></span>
+                                <select name="team" className="form-control selectpicker" onChange={this.changeTeam.bind(this)}>
+                                    <option value=" " >Please select your team</option>
+                                    {options}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label className="col-md-4 control-label"></label>
+                        <div className="col-md-4">
+                            <div className="btn btn-warning" onClick={this.sendRequestToTeamOnServer}>{strings.send_request_to_team} <span className="glyphicon glyphicon-send"></span></div>
+                        </div>
+                    </div>
+                    {this.createTeamButtonRender()}
+                </div>)
+        } else if (currentUser.role_team_id == 1){
+            return(<div>
+                {this.state.team.name}
+                <ul className="col-md-9">
+                   {this.state.teams.map(this.renderTeamMembers)}
+                </ul>
+
+            </div>)
+        } else if (currentUser.role_team_id == 2) {
+
+        } else if (currentUser.role_team_id == 3) {
+            return(<div>
+                You sent request to team
+            </div>)
+        }
+
+        return (<div> </div>);
+    }
+
+
+    sendRequestToTeamOnServer() {
+        var currentUser = this.state.currentUser;
+        var errorMessage = "";
+        if (this.state.team == ""){
+            errorMessage = "Select team";
+        }
+
+        if( errorMessage != ""){
+            this.setState({
+                    errorMessage: errorMessage},
+                () => {$('#error_message').show()}
+            );
+        }else {
+            currentUser.teamId['id'] = this.state.team;
+            currentUser.roleTeam.id = "3";
+            $('#error_message').hide()
+            ajaxUtils.executePostAction("/api/setTeam",
+                JSON.stringify(currentUser),
+                (currentUser) => {
+                    this.setState(
+                        {currentUser: currentUser},
+                        () => {
+                            $('#success_message').show()
+                        }
+                    );
+                },
+                (e) => {
+                    this.setState(
+                        {errorMessage: e},
+                        () => {
+                            $('#error_message').show()
+                        }
+                    );
+                }
+            )
+        }
+    }
+
+
+    sendRequestButtonRender() {
+        const team = this.state.team;
+        if(team == null) {
+            return(
+                <p><a href={ "#/game-edit/0" } type="button" className="btn btn-default" > Create new game</a></p>);
+        }else {
+            return (<p></p>);
+        }
+    }
+
+    createTeamButtonRender() {
+        const currentUser = this.state.currentUser;
+        console.info("currentUser.teamId", currentUser.teamId)
+        const team  = currentUser.teamId;
+        if(team == undefined) {
+            return(
+                <div className="form-group">
+                    <label className="col-md-4 control-label"></label>
+                    <div className="col-md-4 ">
+                        <a href={ "#/team-edit/0" } type="button" className="btn btn-warning" > Create team <span className="glyphicon glyphicon-plus"></span></a>
+                    </div>
+                </div>);
+        }else {
+            return (<p></p>);
+        }
+    }
+
     render() {
+
         return (
             <div>
                 <form className="well form-horizontal" action=" " method="post"  id="contact_form" autoComplete="off">
@@ -246,6 +410,22 @@ export class MyProfile extends React.Component {
                                 <div className="btn btn-warning" onClick={this.sendChangesOnServer}>{strings.save_changes} <span className="glyphicon glyphicon-send"></span></div>
                             </div>
                         </div>
+
+                    </fieldset>
+                </form>
+                <form className="well form-horizontal" action=" " method="post"  id="contact_form" autoComplete="off">
+                    <fieldset>
+
+                        {/*<!-- Form Name -->*/}
+                        <legend>{strings.my_team}</legend>
+
+                        {/*<!-- List select-->*/}
+                        {this.generateMyTeamGroup()}
+
+                        {/*<!-- Success message -->*/}
+                        <div className="alert alert-success" role="alert" id="success_message">{strings.success} <i className="glyphicon glyphicon-thumbs-up"></i>{strings.success_message}</div>
+                        {/*<!-- Error message -->*/}
+                        <div className="alert alert-danger" role="alert" id="error_message">{strings.error} <i className="glyphicon glyphicon-warning-sign"></i> {this.state.errorMessage} </div>
 
                     </fieldset>
                 </form>

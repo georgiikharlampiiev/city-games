@@ -1,7 +1,9 @@
 package com.citygames.service.impl;
 
 import com.citygames.entity.GameUser;
+import com.citygames.entity.Team;
 import com.citygames.repository.GameUserRepository;
+import com.citygames.repository.TeamRepository;
 import com.citygames.service.GameUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class GameUserServiceImpl implements GameUserService {
 
     @Autowired
     private GameUserRepository gameUserRepository;
+
+    @Autowired
+    private TeamRepository teamRepository;
 
     @Override
     public GameUser add(GameUser gameUser) {
@@ -37,6 +42,15 @@ public class GameUserServiceImpl implements GameUserService {
     @Override
     public GameUser getByName(String name) {
         return gameUserRepository.findByName(name);
+    }
+
+    @Override
+    public Team getUserTeam(GameUser currentUser) {
+        Long teamId = currentUser.getTeamId();
+        if (teamId != null){
+            return teamRepository.findOne(teamId);
+        }
+        return null;
     }
 
     @Override

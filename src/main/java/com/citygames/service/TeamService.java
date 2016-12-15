@@ -21,4 +21,6 @@ public interface TeamService {
 
     Boolean addApproveGameForTeam(Long gameId, Long teamId);
 
+    Team getTeamByName(String name);
+
 }

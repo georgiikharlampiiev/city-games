@@ -1,6 +1,8 @@
 package com.citygames.service;
 
 import com.citygames.entity.GameUser;
+import com.citygames.entity.Team;
+
 import java.util.List;
 
 public interface GameUserService {
@@ -14,6 +16,8 @@ public interface GameUserService {
     List<GameUser> getAll();
 
     GameUser getByName(String name);
+
+    Team getUserTeam(GameUser gameUser);
 
     GameUser getByEmail(String email);
 

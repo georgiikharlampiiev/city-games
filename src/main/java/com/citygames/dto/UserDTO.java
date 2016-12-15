@@ -1,5 +1,6 @@
 package com.citygames.dto;
 
+import com.citygames.entity.RoleTeam;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,5 +15,9 @@ public class UserDTO {
     private String email;
 
     private String password;
+
+    private Long teamId;
+
+    private RoleTeam roleTeam;
 
 }

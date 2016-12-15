@@ -83,4 +83,9 @@ public class TeamServiceImpl implements TeamService {
 
         return true;
     }
+
+    @Override
+    public Team getTeamByName(String name) {
+        return teamRepository.findByName(name);
+    }
 }

@@ -3,14 +3,13 @@ package com.citygames.rest;
 
 import com.citygames.dto.UserDTO;
 import com.citygames.entity.GameUser;
+import com.citygames.entity.Team;
 import com.citygames.service.GameUserService;
+import com.citygames.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -18,6 +17,9 @@ public class GameUserRests {
 
     @Autowired
     private GameUserService gameUserService;
+
+    @Autowired
+    private TeamService teamService;
 
     @RequestMapping("/getUserProfile")
     public GameUser getGameUser() {
@@ -42,6 +44,27 @@ public class GameUserRests {
         }
 
         return currentUser;
+    }
+
+    @RequestMapping(value="/setTeam", method= RequestMethod.POST)
+    public GameUser setTeam(@RequestBody UserDTO gameUserDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        GameUser currentUser = gameUserService.getByName(name);
+        if (currentUser.getId().equals(gameUserDto.getId())){
+            currentUser.setTeamId(gameUserDto.getTeamId());
+            currentUser.setRoleTeam(gameUserDto.getRoleTeam());
+            return gameUserService.edit(currentUser);
+        }
+        return currentUser;
+    }
+
+    @RequestMapping("/getTeam")
+    public Team getTeam() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        GameUser currentUser = gameUserService.getByName(name);
+        return gameUserService.getUserTeam(currentUser);
     }
 
 }
