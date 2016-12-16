@@ -1,6 +1,7 @@
 package com.citygames.rest;
 
 
+import com.citygames.dto.TeamDTO;
 import com.citygames.dto.UserDTO;
 import com.citygames.entity.GameUser;
 import com.citygames.entity.Team;
@@ -60,11 +61,8 @@ public class GameUserRests {
     }
 
     @RequestMapping("/getTeam")
-    public Team getTeam() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        GameUser currentUser = gameUserService.getByName(name);
-        return gameUserService.getUserTeam(currentUser);
+    public TeamDTO getTeam() {
+        return gameUserService.getUserTeam(null);
     }
 
 }

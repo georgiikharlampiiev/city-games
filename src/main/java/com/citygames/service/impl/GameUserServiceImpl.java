@@ -1,10 +1,12 @@
 package com.citygames.service.impl;
 
+import com.citygames.dto.TeamDTO;
 import com.citygames.entity.GameUser;
 import com.citygames.entity.Team;
 import com.citygames.repository.GameUserRepository;
 import com.citygames.repository.TeamRepository;
 import com.citygames.service.GameUserService;
+import com.citygames.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,9 @@ public class GameUserServiceImpl implements GameUserService {
 
     @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
+    private SecurityUtilsService securityUtilsService;
 
     @Override
     public GameUser add(GameUser gameUser) {
@@ -45,10 +50,13 @@ public class GameUserServiceImpl implements GameUserService {
     }
 
     @Override
-    public Team getUserTeam(GameUser currentUser) {
+    public TeamDTO getUserTeam(GameUser currentUser) {
+        if(currentUser == null){
+            currentUser = securityUtilsService.getCurrentUser();
+        }
         Long teamId = currentUser.getTeamId();
         if (teamId != null){
-            return teamRepository.findOne(teamId);
+            return new TeamDTO(teamRepository.findOne(teamId));
         }
         return null;
     }

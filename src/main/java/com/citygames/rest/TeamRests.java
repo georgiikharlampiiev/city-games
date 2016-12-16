@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -21,11 +22,8 @@ public class TeamRests {
     private TeamService teamService;
 
     @RequestMapping("/getAllTeams")
-    public List<Team> getAllTeams() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-
-        return teamService.getAll();
+    public List<TeamDTO> getAllTeams() {
+        return teamService.getAll().stream().map(TeamDTO::new).collect(Collectors.toList());
     }
 
     @RequestMapping("/getTeamsForGame/{gameId}")

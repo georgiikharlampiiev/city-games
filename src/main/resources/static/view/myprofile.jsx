@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router";
-var ajaxUtils = require ('../utils/utils.jsx');
+import { Button } from 'react-bootstrap';
+const ajaxUtils = require ('../utils/utils.jsx');
 
 import LocalizedStrings from 'react-localization';
 
@@ -16,7 +17,9 @@ let strings = new LocalizedStrings({
         my_team:"My team",
         teams:"Choose the team",
         team:"Team name",
-        send_request_to_team:"Send request to team"
+        send_request_to_team:"Send request to team",
+        approve:"Approve",
+        delete_approve:"Delete approve"
     },
     ru: {
         name_login:"Имя/Логин",
@@ -44,7 +47,9 @@ let strings = new LocalizedStrings({
         my_team:"Моя команда",
         teams:"Choose the team",
         team:"Team name",
-        send_request_to_team:"Send request to team"
+        send_request_to_team:"Send request to team",
+        approve:"Approve",
+        delete_approve:"Delete approve"
     }
 });
 
@@ -133,34 +138,34 @@ export class MyProfile extends React.Component {
         console.info("team ", this.state.team)
     }
 
-    renderTeamMembers(){
+    renderTeamMembers(user){
         var buttonText = strings.approve;
-        if(team.approved){
-            buttonText = strings.delete_approve
+        if(user.roleTeam.id != 3 ){
+            buttonText = strings.delete_approve;
         }
         return (
-            <li key={team.id} className="list-group-item">
-                {team.name}
-                <Button onClick={ () => this.sendApplyOrUnapply(team.id) }> { buttonText } </Button>
+            <li key={user.id} className="list-group-item">
+                {user.name}
+                <Button onClick={ () => console.info(user.id) }> { buttonText } </Button>
             </li>
         )
     }
 
 
     generateMyTeamGroup() {
-        var currentUser = this.state.currentUser;
-        var options = this.state.teams.map(function(opt, i){
+        const currentUser = this.state.currentUser;
+        const options = this.state.teams.map(function(opt, i){
             return <option key={opt.id} value={opt.id}>{opt.name}</option>;
         }, this);
 
-        if (currentUser.teamId == null){
+        if (!currentUser.teamId){
             return (
                 <div>
                     <div className="form-group">
                         <label className="col-md-4 control-label">Team</label>
                         <div className="col-md-4 selectContainer">
                             <div className="input-group">
-                                <span className="input-group-addon"><i className="glyphicon glyphicon-list"></i></span>
+                                <span className="input-group-addon"><i className="glyphicon glyphicon-list"/></span>
                                 <select name="team" className="form-control selectpicker" onChange={this.changeTeam.bind(this)}>
                                     <option value=" " >Please select your team</option>
                                     {options}
@@ -169,24 +174,29 @@ export class MyProfile extends React.Component {
                         </div>
                     </div>
                     <div className="form-group">
-                        <label className="col-md-4 control-label"></label>
+                        <label className="col-md-4 control-label"/>
                         <div className="col-md-4">
-                            <div className="btn btn-warning" onClick={this.sendRequestToTeamOnServer}>{strings.send_request_to_team} <span className="glyphicon glyphicon-send"></span></div>
+                            <div className="btn btn-warning" onClick={this.sendRequestToTeamOnServer}>{strings.send_request_to_team} <span className="glyphicon glyphicon-send"/></div>
                         </div>
                     </div>
                     {this.createTeamButtonRender()}
                 </div>)
-        } else if (currentUser.role_team_id == 1){
-            return(<div>
-                {this.state.team.name}
-                <ul className="col-md-9">
-                   {this.state.teams.map(this.renderTeamMembers)}
-                </ul>
+        } else if (currentUser.roleTeam.id == 1){
+            if(this.state.team.users){
+                return(<div>
+                    {this.state.team.name}
+                    <ul className="col-md-9">
+                       {this.state.team.users.map(this.renderTeamMembers)}
+                    </ul>
+                </div>)
+            }else {
+                return(<div>
+                    {this.state.team.name}
+                </div>)
+            }
+        } else if (currentUser.roleTeam.id == 2) {
 
-            </div>)
-        } else if (currentUser.role_team_id == 2) {
-
-        } else if (currentUser.role_team_id == 3) {
+        } else if (currentUser.roleTeam.id == 3) {
             return(<div>
                 You sent request to team
             </div>)
@@ -209,7 +219,7 @@ export class MyProfile extends React.Component {
                 () => {$('#error_message').show()}
             );
         }else {
-            currentUser.teamId['id'] = this.state.team;
+            currentUser.teamId = this.state.team;
             currentUser.roleTeam.id = "3";
             $('#error_message').hide()
             ajaxUtils.executePostAction("/api/setTeam",
@@ -252,9 +262,9 @@ export class MyProfile extends React.Component {
         if(team == undefined) {
             return(
                 <div className="form-group">
-                    <label className="col-md-4 control-label"></label>
+                    <label className="col-md-4 control-label"/>
                     <div className="col-md-4 ">
-                        <a href={ "#/team-edit/0" } type="button" className="btn btn-warning" > Create team <span className="glyphicon glyphicon-plus"></span></a>
+                        <a href={ "#/team-edit/0" } type="button" className="btn btn-warning" > Create team <span className="glyphicon glyphicon-plus"/></a>
                     </div>
                 </div>);
         }else {
@@ -296,19 +306,6 @@ export class MyProfile extends React.Component {
                             </div>
                         </div>
 
-
-                        {/*<!-- Text input-->*/}
-
-                        {/*<div className="form-group">*/}
-                            {/*<label className="col-md-4 control-label">Phone #</label>*/}
-                            {/*<div className="col-md-4 inputGroupContainer">*/}
-                                {/*<div className="input-group">*/}
-                                    {/*<span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>*/}
-                                    {/*<input name="phone" placeholder="(845)555-1212" className="form-control" type="text" autoComplete="false" />*/}
-                                {/*</div>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-
                         {/*<!-- Text input-->*/}
 
                         <div className="form-group">
@@ -320,83 +317,6 @@ export class MyProfile extends React.Component {
                                 </div>
                             </div>
                         </div>
-
-                        {/*<!-- Text input-->*/}
-
-                        {/*<div className="form-group">*/}
-                            {/*<label className="col-md-4 control-label">City</label>*/}
-                            {/*<div className="col-md-4 inputGroupContainer">*/}
-                                {/*<div className="input-group">*/}
-                                    {/*<span className="input-group-addon"><i className="glyphicon glyphicon-home"></i></span>*/}
-                                    {/*<input name="city" placeholder="city" className="form-control"  type="text"/>*/}
-                                {/*</div>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-
-                        {/*<!-- Select Basic -->*/}
-
-                        {/*<div className="form-group">*/}
-                            {/*<label className="col-md-4 control-label">State</label>*/}
-                            {/*<div className="col-md-4 selectContainer">*/}
-                                {/*<div className="input-group">*/}
-                                    {/*<span className="input-group-addon"><i className="glyphicon glyphicon-list"></i></span>*/}
-                                    {/*<select name="state" className="form-control selectpicker" >*/}
-                                        {/*<option value=" " >Please select your state</option>*/}
-                                        {/*<option>Alabama</option>*/}
-                                        {/*<option>Alaska</option>*/}
-                                        {/*<option >Arizona</option>*/}
-                                        {/*<option >Arkansas</option>*/}
-                                        {/*<option >California</option>*/}
-                                        {/*<option >Colorado</option>*/}
-                                        {/*<option >Connecticut</option>*/}
-                                        {/*<option >Delaware</option>*/}
-                                        {/*<option >District of Columbia</option>*/}
-                                        {/*<option> Florida</option>*/}
-                                        {/*<option >Georgia</option>*/}
-                                        {/*<option >Hawaii</option>*/}
-                                        {/*<option >daho</option>*/}
-                                        {/*<option >Illinois</option>*/}
-                                        {/*<option >Indiana</option>*/}
-                                        {/*<option >Iowa</option>*/}
-                                        {/*<option> Kansas</option>*/}
-                                        {/*<option >Kentucky</option>*/}
-                                        {/*<option >Louisiana</option>*/}
-                                        {/*<option>Maine</option>*/}
-                                        {/*<option >Maryland</option>*/}
-                                        {/*<option> Mass</option>*/}
-                                        {/*<option >Michigan</option>*/}
-                                        {/*<option >Minnesota</option>*/}
-                                        {/*<option>Mississippi</option>*/}
-                                        {/*<option>Missouri</option>*/}
-                                        {/*<option>Montana</option>*/}
-                                        {/*<option>Nebraska</option>*/}
-                                        {/*<option>Nevada</option>*/}
-                                        {/*<option>New Hampshire</option>*/}
-                                        {/*<option>New Jersey</option>*/}
-                                        {/*<option>New Mexico</option>*/}
-                                        {/*<option>New York</option>*/}
-                                        {/*<option>North Carolina</option>*/}
-                                        {/*<option>North Dakota</option>*/}
-                                        {/*<option>Ohio</option>*/}
-                                        {/*<option>Oklahoma</option>*/}
-                                        {/*<option>Oregon</option>*/}
-                                        {/*<option>Pennsylvania</option>*/}
-                                        {/*<option>Rhode Island</option>*/}
-                                        {/*<option>South Carolina</option>*/}
-                                        {/*<option>South Dakota</option>*/}
-                                        {/*<option>Tennessee</option>*/}
-                                        {/*<option>Texas</option>*/}
-                                        {/*<option> Uttah</option>*/}
-                                        {/*<option>Vermont</option>*/}
-                                        {/*<option>Virginia</option>*/}
-                                        {/*<option >Washington</option>*/}
-                                        {/*<option >West Virginia</option>*/}
-                                        {/*<option>Wisconsin</option>*/}
-                                        {/*<option >Wyoming</option>*/}
-                                    {/*</select>*/}
-                                {/*</div>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
 
                         {/*<!-- Success message -->*/}
                         <div className="alert alert-success" role="alert" id="success_message">{strings.success} <i className="glyphicon glyphicon-thumbs-up"></i>{strings.success_message}</div>

@@ -1,5 +1,6 @@
 package com.citygames.service;
 
+import com.citygames.dto.TeamDTO;
 import com.citygames.entity.GameUser;
 import com.citygames.entity.Team;
 
@@ -17,7 +18,7 @@ public interface GameUserService {
 
     GameUser getByName(String name);
 
-    Team getUserTeam(GameUser gameUser);
+    TeamDTO getUserTeam(GameUser gameUser);
 
     GameUser getByEmail(String email);
 
