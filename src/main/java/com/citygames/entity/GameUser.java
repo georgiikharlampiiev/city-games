@@ -27,7 +27,7 @@ public class GameUser {
     String password;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="id")
+    @JoinColumn(name="role_id")
     private UserRole roleId;
 
     @OneToOne(fetch = FetchType.EAGER)

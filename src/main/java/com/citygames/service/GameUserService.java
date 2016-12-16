@@ -22,6 +22,10 @@ public interface GameUserService {
 
     GameUser getByEmail(String email);
 
-    GameUser setUserTeamRole(Long id);
+    GameUser setUserTeamRole(Long id, Long roleId);
+
+    GameUser leaveUserFromTeam(Long userId);
+
+    GameUser createTeamForCurrentUser(String teamName);
 
 }

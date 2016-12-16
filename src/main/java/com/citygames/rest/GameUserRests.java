@@ -65,9 +65,19 @@ public class GameUserRests {
         return gameUserService.getUserTeam(null);
     }
 
-    @RequestMapping("/approveUserForTeam/{userId}")
-    public UserDTO approveUserForTeam(@PathVariable Long userId) {
-        return new UserDTO(gameUserService.setUserTeamRole(userId));
+    @RequestMapping("/approveUserForTeam/{userId}/{roleId}")
+    public UserDTO approveUserForTeam(@PathVariable Long userId, @PathVariable Long roleId) {
+        return new UserDTO(gameUserService.setUserTeamRole(userId, roleId));
+    }
+
+    @RequestMapping("/leaveTeamForUser/{userId}")
+    public UserDTO leaveTeamForUser(@PathVariable Long userId) {
+        return new UserDTO(gameUserService.leaveUserFromTeam(userId));
+    }
+
+    @RequestMapping("/createTeamForCurrentUser/{teamName}")
+    public UserDTO createTeamForCurrentUser(@PathVariable String teamName) {
+        return new UserDTO(gameUserService.createTeamForCurrentUser(teamName));
     }
 
 }

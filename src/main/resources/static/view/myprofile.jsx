@@ -18,8 +18,10 @@ let strings = new LocalizedStrings({
         teams:"Choose the team",
         team:"Team name",
         send_request_to_team:"Send request to team",
-        approve:"Approve",
-        delete_approve:"Delete approve"
+        approve_admin:"Approve Admin",
+        approve_player:"Approve Player",
+        delete_approve:"Delete approve",
+        leave_team:"Leave team"
     },
     ru: {
         name_login:"Имя/Логин",
@@ -33,8 +35,10 @@ let strings = new LocalizedStrings({
         teams:"Выбор команды",
         team:"Имя команды",
         send_request_to_team:"Отправить заявку в команду",
-        approve:"Approve",
-        delete_approve:"Delete approve"
+        approve_admin:"Approve Admin",
+        approve_player:"Approve Player",
+        delete_approve:"Delete approve",
+        leave_team:"Leave team"
     },
     ua: {
         name_login:"Ім'я/Логін",
@@ -48,8 +52,10 @@ let strings = new LocalizedStrings({
         teams:"Choose the team",
         team:"Team name",
         send_request_to_team:"Send request to team",
-        approve:"Approve",
-        delete_approve:"Delete approve"
+        approve_admin:"Approve Admin",
+        approve_player:"Approve Player",
+        delete_approve:"Delete approve",
+        leave_team:"Leave team"
     }
 });
 
@@ -62,12 +68,19 @@ export class MyProfile extends React.Component {
             errorMessage: "",
             teams: [],
             team: "",
+            yourNameTeam: "",
             teamUsers: []
         };
         this.sendChangesOnServer = this.sendChangesOnServer.bind(this);
         this.sendRequestToTeamOnServer = this.sendRequestToTeamOnServer.bind(this);
         this.changeTeam = this.changeTeam.bind(this);
         this.renderTeamMembers = this.renderTeamMembers.bind(this);
+        this.approveUserForTeam = this.approveUserForTeam.bind(this);
+        this.updateTeamFromServer = this.updateTeamFromServer.bind(this);
+        this.renderTeamMembersWithApprove = this.renderTeamMembersWithApprove.bind(this);
+        this.leaveTeam = this.leaveTeam.bind(this);
+        this.loadFromServer = this.loadFromServer.bind(this);
+        this.createTeamForCurrentUser = this.createTeamForCurrentUser.bind(this);
     }
 
     componentDidMount() {
@@ -83,10 +96,14 @@ export class MyProfile extends React.Component {
              (data) => {this.setState({teams:data})},
              (e) => console.error(e)
          );
-         ajaxUtils.executeGetAction('/api/getTeam',
-             (data) => {this.setState({team:data})},
-             (e) => console.error(e)
-         );
+         this.updateTeamFromServer();
+    }
+
+    updateTeamFromServer(){
+        ajaxUtils.executeGetAction('/api/getTeam',
+            (data) => {this.setState({team:data})},
+            (e) => console.error(e)
+        );
     }
 
     onFieldChange(fieldName, e){
@@ -133,24 +150,66 @@ export class MyProfile extends React.Component {
     }
 
     changeTeam(e){
-        console.info("changeTeam ", e.target.value)
         this.setState({team:e.target.value});
-        console.info("team ", this.state.team)
+    }
+
+    approveUserForTeam(userId, roleId) {
+        ajaxUtils.executeGetAction('/api/approveUserForTeam/'+ userId + '/' + roleId,
+            (data) => {this.updateTeamFromServer()},
+            (e) => console.error(e)
+        );
+    }
+
+    leaveTeam() {
+        ajaxUtils.executeGetAction('/api/leaveTeamForUser/'+ this.state.currentUser.id,
+            (data) => {this.loadFromServer()},
+            (e) => console.error(e)
+        );
+    }
+
+    renderTeamMembersWithApprove(user){
+        if(user.id == this.state.currentUser.id){
+            return (
+                <li key={user.id} className="list-group-item">
+                    {user.name}
+                    <Button onClick={ () =>  this.leaveTeam() }> { strings.leave_team } </Button>
+                </li>
+            )
+        }else if(user.roleTeam.id != 3 ){
+            return (
+                <li key={user.id} className="list-group-item">
+                    {user.name}
+                    <Button onClick={ () => this.approveUserForTeam(user.id, 3) }> { strings.delete_approve } </Button>
+                </li>
+            )
+        }else {
+            return (
+                <li key={user.id} className="list-group-item">
+                    {user.name}
+                    <Button onClick={ () =>  this.approveUserForTeam(user.id, 1) }> { strings.approve_admin } </Button>
+                    <Button onClick={ () =>  this.approveUserForTeam(user.id, 2) }> { strings.approve_player } </Button>
+                </li>
+            )
+        }
+
     }
 
     renderTeamMembers(user){
-        var buttonText = strings.approve;
-        if(user.roleTeam.id != 3 ){
-            buttonText = strings.delete_approve;
+        if(user.id == this.state.currentUser.id){
+            return (
+                <li key={user.id} className="list-group-item">
+                    {user.name}
+                    <Button onClick={ () =>  this.leaveTeam() }> { strings.leave_team } </Button>
+                </li>
+            )
+        }else {
+            return (
+                <li key={user.id} className="list-group-item">
+                    {user.name}
+                </li>
+            )
         }
-        return (
-            <li key={user.id} className="list-group-item">
-                {user.name}
-                <Button onClick={ () => console.info(user.id) }> { buttonText } </Button>
-            </li>
-        )
     }
-
 
     generateMyTeamGroup() {
         const currentUser = this.state.currentUser;
@@ -173,6 +232,7 @@ export class MyProfile extends React.Component {
                             </div>
                         </div>
                     </div>
+
                     <div className="form-group">
                         <label className="col-md-4 control-label"/>
                         <div className="col-md-4">
@@ -186,7 +246,7 @@ export class MyProfile extends React.Component {
                 return(<div>
                     {this.state.team.name}
                     <ul className="col-md-9">
-                       {this.state.team.users.map(this.renderTeamMembers)}
+                       {this.state.team.users.map(this.renderTeamMembersWithApprove)}
                     </ul>
                 </div>)
             }else {
@@ -195,10 +255,16 @@ export class MyProfile extends React.Component {
                 </div>)
             }
         } else if (currentUser.roleTeam.id == 2) {
-
+            return(<div>
+                {this.state.team.name}
+                <ul className="col-md-9">
+                    {this.state.team.users.map(this.renderTeamMembers)}
+                </ul>
+            </div>)
         } else if (currentUser.roleTeam.id == 3) {
             return(<div>
                 You sent request to team
+                <Button onClick={ () =>  this.leaveTeam() }> { strings.leave_team } </Button>
             </div>)
         }
 
@@ -244,6 +310,13 @@ export class MyProfile extends React.Component {
         }
     }
 
+    createTeamForCurrentUser() {
+        ajaxUtils.executeGetAction('/api/createTeamForCurrentUser/'+ this.state.yourNameTeam,
+            (data) => {this.loadFromServer()},
+            (e) => console.error(e)
+        );
+
+    }
 
     sendRequestButtonRender() {
         const team = this.state.team;
@@ -260,11 +333,22 @@ export class MyProfile extends React.Component {
         console.info("currentUser.teamId", currentUser.teamId)
         const team  = currentUser.teamId;
         if(team == undefined) {
-            return(
-                <div className="form-group">
-                    <label className="col-md-4 control-label"/>
-                    <div className="col-md-4 ">
-                        <a href={ "#/team-edit/0" } type="button" className="btn btn-warning" > Create team <span className="glyphicon glyphicon-plus"/></a>
+            return(<div>
+                    <div className="form-group">
+                        <label className="col-md-4 control-label">Your team name</label>
+                        <div className="col-md-4 inputGroupContainer">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="glyphicon glyphicon-envelope"/></span>
+                                <input name="yourteamname" placeholder="Your team name" className="form-control"  type="text" value={this.state.yourNameTeam} onChange={(e) => {this.setState({yourNameTeam: e.target.value})}} />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label className="col-md-4 control-label"/>
+                        <div className="col-md-4 ">
+                            <Button bsStyle="warning" onClick={ () =>  this.createTeamForCurrentUser() }> Create team <span className="glyphicon glyphicon-plus"/> </Button>
+                        </div>
                     </div>
                 </div>);
         }else {
