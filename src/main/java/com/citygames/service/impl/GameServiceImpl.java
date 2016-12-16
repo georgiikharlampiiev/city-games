@@ -80,6 +80,11 @@ public class GameServiceImpl implements GameService {
             if ( game.getQuestions() != null && !game.getQuestions().isEmpty() ) {
 
                 Set<Answer> previousAnswers = new HashSet<>();
+
+                if(previousGame.getQuestions() == null){
+                    previousGame.setQuestions(new HashSet<>());
+                }
+
                 previousGame.getQuestions().stream().forEach(q -> {
                     previousAnswers.addAll(q.getAnswers());
                 });

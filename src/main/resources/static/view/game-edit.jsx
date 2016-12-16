@@ -13,19 +13,22 @@ let strings = new LocalizedStrings({
         game_type:"Game type",
         storm: "Storm",
         liner: "Liner",
-        pub_quiz: "Pub-quiz"
+        pub_quiz: "Pub-quiz",
+        select_game_type: "Select game type"
     },
     ru: {
         game_type:"Game type",
         storm: "Storm",
         liner: "Liner",
-        pub_quiz: "Pub-quiz"
+        pub_quiz: "Pub-quiz",
+        select_game_type: "Select game type"
     },
     ua: {
         game_type:"Game type",
         storm: "Storm",
         liner: "Liner",
-        pub_quiz: "Pub-quiz"
+        pub_quiz: "Pub-quiz",
+        select_game_type: "Select game type"
     }
 });
 
@@ -83,7 +86,7 @@ export class GameEdit extends React.Component {
 
     renderEditFields(){
         let typeGame = this.state.currentGame.typeGame;
-        if (typeGame == '0') {
+        if (typeGame == 0) {
             return (
                 <GameEditStorm
                     params={this.props.params}
@@ -99,7 +102,7 @@ export class GameEdit extends React.Component {
                     currentUser={this.state.currentUser}
                     isUserGameEditor={this.state.isUserGameEditor}
                 />)
-        } else {
+        } else if (typeGame == 2){
             return (
                 <GameEditPubQuiz
                     params={this.props.params}
@@ -108,8 +111,9 @@ export class GameEdit extends React.Component {
                     isUserGameEditor={this.state.isUserGameEditor}
                 />)
 
+        } else {
+            return (<div></div>)
         }
-        return (<div></div>)
     }
 
     renderGameType(type){
@@ -128,8 +132,9 @@ export class GameEdit extends React.Component {
                         <label className="col-md-4 control-label">{strings.game_type}</label>
                         <div className="col-md-4 selectContainer">
                             <div className="input-group">
-                                <span className="input-group-addon"><i className="glyphicon glyphicon-list"></i></span>
+                                <span className="input-group-addon"><i className="glyphicon glyphicon-list"/></span>
                                 <select name="team" value={this.state.currentGame.typeGame} className="form-control selectpicker" onChange={this.changeGameTypeListener.bind(this)} >
+                                    <option key={-1} value={-1}> {strings.select_game_type} </option>
                                     {this.state.gameTypes.map(this.renderGameType)}
                                 </select>
                             </div>
