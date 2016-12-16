@@ -2,6 +2,7 @@ package com.citygames.service.impl;
 
 import com.citygames.dto.TeamDTO;
 import com.citygames.entity.GameUser;
+import com.citygames.entity.RoleTeam;
 import com.citygames.entity.Team;
 import com.citygames.repository.GameUserRepository;
 import com.citygames.repository.TeamRepository;
@@ -63,5 +64,15 @@ public class GameUserServiceImpl implements GameUserService {
 
     @Override
     public GameUser getByEmail(String email) { return gameUserRepository.findByEmail(email); }
+
+    @Override
+    public GameUser setUserTeamRole(Long userId) {
+        GameUser gameUser = gameUserRepository.findOne(userId);
+        RoleTeam roleTeam = new RoleTeam();
+        roleTeam.setId(2l);
+        roleTeam.setName("PLAYER");
+        gameUser.setRoleTeam(roleTeam);
+        return this.edit(gameUser);
+    }
 
 }

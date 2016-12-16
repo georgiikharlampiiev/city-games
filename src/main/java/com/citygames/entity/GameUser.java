@@ -31,7 +31,7 @@ public class GameUser {
     private UserRole roleId;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="id")
+    @JoinColumn(name="role_team_id")
     private RoleTeam roleTeam;
 
     @Column(name="TEAM_ID")

@@ -65,4 +65,9 @@ public class GameUserRests {
         return gameUserService.getUserTeam(null);
     }
 
+    @RequestMapping("/approveUserForTeam/{userId}")
+    public UserDTO approveUserForTeam(@PathVariable Long userId) {
+        return gameUserService.setUserTeamRole(userId);
+    }
+
 }
