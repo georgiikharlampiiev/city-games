@@ -128,7 +128,7 @@ export class GameView extends React.Component {
         const isUserAppliedGame = this.state.isUserAppliedGame;
         const isUserApprovedGame = this.state.isUserApprovedGame;
         const gameId = this.props.params.gameId;
-        if(user && user.teamId){
+        if(user && user.teamId && user.roleTeam.id != 3){
             if(isUserAppliedGame && isUserApprovedGame) {
                 if(this.state.currentGame.dateFinish > new Date().getTime()){
                     return (

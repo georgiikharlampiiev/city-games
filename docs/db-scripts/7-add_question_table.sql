@@ -1,7 +1,7 @@
 CREATE TABLE citygames.question
 (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `order` INT NOT NULL,
+    orderInGame INT NOT NULL,
     name VARCHAR(255),
     description LONGTEXT NOT NULL,
     game_id LONG NOT NULL

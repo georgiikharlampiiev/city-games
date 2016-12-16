@@ -72,7 +72,7 @@ export class GameEditStorm extends React.Component {
     }
 
     sendChangesOnServer(){
-        var currentGame = this.state.currentGame;
+        const currentGame = this.state.currentGame;
         currentGame.questions.forEach(this.setQuestionOrder);
         this.setState({currentGame});
         ajaxUtils.executePostAction(
@@ -94,6 +94,7 @@ export class GameEditStorm extends React.Component {
     addQuestion(){
         const currentGame = this.state.currentGame;
         var questions = [];
+        console.info("this.state.currentGame.questions ", this.state.currentGame.questions);
         if(!this.state.currentGame.questions) {
             questions.push({
                 name: strings.question_name,
@@ -247,7 +248,7 @@ export class GameEditStorm extends React.Component {
                 <div className="form-group">
                     {/*<label className="col-md-4 control-label"></label>*/}
                     <div className="col-md-4">
-                        <div className="btn btn-success" onClick={this.addQuestion}>Add question <span className="glyphicon glyphicon-plus" /></div>
+                        <Button bsStyle="success" onClick={this.addQuestion}>Add question <span className="glyphicon glyphicon-plus" /></Button>
                     </div>
                 </div>
 
@@ -292,18 +293,28 @@ const AnswerListItem  = ({value, index, parent}) =>{
                     <fieldset>
                         {/*<!-- Text input-->*/}
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Game name</label>
+                            <label className="col-md-3 control-label">Answer name</label>
                             <div className="col-md-9 inputGroupContainer">
                                 <div className="input-group">
-                                    <input name={ "question_name"+value.index } className="form-control"  type="text"
+                                    <input name={ "answer_name"+value.index } className="form-control"  type="text"
                                            value={ value.name }
                                            onChange={ changeAnswerField.bind(this,  "name") }  />
                                 </div>
                             </div>
                         </div>
 
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Answers</label>
+                            <div className="col-md-9 inputGroupContainer">
+                                <div className="input-group">
+                                    <input name={ "answer_tags"+value.index } className="form-control"  type="text"
+                                           value={ value.answerTags }
+                                           onChange={ changeAnswerField.bind(this,  "answerTags") }  />
+                                </div>
+                            </div>
+                        </div>
 
-                        <Button onClick={ ()=> {
+                        <Button bsStyle="danger" onClick={ ()=> {
                             const currentGame = parent.owner.state.currentGame;
                             const currentGameQuestions = parent.owner.state.currentGame.questions;
                             const currentQuestion = parent.owner.state.currentGame.questions[parent.index];
@@ -321,7 +332,7 @@ const AnswerListItem  = ({value, index, parent}) =>{
                 </div>
             </Collapse>
         </li>)}
-    else {return (<li></li>)}
+    else {return (<li/>)}
 };
 
 const SortableQuestion = SortableElement(({value}) =>{
@@ -348,7 +359,7 @@ const SortableQuestion = SortableElement(({value}) =>{
     function addAnswer(){
         const currentGame = value.owner.state.currentGame;
         const questions = value.owner.state.currentGame.questions;
-        questions[value.index].answers.push({questionId: value.index, name: "answer name", nextQuestion: 0});
+        questions[value.index].answers.push({questionId: value.index, name: "answer name", nextQuestion: 0, answerTags: "", score: 0});
         currentGame['questions'] = questions;
         value.owner.setState({ currentGame });
     }
@@ -447,12 +458,12 @@ const SortableQuestion = SortableElement(({value}) =>{
                                    <div className="col-md-10 inputGroupContainer">
                                        <div className="input-group">
                                            <ul>
-                                                {value.item.answers.map((ans, index) => {return(<AnswerListItem key={index} value={ans} parent={value} index={index} />)})}
+                                               {value.item.answers.map((ans, index) => {return(<AnswerListItem key={index} value={ans} parent={value} index={index} />)})}
                                             </ul>
                                        </div>
 
-                                       <Button onClick={ ()=> {addAnswer()}}>
-                                           {strings.add_answer}
+                                       <Button bsStyle="success" onClick={ ()=> {addAnswer()}}>
+                                           {strings.add_answer} <span className="glyphicon glyphicon-plus" />
                                        </Button>
 
                                    </div>
@@ -460,7 +471,7 @@ const SortableQuestion = SortableElement(({value}) =>{
 
 
 
-                               <Button onClick={ ()=> {
+                               <Button bsStyle="danger" onClick={ ()=> {
                                    const currentGame = value.owner.state.currentGame;
                                    const currentGameQuestions = value.owner.state.currentGame.questions;
                                    currentGameQuestions.splice(value.index, 1);
@@ -475,7 +486,7 @@ const SortableQuestion = SortableElement(({value}) =>{
                    </Collapse>
                </li>
        )}
-    else {return (<li></li>)}
+    else {return (<li/>)}
 });
 
 const SortableList = SortableContainer(({items}) => {
@@ -488,6 +499,6 @@ const SortableList = SortableContainer(({items}) => {
             </ul>
         );
     }else {
-        return (<ul></ul>)
+        return (<ul/>)
     }
 });

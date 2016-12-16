@@ -51,52 +51,57 @@ public class GameServiceImpl implements GameService {
     public Game add(Game game) {
         GameUser gameUser = securityUtilsService.getCurrentUser();
         if (isUserGameEditor(gameUser, game.getId())) {
-            Game priviesGame = game.getId() != null ? gameRepository.findOne(game.getId()) : new Game();
+            Game previousGame = game.getId() != null ? gameRepository.findOne(game.getId()) : new Game();
 
-            priviesGame.setImage(game.getImage());
-            priviesGame.setName(game.getName());
-            priviesGame.setDescription(game.getDescription());
-            priviesGame.setDateStart(game.getDateStart());
-            priviesGame.setDateFinish(game.getDateFinish());
-            priviesGame.setGameAdmins(game.getGameAdmins());
-            priviesGame.setTypeGame(game.getTypeGame());
+            previousGame.setImage(game.getImage());
+            previousGame.setName(game.getName());
+            previousGame.setDescription(game.getDescription());
+            previousGame.setDateStart(game.getDateStart());
+            previousGame.setDateFinish(game.getDateFinish());
+            previousGame.setGameAdmins(game.getGameAdmins());
+            previousGame.setTypeGame(game.getTypeGame());
 
-            if (priviesGame.getGameAdmins() != null) {
+            if (previousGame.getGameAdmins() != null) {
                 GameAdmin admin = new GameAdmin();
-                admin.setGame(priviesGame);
+                admin.setGame(previousGame);
                 admin.setGameUser(gameUser);
-                priviesGame.getGameAdmins().add(admin);
+                previousGame.getGameAdmins().add(admin);
             } else {
                 Set<GameAdmin> admins = new HashSet<>();
                 GameAdmin admin = new GameAdmin();
-                admin.setGame(priviesGame);
+                admin.setGame(previousGame);
                 admin.setGameUser(gameUser);
                 admins.add(admin);
-                priviesGame.setGameAdmins(admins);
+                previousGame.setGameAdmins(admins);
             }
 
-            Game newGame = gameRepository.save(priviesGame);
+            Game newGame = gameRepository.save(previousGame);
 
             if ( game.getQuestions() != null && !game.getQuestions().isEmpty() ) {
 
-                Set<Answer> priviesAnswers = new HashSet<>();
-                priviesGame.getQuestions().stream().forEach(q -> {
-                    priviesAnswers.addAll(q.getAnswers());
+                Set<Answer> previousAnswers = new HashSet<>();
+
+                if(previousGame.getQuestions() == null){
+                    previousGame.setQuestions(new HashSet<>());
+                }
+
+                previousGame.getQuestions().stream().forEach(q -> {
+                    previousAnswers.addAll(q.getAnswers());
                 });
 
-                answerRepository.delete(priviesAnswers);
+                answerRepository.delete(previousAnswers);
 
-                if( priviesGame.getQuestions() != null && !priviesGame.getQuestions().isEmpty()
-                        && priviesGame.getQuestions().size() > game.getQuestions().size() ){
-                    Set<Question> forDelete = priviesGame.getQuestions();
+                if( previousGame.getQuestions() != null && !previousGame.getQuestions().isEmpty()
+                        && previousGame.getQuestions().size() > game.getQuestions().size() ){
+                    Set<Question> forDelete = previousGame.getQuestions();
                     forDelete.removeAll(game.getQuestions());
                     questionRepository.delete(forDelete);
-                    priviesGame.setQuestions(game.getQuestions());
+                    previousGame.setQuestions(game.getQuestions());
                 }else{
-                    priviesGame.setQuestions(game.getQuestions());
+                    previousGame.setQuestions(game.getQuestions());
                 }
-                priviesGame.getQuestions().stream().forEach(q -> q.setGameId(newGame.getId()));
-                List<Question> savedQuestions = questionRepository.save(priviesGame.getQuestions());
+                previousGame.getQuestions().stream().forEach(q -> q.setGameId(newGame.getId()));
+                List<Question> savedQuestions = questionRepository.save(previousGame.getQuestions());
 
                 Set<Answer> answers = new HashSet<>();
                 savedQuestions.stream().forEach(q -> {

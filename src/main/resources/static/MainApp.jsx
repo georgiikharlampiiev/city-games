@@ -8,7 +8,6 @@ let strings = new LocalizedStrings({
 		games:"Games",
 		statistic:"Statistic",
 		my_profile:"My Profile",
-		team:"Team",
 		about:"About",
 		logout:"Logout"
 	},
@@ -16,7 +15,6 @@ let strings = new LocalizedStrings({
 		games:"Игры",
 		statistic:"Статистика",
 		my_profile:"Мой профиль",
-		team:"Моя команда",
 		about:"Об игре",
 		logout:"Выйти"
 	},
@@ -24,7 +22,6 @@ let strings = new LocalizedStrings({
 		games:"Ігри",
 		statistic:"Статистика",
 		my_profile:"Мій профіль",
-		team:"Моя команда",
 		about:"Про гру",
 		logout:"Вийти"
 	}
@@ -77,11 +74,6 @@ export default class MainApp extends React.Component {
 										{strings.my_profile}
 									</Link>
 								</li>
-								<li>
-                                	<Link to="/team">
-										{strings.team}
-                                	</Link>
-                             	</li>
 								<li>
 									<Link to="/about">
 										{strings.about}

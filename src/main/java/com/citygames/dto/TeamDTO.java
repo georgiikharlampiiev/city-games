@@ -1,8 +1,10 @@
 package com.citygames.dto;
 
+import com.citygames.entity.Team;
 import lombok.Data;
 
-import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 public class TeamDTO {
@@ -12,6 +14,8 @@ public class TeamDTO {
 
     private Boolean approved;
 
+    private Set<UserDTO> users;
+
     public TeamDTO() {
     }
 
@@ -19,5 +23,11 @@ public class TeamDTO {
         this.id = id;
         this.name = name;
         this.approved = approved;
+    }
+
+    public TeamDTO(Team team){
+        this.id = team.getId();
+        this.name = team.getName();
+        this.users = team.getGameUser().stream().map(UserDTO::new).collect(Collectors.toSet());
     }
 }

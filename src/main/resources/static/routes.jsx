@@ -10,7 +10,7 @@ import { GameTeams } from "./view/game-teams.jsx";
 import { GameStatistic } from "./view/game-statistic.jsx";
 import { MyProfile } from "./view/myprofile.jsx";
 import { About } from "./view/about.jsx";
-import { Team } from "./view/team.jsx";
+import { TeamEdit } from "./view/team-edit.jsx";
 
 const routes = (
     <Route path="/" component={MainApp}>
@@ -24,7 +24,7 @@ const routes = (
         <Route path="game-edit/:gameId" component={GameEdit} />
         <Route path="game-teams/:gameId" component={GameTeams} />
         <Route path="game-statistic/:gameId" component={GameStatistic} />
-        <Route path="team" component={Team} />
+        <Route path="team-edit" component={TeamEdit} />
     </Route>
 );
 
