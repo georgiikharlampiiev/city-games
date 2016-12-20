@@ -154,7 +154,7 @@ export class GameEditPubQuiz extends React.Component {
             questions.push({
                 name: strings.question_name,
                 description: strings.description,
-                orderInGame: 0,
+                orderInGame: this.state.currentGame.questions.length,
                 score: 0,
                 autoStartSeconds: 0,
                 autoFinishSeconds: 0,
@@ -302,7 +302,6 @@ export class GameEditPubQuiz extends React.Component {
                         <DateTimeField value={this.state.currentGame.dateFinish} onChange={this.onDateInputChange.bind(this, "dateFinish")} dateFormat="DD/MM/YYY" timeFormat="HH:mm:ss"/>
                     </div>
                 </div>
-
 
                 {/*<!-- Success message -->*/}
                 <div className="alert alert-success" role="alert" id="success_message">Success <i className="glyphicon glyphicon-thumbs-up" /> All changes have been saved.</div>
@@ -457,7 +456,7 @@ const SortableQuestion = SortableElement(({value}) =>{
                         <fieldset>
                             {/*<!-- Text input-->*/}
                             <div className="form-group">
-                                <label className="col-md-2 control-label">Game name</label>
+                                <label className="col-md-2 control-label">Question name</label>
                                 <div className="col-md-10 inputGroupContainer">
                                     <div className="input-group">
                                         <input name={ "question_name"+value.index } className="form-control"  type="text"
@@ -474,17 +473,6 @@ const SortableQuestion = SortableElement(({value}) =>{
                                         <input name={ "score"+value.index } className="form-control"  type="text"
                                                value={ value.item.score }
                                                onChange={ changeQuestionField.bind(this, value.index, "score") } />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <label className="col-md-2 control-label">Auto Start Seconds</label>
-                                <div className="col-md-10 inputGroupContainer">
-                                    <div className="input-group">
-                                        <input name={ "autoStartSeconds"+value.index } className="form-control"  type="text"
-                                               value={ value.item.autoStartSeconds }
-                                               onChange={ changeQuestionField.bind(this, value.index, "autoStartSeconds") } />
                                     </div>
                                 </div>
                             </div>
@@ -546,8 +534,6 @@ const SortableQuestion = SortableElement(({value}) =>{
 
                                 </div>
                             </div>
-
-
 
                             <Button bsStyle="danger" onClick={ ()=> {
                                 const currentGame = value.owner.state.currentGame;
