@@ -179,7 +179,7 @@ export class GameEditLiner extends React.Component {
         return (
             <div>
                 {/*<!-- Form Name -->*/}
-                <legend>Create/edit game type storm</legend>
+                <legend>Create/edit game type liner</legend>
 
                 {/*<!-- Text input-->*/}
                 <div className="form-group">

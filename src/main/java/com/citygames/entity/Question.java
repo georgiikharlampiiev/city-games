@@ -27,6 +27,8 @@ public class Question {
 
   private Integer autoFinishSeconds;
 
+  private Integer blockNumber;
+
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionId", cascade = {CascadeType.MERGE})
   private Set<Answer> answers;
 }
