@@ -335,82 +335,19 @@ export class GameEditPubQuiz extends React.Component {
     }
 }
 
-const AnswerListItem  = ({value, index, parent}) =>{
-
-    function changeAnswerField( name, e){
-        const currentGame = parent.owner.state.currentGame;
-        const currentGameQuestions = parent.owner.state.currentGame.questions;
-        const currentQuestion = parent.owner.state.currentGame.questions[parent.index];
-        const currentAnswers = parent.owner.state.currentGame.questions[parent.index].answers;
-
-        value[name] = e.target.value;
-        currentAnswers[index] = value;
-
-        currentQuestion['answers'] = currentAnswers;
-        currentGameQuestions[parent.index] = currentQuestion;
-        currentGame['questions'] = currentGameQuestions;
-        parent.owner.setState({ currentGame });
+const SortableList = SortableContainer(({items}) => {
+    if(items.items){
+        return (
+            <ul>
+                {items.items.map((value, index) =>
+                    <SortableQuestion key={`item-${index}`} index={index} value={ {item: value, owner: items.owner, index: index} } />
+                )}
+            </ul>
+        );
+    }else {
+        return (<ul/>)
     }
-
-    if(value){
-        return (<li className="list-group-item">
-
-            <Button onClick={ ()=> {
-                console.info("index ", index);
-                console.info("parrentIndex ", parent.index);
-                const openAnswer = parent.owner.state.openAnswer;
-                openAnswer[parent.index +'+'+ index] = !parent.owner.state.openAnswer[parent.index +'+'+ index];
-                parent.owner.setState({ openAnswer: openAnswer })
-            }}>
-                {value.name}
-            </Button>
-
-            <Collapse in={ parent.owner.state.openAnswer[parent.index +'+'+ index] }>
-                <div>
-                    <fieldset>
-                        {/*<!-- Text input-->*/}
-                        <div className="form-group">
-                            <label className="col-md-3 control-label">Answer name</label>
-                            <div className="col-md-9 inputGroupContainer">
-                                <div className="input-group">
-                                    <input name={ "answer_name"+value.index } className="form-control"  type="text"
-                                           value={ value.name }
-                                           onChange={ changeAnswerField.bind(this,  "name") }  />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="col-md-3 control-label">Answers</label>
-                            <div className="col-md-9 inputGroupContainer">
-                                <div className="input-group">
-                                    <input name={ "answer_tags"+value.index } className="form-control"  type="text"
-                                           value={ value.answerTags }
-                                           onChange={ changeAnswerField.bind(this,  "answerTags") }  />
-                                </div>
-                            </div>
-                        </div>
-
-                        <Button bsStyle="danger" onClick={ ()=> {
-                            const currentGame = parent.owner.state.currentGame;
-                            const currentGameQuestions = parent.owner.state.currentGame.questions;
-                            const currentQuestion = parent.owner.state.currentGame.questions[parent.index];
-                            const currentAnswers = parent.owner.state.currentGame.questions[parent.index].answers;
-                            currentAnswers.splice(index, 1);
-                            currentQuestion['answers'] = currentAnswers;
-                            currentGameQuestions[parent.index] = currentQuestion;
-                            currentGame['questions'] = currentGameQuestions;
-                            parent.owner.setState({ currentGame });
-                        }}>
-                            {strings.delete_answer}
-                        </Button>
-                    </fieldset>
-
-                </div>
-            </Collapse>
-        </li>)}
-    else {return (<li/>)}
-};
+});
 
 const SortableQuestion = SortableElement(({value}) =>{
 
@@ -419,6 +356,8 @@ const SortableQuestion = SortableElement(({value}) =>{
         // console.info("index", index)
         // console.info("e", e)
         // console.info("e.target.value", e.target.value)
+        const questions = value.owner.state.currentGame.questions;
+        const currentQuestionIndex = questions.indexOf(value.item);
         if(name == "description"){
             value.item[name] = e;
         }else {
@@ -426,8 +365,7 @@ const SortableQuestion = SortableElement(({value}) =>{
         }
 
         const currentGame = value.owner.state.currentGame;
-        const questions = value.owner.state.currentGame.questions;
-        questions[index] = value.item;
+        questions[currentQuestionIndex] = value.item;
         currentGame['questions'] = questions;
         value.owner.setState({ currentGame });
         console.info("currentGame", value.owner.state.currentGame);
@@ -436,7 +374,8 @@ const SortableQuestion = SortableElement(({value}) =>{
     function addAnswer(){
         const currentGame = value.owner.state.currentGame;
         const questions = value.owner.state.currentGame.questions;
-        questions[value.index].answers.push({questionId: value.index, name: "answer name", nextQuestion: 0, answerTags: "", score: 0});
+        const currentQuestionIndex = questions.indexOf(value.item);
+        questions[currentQuestionIndex].answers.push({questionId: currentQuestionIndex, name: "answer name", nextQuestion: 0, answerTags: "", score: 0});
         currentGame['questions'] = questions;
         value.owner.setState({ currentGame });
     }
@@ -446,12 +385,12 @@ const SortableQuestion = SortableElement(({value}) =>{
 
                 <Button onClick={ ()=> {
                     const open = value.owner.state.open;
-                    open[value.index] = !value.owner.state.open[value.index];
+                    open[value.index + '+' + value.item.blockNumber] = !value.owner.state.open[value.index + '+' + value.item.blockNumber];
                     value.owner.setState({ open: open })}}>
                     {value.item.name}
                 </Button>
 
-                <Collapse in={ value.owner.state.open[value.index] }>
+                <Collapse in={ value.owner.state.open[value.index + '+' + value.item.blockNumber] }>
                     <div>
                         <fieldset>
                             {/*<!-- Text input-->*/}
@@ -553,16 +492,79 @@ const SortableQuestion = SortableElement(({value}) =>{
     else {return (<li/>)}
 });
 
-const SortableList = SortableContainer(({items}) => {
-    if(items.items){
-        return (
-            <ul>
-                {items.items.map((value, index) =>
-                    <SortableQuestion key={`item-${index}`} index={index} value={ {item: value, owner: items.owner, index: index} } />
-                )}
-            </ul>
-        );
-    }else {
-        return (<ul/>)
+const AnswerListItem  = ({value, index, parent}) =>{
+
+    function changeAnswerField( name, e){
+        const currentGame = parent.owner.state.currentGame;
+        const currentGameQuestions = parent.owner.state.currentGame.questions;
+        const currentQuestion = parent.owner.state.currentGame.questions[parent.index];
+        const currentAnswers = parent.owner.state.currentGame.questions[parent.index].answers;
+
+        value[name] = e.target.value;
+        currentAnswers[index] = value;
+
+        currentQuestion['answers'] = currentAnswers;
+        currentGameQuestions[parent.index] = currentQuestion;
+        currentGame['questions'] = currentGameQuestions;
+        parent.owner.setState({ currentGame });
     }
-});
+
+    if(value){
+        return (<li className="list-group-item">
+
+            <Button onClick={ ()=> {
+                console.info("index ", index);
+                console.info("parrentIndex ", parent.index);
+                const openAnswer = parent.owner.state.openAnswer;
+                openAnswer[parent.index +'+'+ index] = !parent.owner.state.openAnswer[parent.index +'+'+ index];
+                parent.owner.setState({ openAnswer: openAnswer })
+            }}>
+                {value.name}
+            </Button>
+
+            <Collapse in={ parent.owner.state.openAnswer[parent.index +'+'+ index] }>
+                <div>
+                    <fieldset>
+                        {/*<!-- Text input-->*/}
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Answer name</label>
+                            <div className="col-md-9 inputGroupContainer">
+                                <div className="input-group">
+                                    <input name={ "answer_name"+value.index } className="form-control"  type="text"
+                                           value={ value.name }
+                                           onChange={ changeAnswerField.bind(this,  "name") }  />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Answers</label>
+                            <div className="col-md-9 inputGroupContainer">
+                                <div className="input-group">
+                                    <input name={ "answer_tags"+value.index } className="form-control"  type="text"
+                                           value={ value.answerTags }
+                                           onChange={ changeAnswerField.bind(this,  "answerTags") }  />
+                                </div>
+                            </div>
+                        </div>
+
+                        <Button bsStyle="danger" onClick={ ()=> {
+                            const currentGame = parent.owner.state.currentGame;
+                            const currentGameQuestions = parent.owner.state.currentGame.questions;
+                            const currentQuestion = parent.owner.state.currentGame.questions[parent.index];
+                            const currentAnswers = parent.owner.state.currentGame.questions[parent.index].answers;
+                            currentAnswers.splice(index, 1);
+                            currentQuestion['answers'] = currentAnswers;
+                            currentGameQuestions[parent.index] = currentQuestion;
+                            currentGame['questions'] = currentGameQuestions;
+                            parent.owner.setState({ currentGame });
+                        }}>
+                            {strings.delete_answer}
+                        </Button>
+                    </fieldset>
+
+                </div>
+            </Collapse>
+        </li>)}
+    else {return (<li/>)}
+};

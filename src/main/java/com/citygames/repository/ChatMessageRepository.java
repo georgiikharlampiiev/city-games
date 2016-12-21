@@ -1,10 +1,10 @@
 package com.citygames.repository;
 
-import com.citygames.entity.ChatMessage;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
+//import com.citygames.entity.ChatMessage;
+//import org.springframework.data.jpa.repository.JpaRepository;
+//import org.springframework.stereotype.Repository;
+//
+//@Repository
+public interface ChatMessageRepository /*extends JpaRepository<ChatMessage, Long>*/ {
 }
 

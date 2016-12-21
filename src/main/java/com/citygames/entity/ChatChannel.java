@@ -4,8 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Data
-@Entity
+//@Data
+//@Entity
 public class ChatChannel {
 
   private @Id @GeneratedValue Long id;
