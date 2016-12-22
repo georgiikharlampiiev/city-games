@@ -8,4 +8,6 @@ public interface QuestionService {
 
     List<Question> getQuestionsForCurrentGameStorm(Long id);
 
+    Question getCurrentQuestionForCurrentGameLiner(Long id);
+
 }

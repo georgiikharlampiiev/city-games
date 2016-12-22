@@ -53,5 +53,10 @@ public class QuestionServiceImpl implements QuestionService {
         return questions;
     }
 
-
+    @Override
+    public Question getCurrentQuestionForCurrentGameLiner(Long id) {
+        Question question = new Question();
+        question.setName("Test name");
+        return question;
+    }
 }
