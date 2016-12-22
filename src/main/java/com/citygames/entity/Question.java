@@ -29,6 +29,11 @@ public class Question {
 
   private Integer blockNumber;
 
+  private Integer questionType;
+
+  @Column(name="FILE_ID")
+  private Long fileId;
+
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionId", cascade = {CascadeType.MERGE})
   private Set<Answer> answers;
 }

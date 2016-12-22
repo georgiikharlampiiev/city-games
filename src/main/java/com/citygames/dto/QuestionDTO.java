@@ -1,9 +1,7 @@
 package com.citygames.dto;
 
-import com.citygames.entity.Answer;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.Set;
 
 @Data

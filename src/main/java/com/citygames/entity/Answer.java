@@ -24,4 +24,7 @@ public class Answer {
 
   private Boolean isCloseQuestion;
 
+  @Column(name="FILE_ID")
+  private Long fileId;
+
 }

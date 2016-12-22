@@ -46,7 +46,8 @@
     "react-sortable-hoc": "^0.4.5",
     "react-localization": "^0.0.8",
     "react-countdown-clock": "^1.0.9",
-    "react-tagsinput": "^3.14.0"
+    "react-tagsinput": "^3.14.0",
+    "react-fileupload-progress": "^0.4.0"
   },
   "scripts": {
     "watch": "webpack --watch -d"
