@@ -95,7 +95,7 @@ export class GameEditPubQuiz extends React.Component {
         );
     }
 
-    addQuestion(blockNumber){
+    addQuestion(blockNumber, questionType){
         const currentGame = this.state.currentGame;
         var questions = [];
         console.info("this.state.currentGame.questions ", this.state.currentGame.questions);
@@ -108,7 +108,8 @@ export class GameEditPubQuiz extends React.Component {
                 autoStartSeconds: 0,
                 autoFinishSeconds: 0,
                 answers:[],
-                blockNumber: blockNumber
+                blockNumber: blockNumber,
+                questionType: questionType
             });
         }else {
             questions = this.state.currentGame.questions;
@@ -120,7 +121,8 @@ export class GameEditPubQuiz extends React.Component {
                 autoStartSeconds: 0,
                 autoFinishSeconds: 0,
                 answers:[],
-                blockNumber: blockNumber
+                blockNumber: blockNumber,
+                questionType: questionType
             });
         }
 
@@ -246,7 +248,19 @@ export class GameEditPubQuiz extends React.Component {
                     <div className="form-group">
                         {/*<label className="col-md-4 control-label"></label>*/}
                         <div className="col-md-4">
-                            <Button bsStyle="success" onClick={() => this.addQuestion(index)}>Add question <span className="glyphicon glyphicon-plus" /></Button>
+                            <Button bsStyle="success" onClick={() => this.addQuestion(index, "0")}>Add simple question <span className="glyphicon glyphicon-plus" /></Button>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        {/*<label className="col-md-4 control-label"></label>*/}
+                        <div className="col-md-4">
+                            <Button bsStyle="success" onClick={() => this.addQuestion(index, "1")}>Add audio question <span className="glyphicon glyphicon-plus" /></Button>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        {/*<label className="col-md-4 control-label"></label>*/}
+                        <div className="col-md-4">
+                            <Button bsStyle="success" onClick={() => this.addQuestion(index, "2")}>Add video question <span className="glyphicon glyphicon-plus" /></Button>
                         </div>
                     </div>
                 </div>
@@ -381,6 +395,8 @@ const SortableQuestion = SortableElement(({value}) =>{
         value.owner.setState({ currentGame });
     }
 
+
+
     function renderFieldset(item){
         if(item.questionType == 0){
             return (<fieldset>
@@ -475,13 +491,13 @@ const SortableQuestion = SortableElement(({value}) =>{
                     {strings.delete_question}
                 </Button>
             </fieldset>)
-        } else {
+        } else if(item.questionType == 1) {
             return (
                     <fieldset>
                     {/*<!-- Text input-->*/}
 
                     <div className="form-group">
-                        <label className="col-md-2 control-label">Question name</label>
+                        <label className="col-md-2 control-label">Audio Question name</label>
                         <div className="col-md-10 inputGroupContainer">
                             <div className="input-group">
                                 <input name={ "question_name"+value.index } className="form-control"  type="text"
@@ -505,6 +521,68 @@ const SortableQuestion = SortableElement(({value}) =>{
                                       }}
                                       onError={ (e, request) => {console.log('error', e, request);}}
                                       onAbort={ (e, request) => {console.log('abort', e, request);}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label className="col-md-2 control-label">Answers</label>
+                        <div className="col-md-10 inputGroupContainer">
+                            <div className="input-group">
+                                <ul>
+                                    {item.answers.map((ans, index) => {return(<AnswerListItem key={index} value={ans} parent={value} index={index} />)})}
+                                </ul>
+                            </div>
+
+                            <Button bsStyle="success" onClick={ ()=> {addAnswer()}}>
+                                {strings.add_answer} <span className="glyphicon glyphicon-plus" />
+                            </Button>
+
+                        </div>
+                    </div>
+
+                    <Button bsStyle="danger" onClick={ ()=> {
+                        const currentGame = value.owner.state.currentGame;
+                        const currentGameQuestions = value.owner.state.currentGame.questions;
+                        currentGameQuestions.splice(value.index, 1);
+                        currentGame['questions'] = currentGameQuestions;
+                        value.owner.setState({ currentGame });
+                    }}>
+                        {strings.delete_question}
+                    </Button>
+                </fieldset>
+            )
+        } else  {
+            return (
+                <fieldset>
+                    {/*<!-- Text input-->*/}
+
+                    <div className="form-group">
+                        <label className="col-md-2 control-label">Video Question name</label>
+                        <div className="col-md-10 inputGroupContainer">
+                            <div className="input-group">
+                                <input name={ "question_name"+value.index } className="form-control"  type="text"
+                                       value={ item.name }
+                                       onChange={ changeQuestionField.bind(this, value.index, "name") } />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label className="col-md-2 control-label">File</label>
+                        <div className="col-md-10 inputGroupContainer">
+                            <div className="input-group">
+                                <FileUploadProgress key='ex1' url='/api/addFile'
+                                                    onProgress={(e, request, progress) => {console.log('progress', e, request, progress);}}
+                                                    onLoad={ (e, request) => {
+                                                        {/*console.log('load', e, request);*/}
+                                                        console.log('equest', request);
+                                                        console.log('equest.response', request.response);
+                                                        changeQuestionField("","fileId", request.response)
+                                                    }}
+                                                    onError={ (e, request) => {console.log('error', e, request);}}
+                                                    onAbort={ (e, request) => {console.log('abort', e, request);}}
                                 />
                             </div>
                         </div>
