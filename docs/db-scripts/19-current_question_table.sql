@@ -1,6 +1,8 @@
+DROP TABLE citygames.current_question;
 CREATE TABLE citygames.current_question
 (
-    team_id BIGINT NOT NULL,
-    game_id BIGINT NOT NULL,
-    question_id BIGINT NOT NULL
+    game_team_id BIGINT NOT NULL,
+    question_id BIGINT NOT NULL,
+    PRIMARY KEY (`game_team_id`),
+    UNIQUE KEY `game_team_id_uindex` (`game_team_id`)
 );

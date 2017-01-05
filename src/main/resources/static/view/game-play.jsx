@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import ReactCountdownClock  from "react-countdown-clock";
 
 import { GamePlayStorm } from "./game-play-component/game-play-storm.jsx";
+import { GamePlayLiner } from "./game-play-component/game-play-liner.jsx";
 
 const ajaxUtils = require('../utils/utils.jsx');
 const moment = require('moment');
@@ -44,6 +45,8 @@ export class GamePlay extends React.Component {
 
         }else if(currentGame.typeGame == 0){
             return (<GamePlayStorm props={this.props} gameId={currentGame.id} dateFinish={this.state.currentGame.dateFinish} />)
+         } else if(currentGame.typeGame == 1){
+             return (<GamePlayLiner props={this.props} gameId={currentGame.id} dateFinish={this.state.currentGame.dateFinish} />)
         }
 
         return (<div></div>)

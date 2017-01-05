@@ -4,10 +4,7 @@ import com.citygames.dto.TeamAnswerDTO;
 import com.citygames.entity.*;
 import com.citygames.enums.GameTypeEnum;
 import com.citygames.repository.TeamAnswerRepository;
-import com.citygames.service.GameService;
-import com.citygames.service.SecurityUtilsService;
-import com.citygames.service.TeamAnswerService;
-import com.citygames.service.TeamService;
+import com.citygames.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +28,9 @@ public class TeamAnswerServiceImpl implements TeamAnswerService {
 
     @Autowired
     private TeamService teamService;
+
+    @Autowired
+    private QuestionService questionService;
 
     @Override
     public TeamAnswer add(TeamAnswerDTO teamAnswerDTO) {
@@ -63,14 +63,29 @@ public class TeamAnswerServiceImpl implements TeamAnswerService {
         Game game = gameService.getGameById(teamAnswerDTO.getGameId());
         Team team = teamService.get(gameUser.getTeamId());
         TeamAnswer teamAnswer =  new TeamAnswer();
+        teamAnswer.setAnswer(teamAnswerDTO.getAnswer());
+        teamAnswer.setTeam(team);
+        teamAnswer.setTime(new Date());
         if ( GameTypeEnum.STORM.getId().equals( game.getTypeGame() ) ) {
-            teamAnswer.setAnswer(teamAnswerDTO.getAnswer());
-            teamAnswer.setTeam(team);
             checkAnswerForStormGame(teamAnswer, game);
-            teamAnswer.setTime(new Date());
+        } else if (GameTypeEnum.LINER.getId().equals(game.getTypeGame())){
+            Question question = questionService.getQuestionById(teamAnswerDTO.getQuestionId());
+            checkAnswerForLinerGame(teamAnswer, question);
+            teamAnswer.setQuestion(question);
         }
 
         return teamAnswer;
+    }
+
+    private void checkAnswerForLinerGame(TeamAnswer teamAnswer, Question question) {
+        for(Answer a : question.getAnswers()){
+            if(a.getName().equalsIgnoreCase(teamAnswer.getAnswer())){
+                teamAnswer.setCorrect(true);
+                return;
+            }
+        }
+        teamAnswer.setCorrect(false);
+
     }
 
     private void checkAnswerForStormGame(TeamAnswer teamAnswer, Game game){

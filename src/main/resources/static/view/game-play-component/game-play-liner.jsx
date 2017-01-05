@@ -4,7 +4,7 @@ const ajaxUtils = require('../../utils/utils.jsx');
 const moment = require('moment');
 const $ = require ('jquery');
 
-export class GamePlayStorm extends React.Component {
+export class GamePlayLiner extends React.Component {
 
     constructor(props) {
        super(props);
@@ -36,7 +36,7 @@ export class GamePlayStorm extends React.Component {
     componentDidMount() {
         this.loadFromServer();
         const that = this;
-        const intervalHandler = setInterval(that.loadFromServer.bind(that), 10000);
+        const intervalHandler = setInterval(that.loadFromServer.bind(that), 50000);
         const counterHandler = setInterval(() => {
             const currentTime = new Date();
             if(currentTime.getTime() > that.props.dateFinish){
@@ -79,7 +79,8 @@ export class GamePlayStorm extends React.Component {
             answer: this.state.inputAnswer,
             gameId: this.props.gameId,
             teamId:0,
-            correct: false
+            correct: false,
+            questionId:8
         };
 
         ajaxUtils.executePostAction("/api/addAnswer",

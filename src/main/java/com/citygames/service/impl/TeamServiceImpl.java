@@ -1,10 +1,13 @@
 package com.citygames.service.impl;
 
 import com.citygames.dto.TeamDTO;
+import com.citygames.entity.Game;
 import com.citygames.entity.Team;
 import com.citygames.entity.TeamInGame;
+import com.citygames.enums.GameTypeEnum;
 import com.citygames.repository.TeamInGameRepository;
 import com.citygames.repository.TeamRepository;
+import com.citygames.service.CurrentQuestionService;
 import com.citygames.service.GameService;
 import com.citygames.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,9 @@ public class TeamServiceImpl implements TeamService {
 
     @Autowired
     private GameService gameService;
+
+    @Autowired
+    private CurrentQuestionService currentQuestionService;
 
     @Override
     public Team add(Team team) {
@@ -80,6 +86,14 @@ public class TeamServiceImpl implements TeamService {
         teamInGame.setApproved(!approveStatus);
 
         teamInGameRepository.save(teamInGame);
+
+        Game game = gameService.getGameById(gameId);
+
+        if (teamInGame.isApproved()) {
+            if (GameTypeEnum.LINER.getId().equals(game.getTypeGame())) {
+                currentQuestionService.setFirstQuestionForLinerGame(teamInGame, game);
+            }
+        }
 
         return true;
     }

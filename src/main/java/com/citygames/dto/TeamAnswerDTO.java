@@ -13,6 +13,8 @@ public class TeamAnswerDTO {
 
     private Long gameId;
 
+    private Long questionId;
+
     private Boolean correct;
 
     public static TeamAnswerDTO convetToDTO(TeamAnswer teamAnswer){
@@ -20,6 +22,7 @@ public class TeamAnswerDTO {
 
         teamAnswerDTO.setAnswer(teamAnswer.getAnswer());
         teamAnswerDTO.setCorrect(teamAnswer.isCorrect());
+        teamAnswerDTO.setQuestionId(teamAnswer.getQuestion().getId());
 
         return teamAnswerDTO;
     }
