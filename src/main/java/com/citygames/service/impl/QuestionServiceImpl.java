@@ -53,28 +53,26 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getCurrentQuestionForCurrentGameLiner(Long id) {
+    public Question getCurrentQuestionForCurrentGameLiner(Long id) {
         GameUser gameUser =  securityUtilsService.getCurrentUser();
 
         if(gameUser == null){
-            return Collections.EMPTY_LIST;
+            return null;
         }
 
         TeamInGame teamInGame = teamInGameRepository.findByGameIdAndTeamsId(id, gameUser.getId());
         CurrentQuestion currentQuestion = currentQuestionRepository.findByGameTeamId(teamInGame.getId());
 
-        List<Question> questions = new ArrayList<>();
-        questions.add(questionRepository.findOne(currentQuestion.getQuestionId()));
+        Question question = questionRepository.findOne(currentQuestion.getQuestionId());
 
-        List<Long> questionIds = questions.stream().map(Question::getId).collect(Collectors.toList());
+        List<Long> questionIds = new ArrayList<>();
+        questionIds.add(question.getId());
 
         List<TeamAnswer> teamAnswers = teamAnswerRepository.findByTeamIdAndQuestionIdIn(gameUser.getTeamId(), questionIds).stream().filter((TeamAnswer::isCorrect)).collect(Collectors.toList());
 
-        for(Question q :questions){
-            updateAnswers(teamAnswers, q);
-        }
+        updateAnswers(teamAnswers, question);
 
-        return questions;
+        return question;
     }
 
     private void updateAnswers(List<TeamAnswer> teamAnswers, Question q){

@@ -9,7 +9,9 @@ export class GamePlayLiner extends React.Component {
     constructor(props) {
        super(props);
        this.state = {
-           currentQuestion: [],
+           question: null,
+           currentQuestion: null,
+           currentQuestionFinish: "",
            gameId: 0,
            inputAnswer: "",
            cameBackAnswer:"",
@@ -39,11 +41,20 @@ export class GamePlayLiner extends React.Component {
         const intervalHandler = setInterval(that.loadFromServer.bind(that), 50000);
         const counterHandler = setInterval(() => {
             const currentTime = new Date();
-            if(currentTime.getTime() > that.props.dateFinish){
-                that.setState({isFinished: true});
+            if(currentTime.getTime() > this.state.currentQuestionFinish){
+                ajaxUtils.executeGetAction('api/setNewCurrentQuestionsForCurrentGameLiner/' + this.props.gameId,
+                    (data) => {
+                        this.setState({question:data})
+                    },
+                    (e) => {
+                        console.error(e)
+                    },
+                    false
+                    );
+                //that.setState({isFinished: true});
             }else {
                 that.setState({
-                    counter: (that.props.dateFinish - currentTime.getTime())
+                    counter: (this.state.currentQuestionFinish - currentTime.getTime())
                 });
             }
         } , 1000);
@@ -66,10 +77,13 @@ export class GamePlayLiner extends React.Component {
 
     loadFromServer() {
          ajaxUtils.executeGetAction('/api/getCurrentQuestionsForCurrentGameLiner/' + this.props.gameId,
-             (data) => {this.setState({ currentQuestion:data })},
+             (data) => {this.setState({ question:data })},
              (e) => console.error(e),
              false
          );
+         if (this.state.question != null) {
+             this.setState({currentQuestionFinish:this.state.question.autoFinishSeconds})
+         }
     }
 
     applyAnswer() {
@@ -124,20 +138,22 @@ export class GamePlayLiner extends React.Component {
 
 
     mapQuestion(question){
-        return (
-            <div key={`question-view-${question.orderInGame}`}>
-            {/*<!-- Question -->*/}
-                <p className="lead">
-                    {question.name}
-                </p>
-                <div dangerouslySetInnerHTML={this.mapDescription(question)} />
-                <p>Your answers: </p>
-                <u>
-                    { question.answers.map((a) => <li key={a.id}>{a.name}</li>) }
-                </u>
-                <hr/>
-            </div>
-        )
+        if (question != null) {
+            return (
+                <div key={`question-view-${question.orderInGame}`}>
+                    {/*<!-- Question -->*/}
+                    <p className="lead">
+                        {question.name}
+                    </p>
+                    <div dangerouslySetInnerHTML={this.mapDescription(question)}/>
+                    <p>Your answers: </p>
+                    <u>
+                        { question.answers.map((a) => <li key={a.id}>{a.name}</li>) }
+                    </u>
+                    <hr/>
+                </div>
+            )
+        } else { return <div></div> }
     }
 
     mapDescription(question){
@@ -154,12 +170,12 @@ export class GamePlayLiner extends React.Component {
         this.setState({inputAnswer: e.target.value});
     }
 
-    renderQuestions(currentQuestion){
+    renderQuestions(question){
         if(this.state.isFinished){
             return (<Link to={"/game-statistic/"+ this.props.gameId} className="btn btn-default " >Game is over click here for Statistic</Link>)
          }else {
-            return (<div>{currentQuestion.map(this.mapQuestion)}</div>)
-        }
+            return (<div>{this.mapQuestion(question)}</div>)
+}
     }
 
     render() {
@@ -180,8 +196,8 @@ export class GamePlayLiner extends React.Component {
                 </fieldset>
 
                 <div style={{marginTop : "70px"}}>
-                    <p><span className="glyphicon glyphicon-time"/> To end of the game: { this.formatMillisecondsToCounter(this.state.counter) } </p>
-                    {this.renderQuestions(this.state.currentQuestion)}
+                    <p><span className="glyphicon glyphicon-time"/> To end of the level: { this.formatMillisecondsToCounter(this.state.counter) } </p>
+                    {this.renderQuestions(this.state.question)}
                 </div>
 
             </div>

@@ -91,7 +91,7 @@ public class TeamServiceImpl implements TeamService {
 
         if (teamInGame.isApproved()) {
             if (GameTypeEnum.LINER.getId().equals(game.getTypeGame())) {
-                currentQuestionService.setFirstQuestionForLinerGame(teamInGame, game);
+                currentQuestionService.setFirstQuestionForLinerGame(gameId);
             }
         }
 

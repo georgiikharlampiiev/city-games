@@ -20,8 +20,7 @@ public class QuestionRests {
     }
 
     @RequestMapping("/getCurrentQuestionsForCurrentGameLiner/{id}")
-    public List<Question> getCurrentQuestionForCurrentGameLiner(@PathVariable Long id) {
+    public Question getCurrentQuestionForCurrentGameLiner(@PathVariable Long id) {
         return questionService.getCurrentQuestionForCurrentGameLiner(id);
     }
-
 }

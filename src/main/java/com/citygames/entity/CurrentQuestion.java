@@ -3,6 +3,8 @@ package com.citygames.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
 @Data
 @Entity
@@ -14,6 +16,9 @@ public class CurrentQuestion {
   @Column(name="QUESTION_ID")
   private Long questionId;
 
-//  @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionId", cascade = {CascadeType.MERGE})
-//  private Set<Answer> answers;
+  @Column(name="START_DATE")
+  private Date startDate;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionId", cascade = {CascadeType.MERGE})
+  private Set<TeamAnswer> answers;
 }

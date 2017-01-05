@@ -15,8 +15,10 @@ public interface CurrentQuestionService {
 
     void delete(long id);
 
-    void setFirstQuestionForLinerGame(TeamInGame teamInGame, Game game);
+    void setFirstQuestionForLinerGame(Long gameId);
 
-    void setNextCurrentQuestionForLinerGame(TeamInGame teamInGame, Game game);
+    Question setNextCurrentQuestionForLinerGame(Long gameId);
+
+    CurrentQuestion getCurrentQuestionForLinerGame(Long gameId);
 
 }
