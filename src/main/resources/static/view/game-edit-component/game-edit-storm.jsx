@@ -103,7 +103,9 @@ export class GameEditStorm extends React.Component {
                 score: 0,
                 autoStartSeconds: 0,
                 autoFinishSeconds: 0,
-                answers:[]
+                answers:[],
+                blockNumber: 0,
+                questionType: 0
             });
         }else {
             questions = this.state.currentGame.questions;
@@ -114,7 +116,9 @@ export class GameEditStorm extends React.Component {
                 score: 0,
                 autoStartSeconds: 0,
                 autoFinishSeconds: 0,
-                answers:[]
+                answers:[],
+                blockNumber: 0,
+                questionType: 0
             });
         }
 

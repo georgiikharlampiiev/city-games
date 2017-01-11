@@ -16,3 +16,6 @@ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 
+multipart.max-file-size=100MB
+multipart.max-request-size=100MB
+
