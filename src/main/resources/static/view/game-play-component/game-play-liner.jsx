@@ -10,7 +10,7 @@ export class GamePlayLiner extends React.Component {
        super(props);
        this.state = {
            question: null,
-           currentQuestion: null,
+           teamQuestion: null,
            currentQuestionFinish: "",
            gameId: 0,
            inputAnswer: "",
@@ -38,20 +38,35 @@ export class GamePlayLiner extends React.Component {
     componentDidMount() {
         this.loadFromServer();
         const that = this;
-        const intervalHandler = setInterval(that.loadFromServer.bind(that), 50000);
+        const intervalHandler = setInterval(that.loadFromServer.bind(that), 100000);
         const counterHandler = setInterval(() => {
             const currentTime = new Date();
             if(currentTime.getTime() > this.state.currentQuestionFinish){
-                ajaxUtils.executeGetAction('api/setNewCurrentQuestionsForCurrentGameLiner/' + this.props.gameId,
+                ajaxUtils.executeGetAction('api/getNextTeamQuestionsForCurrentGameLiner/' + this.props.gameId,
                     (data) => {
-                        this.setState({question:data})
+                        that.setState({teamQuestion:data})
+                        const tQuestion = this.state.teamQuestion;
+                        if (tQuestion.questionId != null) {
+
+                            ajaxUtils.executeGetAction('api/getQuestionById/' + tQuestion.questionId,
+                                (data) =>{
+                                    this.setState({question:data});
+                                    var finishTime = tQuestion.startDate + this.state.question.autoFinishSeconds;
+                                    this.setState({currentQuestionFinish: finishTime})
+                                },
+                                (e) => console.error(e),
+                                true
+                            );
+
+                        } else {
+                            this.setState({ isFinished:true})
+                        }
                     },
                     (e) => {
                         console.error(e)
                     },
                     false
                     );
-                //that.setState({isFinished: true});
             }else {
                 that.setState({
                     counter: (this.state.currentQuestionFinish - currentTime.getTime())
@@ -76,14 +91,30 @@ export class GamePlayLiner extends React.Component {
     }
 
     loadFromServer() {
-         ajaxUtils.executeGetAction('/api/getCurrentQuestionsForCurrentGameLiner/' + this.props.gameId,
-             (data) => {this.setState({ question:data })},
+         ajaxUtils.executeGetAction('/api/getCurrentTeamQuestionForCurrentLinerGame/' + this.props.gameId,
+             (data) => {
+                this.setState({ teamQuestion:data });
+                 const tQuestion = this.state.teamQuestion;
+                 if (tQuestion.questionId != null) {
+
+                     ajaxUtils.executeGetAction('api/getQuestionById/' + tQuestion.questionId,
+                         (data) =>{
+                            this.setState({question:data});
+                             var finishTime = tQuestion.startDate + this.state.question.autoFinishSeconds;
+                             this.setState({currentQuestionFinish: finishTime})
+
+                     },
+                         (e) => console.error(e),
+                         true
+                     );
+
+                 } else {
+                     this.setState({ isFinished:true})
+                 }
+             },
              (e) => console.error(e),
              false
          );
-         if (this.state.question != null) {
-             this.setState({currentQuestionFinish:this.state.question.autoFinishSeconds})
-         }
     }
 
     applyAnswer() {
@@ -94,7 +125,7 @@ export class GamePlayLiner extends React.Component {
             gameId: this.props.gameId,
             teamId:0,
             correct: false,
-            questionId:8
+            questionId:this.state.teamQuestion.questionId
         };
 
         ajaxUtils.executePostAction("/api/addAnswer",
@@ -196,7 +227,7 @@ export class GamePlayLiner extends React.Component {
                 </fieldset>
 
                 <div style={{marginTop : "70px"}}>
-                    <p><span className="glyphicon glyphicon-time"/> To end of the level: { this.formatMillisecondsToCounter(this.state.counter) } </p>
+                    <p><span className="glyphicon glyphicon-time"/> To the end of the level: { this.formatMillisecondsToCounter(this.state.counter) } </p>
                     {this.renderQuestions(this.state.question)}
                 </div>
 

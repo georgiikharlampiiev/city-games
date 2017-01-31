@@ -11,5 +11,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     List<Question> findByGameIdOrderByOrderInGameAsc(Long gameId);
 
+    Question findByGameIdAndOrderInGame(Long gameId, Integer orderInGame);
+
 }
 

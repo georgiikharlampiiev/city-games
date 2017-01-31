@@ -2,7 +2,6 @@ package com.citygames.service.impl;
 
 import com.citygames.entity.*;
 import com.citygames.repository.*;
-import com.citygames.service.CurrentQuestionService;
 import com.citygames.service.QuestionService;
 import com.citygames.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionRepository questionRepository;
 
     @Autowired
-    private CurrentQuestionRepository currentQuestionRepository;
+    private TeamQuestionRepository teamQuestionRepository;
 
     @Autowired
     private TeamInGameRepository teamInGameRepository;
@@ -53,17 +52,17 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question getCurrentQuestionForCurrentGameLiner(Long id) {
+    public Question getCurrentQuestionForCurrentGameLiner(Long teamId) {
         GameUser gameUser =  securityUtilsService.getCurrentUser();
 
         if(gameUser == null){
             return null;
         }
 
-        TeamInGame teamInGame = teamInGameRepository.findByGameIdAndTeamsId(id, gameUser.getId());
-        CurrentQuestion currentQuestion = currentQuestionRepository.findByGameTeamId(teamInGame.getId());
+        TeamInGame teamInGame = teamInGameRepository.findByGameIdAndTeamsId(teamId, gameUser.getId());
+        TeamQuestion teamQuestion = teamQuestionRepository.findByGameTeamId(teamInGame.getId());
 
-        Question question = questionRepository.findOne(currentQuestion.getQuestionId());
+        Question question = questionRepository.findOne(teamQuestion.getQuestionId());
 
         List<Long> questionIds = new ArrayList<>();
         questionIds.add(question.getId());
@@ -85,7 +84,28 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question getQuestionById(Long id) {
+    public Question getQuestionForCurrentGameLiner(Long id) {
         return questionRepository.findOne(id);
+    }
+
+    @Override
+    public Question getQuestionForLinerGameById(Long id) {
+
+        GameUser gameUser =  securityUtilsService.getCurrentUser();
+
+        if(gameUser == null){
+            return null;
+        }
+
+        Question question = questionRepository.findOne(id);
+
+        List<Long> questionIds = new ArrayList<>();
+        questionIds.add(question.getId());
+
+        List<TeamAnswer> teamAnswers = teamAnswerRepository.findByTeamIdAndQuestionIdIn(gameUser.getTeamId(), questionIds).stream().filter((TeamAnswer::isCorrect)).collect(Collectors.toList());
+
+        updateAnswers(teamAnswers, question);
+
+        return question;
     }
 }

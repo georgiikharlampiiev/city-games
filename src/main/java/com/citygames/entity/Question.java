@@ -1,5 +1,6 @@
 package com.citygames.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -30,5 +31,6 @@ public class Question {
   private Integer blockNumber;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionId", cascade = {CascadeType.MERGE})
+  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   private Set<Answer> answers;
 }

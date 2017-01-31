@@ -7,7 +7,7 @@ import com.citygames.entity.TeamInGame;
 import com.citygames.enums.GameTypeEnum;
 import com.citygames.repository.TeamInGameRepository;
 import com.citygames.repository.TeamRepository;
-import com.citygames.service.CurrentQuestionService;
+import com.citygames.service.TeamQuestionService;
 import com.citygames.service.GameService;
 import com.citygames.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class TeamServiceImpl implements TeamService {
     private GameService gameService;
 
     @Autowired
-    private CurrentQuestionService currentQuestionService;
+    private TeamQuestionService teamQuestionService;
 
     @Override
     public Team add(Team team) {
@@ -91,7 +91,7 @@ public class TeamServiceImpl implements TeamService {
 
         if (teamInGame.isApproved()) {
             if (GameTypeEnum.LINER.getId().equals(game.getTypeGame())) {
-                currentQuestionService.setFirstQuestionForLinerGame(gameId);
+                teamQuestionService.setFirstTeamQuestionForLinerGame(gameId);
             }
         }
 

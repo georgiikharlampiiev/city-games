@@ -1,5 +1,6 @@
 package com.citygames.repository;
 
+import com.citygames.entity.Answer;
 import com.citygames.entity.TeamAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -11,7 +12,9 @@ import java.util.List;
 @RepositoryRestResource(exported = false)
 public interface TeamAnswerRepository extends JpaRepository<TeamAnswer, Long> {
 
-    List<TeamAnswer> findByTeamIdAndQuestionIdIn(Long gameId, List<Long> questionId);
+    List<TeamAnswer> findByTeamIdAndQuestionIdIn(Long teamId, List<Long> questionId);
+
+
 
 }
 

@@ -1,5 +1,5 @@
-DROP TABLE citygames.current_question;
-CREATE TABLE citygames.current_question
+DROP TABLE citygames.team_question;
+CREATE TABLE citygames.team_question
 (
     game_team_id BIGINT NOT NULL,
     question_id BIGINT NOT NULL,

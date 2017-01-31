@@ -19,8 +19,13 @@ public class QuestionRests {
         return questionService.getQuestionsForCurrentGameStorm(id);
     }
 
-    @RequestMapping("/getCurrentQuestionsForCurrentGameLiner/{id}")
-    public Question getCurrentQuestionForCurrentGameLiner(@PathVariable Long id) {
-        return questionService.getCurrentQuestionForCurrentGameLiner(id);
+    @RequestMapping("/getQuestionForCurrentGameLiner/{id}")
+    public Question getQuestionForCurrentGameLiner(@PathVariable Long id) {
+        return questionService.getQuestionForCurrentGameLiner(id);
+    }
+
+    @RequestMapping("/getQuestionById/{id}")
+    public Question getQuestionById(@PathVariable Long id) {
+        return questionService.getQuestionForLinerGameById(id);
     }
 }

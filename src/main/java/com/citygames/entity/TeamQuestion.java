@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 @Entity
-public class CurrentQuestion {
+public class TeamQuestion {
 
   @Id
   private Long gameTeamId;
@@ -19,6 +19,6 @@ public class CurrentQuestion {
   @Column(name="START_DATE")
   private Date startDate;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionId", cascade = {CascadeType.MERGE})
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = {CascadeType.MERGE})
   private Set<TeamAnswer> answers;
 }
