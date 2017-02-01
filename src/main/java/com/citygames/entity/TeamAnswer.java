@@ -1,5 +1,7 @@
 package com.citygames.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,6 +16,7 @@ public class TeamAnswer {
 
     private boolean deleted;
 
+    @JoinColumn(name = "ANSWER")
     private String answer;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -23,6 +26,11 @@ public class TeamAnswer {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "ANSWER_ID")
+    private Answer answerId;
 
     private Date time;
 
@@ -80,5 +88,13 @@ public class TeamAnswer {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public Answer getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Answer answerId) {
+        this.answerId = answerId;
     }
 }
