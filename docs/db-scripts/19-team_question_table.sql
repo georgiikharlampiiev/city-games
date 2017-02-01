@@ -1,4 +1,4 @@
-DROP TABLE citygames.team_question;
+DROP TABLE IF EXISTS citygames.team_question;
 CREATE TABLE citygames.team_question
 (
     game_team_id BIGINT NOT NULL,
